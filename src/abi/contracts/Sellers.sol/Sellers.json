@@ -1,0 +1,89 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "Sellers",
+  "sourceName": "contracts/Sellers.sol",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "SellerAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "SellerList",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "seller_addr",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "bv_value",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "token_withdraw_value",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "exists",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "seller_id",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "withraw_token",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x608060405234801561001057600080fd5b506101aa806100206000396000f3fe608060405234801561001057600080fd5b506004361061004c5760003560e01c80634d343cb2146100515780637b436480146100975780637df6cc6f146100ae578063b4a4601e14610129575b600080fd5b61007a61005f36600461012b565b6002602052600090815260409020546001600160a01b031681565b6040516001600160a01b0390911681526020015b60405180910390f35b6100a060005481565b60405190815260200161008e565b6100f76100bc366004610144565b6001602081905260009182526040909120805491810154600282015460038301546004909301546001600160a01b0390921692909160ff1685565b604080519586526001600160a01b0390941660208601529284019190915260608301521515608082015260a00161008e565b005b60006020828403121561013d57600080fd5b5035919050565b60006020828403121561015657600080fd5b81356001600160a01b038116811461016d57600080fd5b939250505056fea2646970667358221220f910d7fe7af84eb0debe777a5ec387da78aa1b5dabbcada0d5cbb4f03053119d64736f6c63430008140033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b506004361061004c5760003560e01c80634d343cb2146100515780637b436480146100975780637df6cc6f146100ae578063b4a4601e14610129575b600080fd5b61007a61005f36600461012b565b6002602052600090815260409020546001600160a01b031681565b6040516001600160a01b0390911681526020015b60405180910390f35b6100a060005481565b60405190815260200161008e565b6100f76100bc366004610144565b6001602081905260009182526040909120805491810154600282015460038301546004909301546001600160a01b0390921692909160ff1685565b604080519586526001600160a01b0390941660208601529284019190915260608301521515608082015260a00161008e565b005b60006020828403121561013d57600080fd5b5035919050565b60006020828403121561015657600080fd5b81356001600160a01b038116811461016d57600080fd5b939250505056fea2646970667358221220f910d7fe7af84eb0debe777a5ec387da78aa1b5dabbcada0d5cbb4f03053119d64736f6c63430008140033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

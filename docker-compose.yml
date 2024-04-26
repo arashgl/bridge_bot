@@ -1,0 +1,30 @@
+version: '3.1'
+
+services:
+  db:
+    image: mariadb:latest
+    restart: always
+    env_file:
+      - ./.env
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+    ports:
+      - '3307:3306'
+
+  phpmyadmin:
+     container_name: phpmyadmin_container2
+     image: phpmyadmin/phpmyadmin
+     restart: always
+     environment:
+       PMA_HOST: db
+       PMA_USER: ${MYSQL_USER}
+       PMA_PASSWORD: ${MYSQL_PASSWORD}
+       UPLOAD_LIMIT: 32048K
+     ports:
+       - "8090:80"
+     depends_on:
+       - db

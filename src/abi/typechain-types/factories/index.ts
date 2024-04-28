@@ -4,4 +4,3 @@
 export * as openzeppelin from "./@openzeppelin";
 export * as contracts from "./contracts";
 export * as forgeStd from "./forge-std";
-export * as test from "./test";

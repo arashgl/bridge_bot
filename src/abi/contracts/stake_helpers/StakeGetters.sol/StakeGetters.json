@@ -1,0 +1,153 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "StakeGetters",
+  "sourceName": "contracts/stake_helpers/StakeGetters.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "EIGHTEEN_MONTH_DURATION",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "ONE_YEAR_DURATION",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "REWARD_DECAY_PERIOD",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "STAKE_MAX_DNM",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "STAKE_MAX_UVM",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "STAKE_MIN_DNM",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "TIME_STEP",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "TWO_YEAR_DURATION",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "dnm",
+          "type": "uint256"
+        }
+      ],
+      "name": "calDnmUvmRatio",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "land_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "getPlanByTokenId",
+      "outputs": [
+        {
+          "internalType": "uint8",
+          "name": "",
+          "type": "uint8"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x60806040526301e133806000556302d124806001556303c2670060025534801561002857600080fd5b506102c2806100386000396000f3fe608060405234801561001057600080fd5b506004361061009e5760003560e01c80639965f9e2116100665780639965f9e2146100f85780639d69c99114610101578063a4580cd014610110578063b4ebaa2d14610119578063f19d2e5e1461013e57600080fd5b80630e171896146100a35780632424e6fa146100c957806332bc298c146100d4578063631e136c146100de5780637fea672c146100e7575b600080fd5b6100b66100b136600461022c565b61014e565b6040519081526020015b60405180910390f35b6100b66301e1338081565b6100b66201518081565b6100b660005481565b6100b669014542ba12a337c0000081565b6100b660025481565b6100b6670de0b6b3a764000081565b6100b660015481565b61012c61012736600461022c565b61017e565b60405160ff90911681526020016100c0565b6100b668018493fba64ef0000081565b600068018493fba64ef0000061016e8369014542ba12a337c00000610245565b610178919061026a565b92915050565b6000600182101580156101935750611f408211155b156101a057506001919050565b611f4182101580156101b45750613a988211155b156101c157506002919050565b613a9982101580156101d55750614e208211155b156101e257506003919050565b614e2182101580156101f657506159d88211155b1561020357506004919050565b6159d9821015801561021757506161a88211155b1561022457506005919050565b506000919050565b60006020828403121561023e57600080fd5b5035919050565b808202811582820484141761017857634e487b7160e01b600052601160045260246000fd5b60008261028757634e487b7160e01b600052601260045260246000fd5b50049056fea26469706673582212200ccbad2a47b30582290ce6408d16adcf777bbc8148239a9fef9fc8672ef3e5cf64736f6c63430008140033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b506004361061009e5760003560e01c80639965f9e2116100665780639965f9e2146100f85780639d69c99114610101578063a4580cd014610110578063b4ebaa2d14610119578063f19d2e5e1461013e57600080fd5b80630e171896146100a35780632424e6fa146100c957806332bc298c146100d4578063631e136c146100de5780637fea672c146100e7575b600080fd5b6100b66100b136600461022c565b61014e565b6040519081526020015b60405180910390f35b6100b66301e1338081565b6100b66201518081565b6100b660005481565b6100b669014542ba12a337c0000081565b6100b660025481565b6100b6670de0b6b3a764000081565b6100b660015481565b61012c61012736600461022c565b61017e565b60405160ff90911681526020016100c0565b6100b668018493fba64ef0000081565b600068018493fba64ef0000061016e8369014542ba12a337c00000610245565b610178919061026a565b92915050565b6000600182101580156101935750611f408211155b156101a057506001919050565b611f4182101580156101b45750613a988211155b156101c157506002919050565b613a9982101580156101d55750614e208211155b156101e257506003919050565b614e2182101580156101f657506159d88211155b1561020357506004919050565b6159d9821015801561021757506161a88211155b1561022457506005919050565b506000919050565b60006020828403121561023e57600080fd5b5035919050565b808202811582820484141761017857634e487b7160e01b600052601160045260246000fd5b60008261028757634e487b7160e01b600052601260045260246000fd5b50049056fea26469706673582212200ccbad2a47b30582290ce6408d16adcf777bbc8148239a9fef9fc8672ef3e5cf64736f6c63430008140033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

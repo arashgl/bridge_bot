@@ -28,33 +28,126 @@ import type {
 
 export interface BridgeInterface extends utils.Interface {
   functions: {
+    "DNM()": FunctionFragment;
+    "EIGHTEEN_MONTH_DURATION()": FunctionFragment;
+    "LAND()": FunctionFragment;
+    "ONE_YEAR_DURATION()": FunctionFragment;
+    "REWARD_DECAY_PERIOD()": FunctionFragment;
+    "STAKE_MAX_DNM()": FunctionFragment;
+    "STAKE_MAX_UVM()": FunctionFragment;
+    "STAKE_MIN_DNM()": FunctionFragment;
+    "TIME_STEP()": FunctionFragment;
+    "TWO_YEAR_DURATION()": FunctionFragment;
+    "UVM()": FunctionFragment;
+    "calDnmUvmRatio(uint256)": FunctionFragment;
+    "fullTransferFromBsc(uint256,uint256,uint256,uint256)": FunctionFragment;
+    "fullTransferToPolygon(uint256,uint256,uint256,uint256,address)": FunctionFragment;
+    "getPlanByTokenId(uint256)": FunctionFragment;
     "id()": FunctionFragment;
     "owner()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
+    "stakeMeta()": FunctionFragment;
     "transferFromBSC(address,uint256)": FunctionFragment;
+    "transferNFTfromBSC(uint256)": FunctionFragment;
+    "transferNFTtoPolygon(uint256,address)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "transferToPolygon(address,address,uint256)": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
+      | "DNM"
+      | "EIGHTEEN_MONTH_DURATION"
+      | "LAND"
+      | "ONE_YEAR_DURATION"
+      | "REWARD_DECAY_PERIOD"
+      | "STAKE_MAX_DNM"
+      | "STAKE_MAX_UVM"
+      | "STAKE_MIN_DNM"
+      | "TIME_STEP"
+      | "TWO_YEAR_DURATION"
+      | "UVM"
+      | "calDnmUvmRatio"
+      | "fullTransferFromBsc"
+      | "fullTransferToPolygon"
+      | "getPlanByTokenId"
       | "id"
       | "owner"
       | "renounceOwnership"
+      | "stakeMeta"
       | "transferFromBSC"
+      | "transferNFTfromBSC"
+      | "transferNFTtoPolygon"
       | "transferOwnership"
       | "transferToPolygon"
   ): FunctionFragment;
 
+  encodeFunctionData(functionFragment: "DNM", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "EIGHTEEN_MONTH_DURATION",
+    values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "LAND", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "ONE_YEAR_DURATION",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "REWARD_DECAY_PERIOD",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "STAKE_MAX_DNM",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "STAKE_MAX_UVM",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "STAKE_MIN_DNM",
+    values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "TIME_STEP", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "TWO_YEAR_DURATION",
+    values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "UVM", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "calDnmUvmRatio",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "fullTransferFromBsc",
+    values: [BigNumberish, BigNumberish, BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "fullTransferToPolygon",
+    values: [BigNumberish, BigNumberish, BigNumberish, BigNumberish, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getPlanByTokenId",
+    values: [BigNumberish]
+  ): string;
   encodeFunctionData(functionFragment: "id", values?: undefined): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "renounceOwnership",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "stakeMeta", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "transferFromBSC",
     values: [string, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "transferNFTfromBSC",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "transferNFTtoPolygon",
+    values: [BigNumberish, string]
   ): string;
   encodeFunctionData(
     functionFragment: "transferOwnership",
@@ -65,14 +158,71 @@ export interface BridgeInterface extends utils.Interface {
     values: [string, string, BigNumberish]
   ): string;
 
+  decodeFunctionResult(functionFragment: "DNM", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "EIGHTEEN_MONTH_DURATION",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "LAND", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "ONE_YEAR_DURATION",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "REWARD_DECAY_PERIOD",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "STAKE_MAX_DNM",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "STAKE_MAX_UVM",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "STAKE_MIN_DNM",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "TIME_STEP", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "TWO_YEAR_DURATION",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "UVM", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "calDnmUvmRatio",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "fullTransferFromBsc",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "fullTransferToPolygon",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getPlanByTokenId",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "id", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "renounceOwnership",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "stakeMeta", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "transferFromBSC",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "transferNFTfromBSC",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "transferNFTtoPolygon",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -85,15 +235,33 @@ export interface BridgeInterface extends utils.Interface {
   ): Result;
 
   events: {
+    "FullTransfer(uint256,address,address,uint256,uint256,uint256,uint256)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
-    "TestEvent(address,string)": EventFragment;
-    "Transfer(address,address,uint256,address)": EventFragment;
+    "Transfer(uint256,address,address,uint256,address)": EventFragment;
+    "TransferNFT(uint256,uint256,address,address)": EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: "FullTransfer"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "TestEvent"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "TransferNFT"): EventFragment;
 }
+
+export interface FullTransferEventObject {
+  id: BigNumber;
+  sender: string;
+  receiver: string;
+  uvm_amount: BigNumber;
+  dnm_amount: BigNumber;
+  land_id: BigNumber;
+  stake_duration: BigNumber;
+}
+export type FullTransferEvent = TypedEvent<
+  [BigNumber, string, string, BigNumber, BigNumber, BigNumber, BigNumber],
+  FullTransferEventObject
+>;
+
+export type FullTransferEventFilter = TypedEventFilter<FullTransferEvent>;
 
 export interface OwnershipTransferredEventObject {
   previousOwner: string;
@@ -107,26 +275,32 @@ export type OwnershipTransferredEvent = TypedEvent<
 export type OwnershipTransferredEventFilter =
   TypedEventFilter<OwnershipTransferredEvent>;
 
-export interface TestEventEventObject {
-  me: string;
-  message: string;
-}
-export type TestEventEvent = TypedEvent<[string, string], TestEventEventObject>;
-
-export type TestEventEventFilter = TypedEventFilter<TestEventEvent>;
-
 export interface TransferEventObject {
+  id: BigNumber;
   sender: string;
   receiver: string;
   amount: BigNumber;
   token_address: string;
 }
 export type TransferEvent = TypedEvent<
-  [string, string, BigNumber, string],
+  [BigNumber, string, string, BigNumber, string],
   TransferEventObject
 >;
 
 export type TransferEventFilter = TypedEventFilter<TransferEvent>;
+
+export interface TransferNFTEventObject {
+  id: BigNumber;
+  land: BigNumber;
+  sender: string;
+  receiver: string;
+}
+export type TransferNFTEvent = TypedEvent<
+  [BigNumber, BigNumber, string, string],
+  TransferNFTEventObject
+>;
+
+export type TransferNFTEventFilter = TypedEventFilter<TransferNFTEvent>;
 
 export interface Bridge extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -155,6 +329,55 @@ export interface Bridge extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    DNM(overrides?: CallOverrides): Promise<[string]>;
+
+    EIGHTEEN_MONTH_DURATION(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    LAND(overrides?: CallOverrides): Promise<[string]>;
+
+    ONE_YEAR_DURATION(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    REWARD_DECAY_PERIOD(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    STAKE_MAX_DNM(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    STAKE_MAX_UVM(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    STAKE_MIN_DNM(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    TIME_STEP(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    TWO_YEAR_DURATION(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    UVM(overrides?: CallOverrides): Promise<[string]>;
+
+    calDnmUvmRatio(
+      dnm: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    fullTransferFromBsc(
+      uvm_amount: BigNumberish,
+      dnm_amount: BigNumberish,
+      land_id: BigNumberish,
+      stake_duration: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
+
+    fullTransferToPolygon(
+      uvm_amount: BigNumberish,
+      dnm_amount: BigNumberish,
+      land_id: BigNumberish,
+      stake_duration: BigNumberish,
+      _address: string,
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
+
+    getPlanByTokenId(
+      land_id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[number]>;
+
     id(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     owner(overrides?: CallOverrides): Promise<[string]>;
@@ -163,9 +386,22 @@ export interface Bridge extends BaseContract {
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
 
+    stakeMeta(overrides?: CallOverrides): Promise<[string]>;
+
     transferFromBSC(
       token_address: string,
       amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
+
+    transferNFTfromBSC(
+      token_id: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
+
+    transferNFTtoPolygon(
+      token_id: BigNumberish,
+      _address: string,
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
 
@@ -182,6 +418,55 @@ export interface Bridge extends BaseContract {
     ): Promise<ContractTransaction>;
   };
 
+  DNM(overrides?: CallOverrides): Promise<string>;
+
+  EIGHTEEN_MONTH_DURATION(overrides?: CallOverrides): Promise<BigNumber>;
+
+  LAND(overrides?: CallOverrides): Promise<string>;
+
+  ONE_YEAR_DURATION(overrides?: CallOverrides): Promise<BigNumber>;
+
+  REWARD_DECAY_PERIOD(overrides?: CallOverrides): Promise<BigNumber>;
+
+  STAKE_MAX_DNM(overrides?: CallOverrides): Promise<BigNumber>;
+
+  STAKE_MAX_UVM(overrides?: CallOverrides): Promise<BigNumber>;
+
+  STAKE_MIN_DNM(overrides?: CallOverrides): Promise<BigNumber>;
+
+  TIME_STEP(overrides?: CallOverrides): Promise<BigNumber>;
+
+  TWO_YEAR_DURATION(overrides?: CallOverrides): Promise<BigNumber>;
+
+  UVM(overrides?: CallOverrides): Promise<string>;
+
+  calDnmUvmRatio(
+    dnm: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  fullTransferFromBsc(
+    uvm_amount: BigNumberish,
+    dnm_amount: BigNumberish,
+    land_id: BigNumberish,
+    stake_duration: BigNumberish,
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
+
+  fullTransferToPolygon(
+    uvm_amount: BigNumberish,
+    dnm_amount: BigNumberish,
+    land_id: BigNumberish,
+    stake_duration: BigNumberish,
+    _address: string,
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
+
+  getPlanByTokenId(
+    land_id: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<number>;
+
   id(overrides?: CallOverrides): Promise<BigNumber>;
 
   owner(overrides?: CallOverrides): Promise<string>;
@@ -190,9 +475,22 @@ export interface Bridge extends BaseContract {
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
 
+  stakeMeta(overrides?: CallOverrides): Promise<string>;
+
   transferFromBSC(
     token_address: string,
     amount: BigNumberish,
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
+
+  transferNFTfromBSC(
+    token_id: BigNumberish,
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
+
+  transferNFTtoPolygon(
+    token_id: BigNumberish,
+    _address: string,
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
 
@@ -209,15 +507,77 @@ export interface Bridge extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    DNM(overrides?: CallOverrides): Promise<string>;
+
+    EIGHTEEN_MONTH_DURATION(overrides?: CallOverrides): Promise<BigNumber>;
+
+    LAND(overrides?: CallOverrides): Promise<string>;
+
+    ONE_YEAR_DURATION(overrides?: CallOverrides): Promise<BigNumber>;
+
+    REWARD_DECAY_PERIOD(overrides?: CallOverrides): Promise<BigNumber>;
+
+    STAKE_MAX_DNM(overrides?: CallOverrides): Promise<BigNumber>;
+
+    STAKE_MAX_UVM(overrides?: CallOverrides): Promise<BigNumber>;
+
+    STAKE_MIN_DNM(overrides?: CallOverrides): Promise<BigNumber>;
+
+    TIME_STEP(overrides?: CallOverrides): Promise<BigNumber>;
+
+    TWO_YEAR_DURATION(overrides?: CallOverrides): Promise<BigNumber>;
+
+    UVM(overrides?: CallOverrides): Promise<string>;
+
+    calDnmUvmRatio(
+      dnm: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    fullTransferFromBsc(
+      uvm_amount: BigNumberish,
+      dnm_amount: BigNumberish,
+      land_id: BigNumberish,
+      stake_duration: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    fullTransferToPolygon(
+      uvm_amount: BigNumberish,
+      dnm_amount: BigNumberish,
+      land_id: BigNumberish,
+      stake_duration: BigNumberish,
+      _address: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    getPlanByTokenId(
+      land_id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<number>;
+
     id(overrides?: CallOverrides): Promise<BigNumber>;
 
     owner(overrides?: CallOverrides): Promise<string>;
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
 
+    stakeMeta(overrides?: CallOverrides): Promise<string>;
+
     transferFromBSC(
       token_address: string,
       amount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    transferNFTfromBSC(
+      token_id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    transferNFTtoPolygon(
+      token_id: BigNumberish,
+      _address: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -235,6 +595,25 @@ export interface Bridge extends BaseContract {
   };
 
   filters: {
+    "FullTransfer(uint256,address,address,uint256,uint256,uint256,uint256)"(
+      id?: BigNumberish | null,
+      sender?: string | null,
+      receiver?: string | null,
+      uvm_amount?: null,
+      dnm_amount?: null,
+      land_id?: null,
+      stake_duration?: null
+    ): FullTransferEventFilter;
+    FullTransfer(
+      id?: BigNumberish | null,
+      sender?: string | null,
+      receiver?: string | null,
+      uvm_amount?: null,
+      dnm_amount?: null,
+      land_id?: null,
+      stake_duration?: null
+    ): FullTransferEventFilter;
+
     "OwnershipTransferred(address,address)"(
       previousOwner?: string | null,
       newOwner?: string | null
@@ -244,27 +623,85 @@ export interface Bridge extends BaseContract {
       newOwner?: string | null
     ): OwnershipTransferredEventFilter;
 
-    "TestEvent(address,string)"(
-      me?: null,
-      message?: null
-    ): TestEventEventFilter;
-    TestEvent(me?: null, message?: null): TestEventEventFilter;
-
-    "Transfer(address,address,uint256,address)"(
+    "Transfer(uint256,address,address,uint256,address)"(
+      id?: BigNumberish | null,
       sender?: string | null,
       receiver?: string | null,
       amount?: null,
       token_address?: null
     ): TransferEventFilter;
     Transfer(
+      id?: BigNumberish | null,
       sender?: string | null,
       receiver?: string | null,
       amount?: null,
       token_address?: null
     ): TransferEventFilter;
+
+    "TransferNFT(uint256,uint256,address,address)"(
+      id?: BigNumberish | null,
+      land?: BigNumberish | null,
+      sender?: null,
+      receiver?: null
+    ): TransferNFTEventFilter;
+    TransferNFT(
+      id?: BigNumberish | null,
+      land?: BigNumberish | null,
+      sender?: null,
+      receiver?: null
+    ): TransferNFTEventFilter;
   };
 
   estimateGas: {
+    DNM(overrides?: CallOverrides): Promise<BigNumber>;
+
+    EIGHTEEN_MONTH_DURATION(overrides?: CallOverrides): Promise<BigNumber>;
+
+    LAND(overrides?: CallOverrides): Promise<BigNumber>;
+
+    ONE_YEAR_DURATION(overrides?: CallOverrides): Promise<BigNumber>;
+
+    REWARD_DECAY_PERIOD(overrides?: CallOverrides): Promise<BigNumber>;
+
+    STAKE_MAX_DNM(overrides?: CallOverrides): Promise<BigNumber>;
+
+    STAKE_MAX_UVM(overrides?: CallOverrides): Promise<BigNumber>;
+
+    STAKE_MIN_DNM(overrides?: CallOverrides): Promise<BigNumber>;
+
+    TIME_STEP(overrides?: CallOverrides): Promise<BigNumber>;
+
+    TWO_YEAR_DURATION(overrides?: CallOverrides): Promise<BigNumber>;
+
+    UVM(overrides?: CallOverrides): Promise<BigNumber>;
+
+    calDnmUvmRatio(
+      dnm: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    fullTransferFromBsc(
+      uvm_amount: BigNumberish,
+      dnm_amount: BigNumberish,
+      land_id: BigNumberish,
+      stake_duration: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+
+    fullTransferToPolygon(
+      uvm_amount: BigNumberish,
+      dnm_amount: BigNumberish,
+      land_id: BigNumberish,
+      stake_duration: BigNumberish,
+      _address: string,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+
+    getPlanByTokenId(
+      land_id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     id(overrides?: CallOverrides): Promise<BigNumber>;
 
     owner(overrides?: CallOverrides): Promise<BigNumber>;
@@ -273,9 +710,22 @@ export interface Bridge extends BaseContract {
       overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
 
+    stakeMeta(overrides?: CallOverrides): Promise<BigNumber>;
+
     transferFromBSC(
       token_address: string,
       amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+
+    transferNFTfromBSC(
+      token_id: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+
+    transferNFTtoPolygon(
+      token_id: BigNumberish,
+      _address: string,
       overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
 
@@ -293,6 +743,59 @@ export interface Bridge extends BaseContract {
   };
 
   populateTransaction: {
+    DNM(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    EIGHTEEN_MONTH_DURATION(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    LAND(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    ONE_YEAR_DURATION(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    REWARD_DECAY_PERIOD(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    STAKE_MAX_DNM(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    STAKE_MAX_UVM(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    STAKE_MIN_DNM(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    TIME_STEP(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    TWO_YEAR_DURATION(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    UVM(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    calDnmUvmRatio(
+      dnm: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    fullTransferFromBsc(
+      uvm_amount: BigNumberish,
+      dnm_amount: BigNumberish,
+      land_id: BigNumberish,
+      stake_duration: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
+
+    fullTransferToPolygon(
+      uvm_amount: BigNumberish,
+      dnm_amount: BigNumberish,
+      land_id: BigNumberish,
+      stake_duration: BigNumberish,
+      _address: string,
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
+
+    getPlanByTokenId(
+      land_id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     id(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -301,9 +804,22 @@ export interface Bridge extends BaseContract {
       overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 
+    stakeMeta(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     transferFromBSC(
       token_address: string,
       amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
+
+    transferNFTfromBSC(
+      token_id: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
+
+    transferNFTtoPolygon(
+      token_id: BigNumberish,
+      _address: string,
       overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 

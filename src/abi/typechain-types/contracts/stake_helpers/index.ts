@@ -4,4 +4,5 @@
 export type { Finalizable } from "./Finalizable";
 export type { LandPlan } from "./LandPlan";
 export type { SideContract } from "./SideContract";
+export type { StakeGetters } from "./StakeGetters";
 export type { TopUp } from "./TopUp";

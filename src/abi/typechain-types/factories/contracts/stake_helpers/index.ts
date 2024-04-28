@@ -4,4 +4,5 @@
 export { Finalizable__factory } from "./Finalizable__factory";
 export { LandPlan__factory } from "./LandPlan__factory";
 export { SideContract__factory } from "./SideContract__factory";
+export { StakeGetters__factory } from "./StakeGetters__factory";
 export { TopUp__factory } from "./TopUp__factory";

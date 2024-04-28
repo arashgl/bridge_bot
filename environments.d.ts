@@ -21,6 +21,8 @@ export interface Env {
   MYSQL_PASSWORD: string;
   MYSQL_DATABASE: string;
   CONFIRMATION_BLOCKS: string;
+  POLYGON_NFT_ADDRESS: string;
+  POLYGON_STAKE_ADDRESS: string;
 }
 
 declare global {

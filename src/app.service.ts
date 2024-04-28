@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { BridgeService } from './bridge/bridge.service';
+import { BridgeListenersService } from './bridge/bridge-listeners.service';
 
 @Injectable()
 export class AppService {
-  constructor(private readonly blockChainService: BridgeService) {}
+  constructor(private readonly bridgeListenerService: BridgeListenersService) {}
 
   async listenForConnections() {
-    await this.blockChainService.listenForConnectionsInBsc();
+    await this.bridgeListenerService.listenForConnectionsInBsc();
   }
 }

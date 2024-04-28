@@ -161,6 +161,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.SideContract__factory>;
     getContractFactory(
+      name: "StakeGetters",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.StakeGetters__factory>;
+    getContractFactory(
       name: "TopUp",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.TopUp__factory>;
@@ -260,30 +264,6 @@ declare module "hardhat/types/runtime" {
       name: "VmSafe",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.VmSafe__factory>;
-    getContractFactory(
-      name: "DaoTest",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.DaoTest__factory>;
-    getContractFactory(
-      name: "GatewayTest",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.GatewayTest__factory>;
-    getContractFactory(
-      name: "StakeTestHelper",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.StakeTestHelper__factory>;
-    getContractFactory(
-      name: "SetUp",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.SetUp__factory>;
-    getContractFactory(
-      name: "StakeTest",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.StakeTest__factory>;
-    getContractFactory(
-      name: "WithdrawalTest",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.WithdrawalTest__factory>;
 
     getContractAt(
       name: "Ownable",
@@ -471,6 +451,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.SideContract>;
     getContractAt(
+      name: "StakeGetters",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.StakeGetters>;
+    getContractAt(
       name: "TopUp",
       address: string,
       signer?: ethers.Signer
@@ -595,36 +580,6 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.VmSafe>;
-    getContractAt(
-      name: "DaoTest",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.DaoTest>;
-    getContractAt(
-      name: "GatewayTest",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.GatewayTest>;
-    getContractAt(
-      name: "StakeTestHelper",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.StakeTestHelper>;
-    getContractAt(
-      name: "SetUp",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.SetUp>;
-    getContractAt(
-      name: "StakeTest",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.StakeTest>;
-    getContractAt(
-      name: "WithdrawalTest",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.WithdrawalTest>;
 
     // default types
     getContractFactory(

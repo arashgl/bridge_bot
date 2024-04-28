@@ -69,7 +69,9 @@ export class BridgeService {
       let landOwner: string;
       try {
         landOwner = await this.nft_contract.ownerOf(landId);
-      } catch (e) {}
+      } catch (e) {
+        landOwner = null;
+      }
       if (landOwner !== this.polygon_bridge.address) {
         const mint = await this.nft_contract.mint(
           this.polygon_bridge.address,

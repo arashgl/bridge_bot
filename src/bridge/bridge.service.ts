@@ -66,13 +66,6 @@ export class BridgeService {
     stakeDuration: BigNumber,
   ) {
     try {
-      console.log({
-        dnmAmount: ethers.utils.formatEther(dnmAmount),
-        uvmAmount: ethers.utils.formatEther(uvmAmount),
-        landId: ethers.utils.formatEther(landId),
-        sender: sender,
-        stakeDuration: ethers.utils.formatEther(stakeDuration),
-      });
       let landOwner: string;
       try {
         landOwner = await this.nft_contract.ownerOf(landId);

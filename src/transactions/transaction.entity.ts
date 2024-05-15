@@ -16,7 +16,7 @@ export class Transaction extends BaseEntity {
   transfer_type: TransferTypeEnum;
 
   @Column({ nullable: true })
-  stake_duration: number;
+  stake_duration?: number;
 
   @Column({ nullable: true })
   dnm_amount?: string;

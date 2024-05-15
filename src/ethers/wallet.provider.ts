@@ -17,7 +17,7 @@ export class WalletProvider {
     this.bsc_wallet = new ethers.Wallet(
       configService.getOrThrow('ORIGIN_PRIVATE_KEY'),
       env === 'DEVELOPMENT'
-        ? ethersProvider.sepoliaProvider
+        ? ethersProvider.bscTestnetProvider
         : ethersProvider.bscMainnetProvider,
     );
     this.polygon_wallet = new ethers.Wallet(

@@ -2,17 +2,21 @@ import { config as dotenvConfig } from 'dotenv';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm/dist/interfaces/typeorm-options.interface';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { Entities } from './entities';
+import * as path from 'path';
 
 dotenvConfig({ path: '.env' });
+
 export const databaseConfig: TypeOrmModuleOptions = {
-  type: 'mariadb',
-  host: process.env['MYSQL_HOST'],
-  port: +process.env['MYSQL_PORT'],
-  username: process.env['MYSQL_USER'],
-  password: process.env['MYSQL_PASSWORD'],
-  database: process.env['MYSQL_DATABASE'],
+  type: 'postgres',
+  host: process.env.POSTGRES_HOST,
+  port: +process.env.POSTGRES_PORT,
+  username: process.env.POSTGRES_USER,
+  password: process.env.POSTGRES_PASSWORD,
+  database: process.env.POSTGRES_DB,
   synchronize: true,
   entities: Entities,
+  migrations: [path.join(__dirname, '../database/migrations/*{.js,.ts}')],
+  // logging: true,
 };
 
 export const dataSource = new DataSource(databaseConfig as DataSourceOptions);

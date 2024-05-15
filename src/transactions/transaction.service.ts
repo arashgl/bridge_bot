@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOneOptions, FindOptionsWhere, Repository } from 'typeorm';
 import { Transaction } from './transaction.entity';
 
 @Injectable()
@@ -16,5 +16,8 @@ export class TransactionService {
     } catch (err) {
       Logger.error(err);
     }
+  }
+  async findOne(obj: FindOneOptions<Transaction>) {
+    return this.transactionRepository.findOne(obj);
   }
 }

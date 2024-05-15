@@ -98,7 +98,7 @@ export class BridgeService {
         console.log('Waiting for Stake');
         await res.wait();
         console.log('Finished for Stake');
-        await this.transactionService.createTransaction({
+        const final_res = await this.transactionService.createTransaction({
           from: res.from,
           to: res.to,
           tx_hash: res.hash,
@@ -111,6 +111,7 @@ export class BridgeService {
           is_event: true,
         });
         Logger.log({ stakedAddress: res.to }, '<<< Staked');
+        return final_res;
         // }
         // } else {
         // await this.transferLandToPolygon(landId, sender);
@@ -161,7 +162,7 @@ export class BridgeService {
       Logger.log(mint?.to, 'transferFullToPolygon');
       if (mint.hash) {
         await mint.wait();
-        await this.transactionService.createTransaction({
+        const final_res = await this.transactionService.createTransaction({
           from: mint.from,
           to: mint.to,
           tx_hash: mint.hash,
@@ -174,6 +175,7 @@ export class BridgeService {
           { from: mint?.from, to: mint?.to },
           'transferFullToPolygonFinished',
         );
+        return final_res;
       } else {
         const owner = await this.nft_contract.ownerOf(landId);
         if (owner === sender) {
@@ -216,7 +218,8 @@ export class BridgeService {
     address: string,
     amount: BigNumber,
     tokenAddress: string,
-  ): Promise<any> {
+    is_interval?: boolean,
+  ) {
     try {
       const token_address =
         tokenAddress === this.uvm_bsc
@@ -236,19 +239,20 @@ export class BridgeService {
       Logger.log(res?.to, 'TransferToPolygon');
       if (res.hash) {
         const result = await res.wait();
-        await this.transactionService.createTransaction({
+        const final_res = await this.transactionService.createTransaction({
           from: result.from,
           to: result.to,
           amount: ethers.utils.formatEther(amount),
           tx_hash: res.hash,
           network: NetworkEnum.POLYGON,
           token_address: tokenAddress,
-          is_event: true,
+          is_event: !is_interval,
         });
         Logger.log(
           { from: result?.from, to: result?.to },
           'TransferToPolygonFinished',
         );
+        return final_res;
       }
     } catch (err) {
       Logger.error(

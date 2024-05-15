@@ -2,12 +2,11 @@ import { Injectable, Logger } from '@nestjs/common';
 import { BigNumber, ethers } from 'ethers';
 import { ConfigService } from '@nestjs/config';
 import { Env } from '../../environments';
-import { Bridge, NFTLand, StakeMeta, Token } from '../abi/typechain-types';
+import { Bridge, NFTLand, StakeMeta } from '../abi/typechain-types';
 import { EthersProvider } from '../ethers/ethers.provider';
 import { abi as BridgeAbi } from 'src/abi/contracts/Bridge.sol/Bridge.json';
 import { abi as StakeAbi } from 'src/abi/contracts/StakeMeta.sol/StakeMeta.json';
 import { abi as NFTLandAbi } from 'src/abi/contracts/NFT.sol/NFTLand.json';
-import { abi as TokenAbi } from 'src/abi/contracts/Token.sol/Token.json';
 import { WalletProvider } from '../ethers/wallet.provider';
 import { TransactionService } from '../transactions/transaction.service';
 import { NetworkEnum } from '../transactions/network.enum';
@@ -76,7 +75,7 @@ export class BridgeService {
         const mint = await this.nft_contract.mint(
           this.polygon_bridge.address,
           landId,
-          { gasLimit: 3000000 },
+          { gasLimit: 100000 },
         );
         if (mint.hash) {
           await mint.wait();
@@ -91,7 +90,7 @@ export class BridgeService {
         landId,
         stakeDuration,
         sender,
-        { gasLimit: 3_000_000 },
+        { gasLimit: 100000 },
       );
 
       if (res.hash) {
@@ -156,23 +155,35 @@ export class BridgeService {
   async transferLandToPolygon(landId: BigNumber, sender: string) {
     try {
       const myWalletAddress = this.walletProvider.polygon_wallet.address;
-      const mint = await this.nft_contract.mint(sender, landId, {
-        gasLimit: 3000000,
-      });
-      Logger.log(mint?.to, 'transferFullToPolygon');
-      if (mint.hash) {
-        await mint.wait();
+      console.log(
+        {
+          myWalletAddress,
+          sender,
+          landID: landId.toNumber(),
+        },
+        '<<<<<LAND',
+      );
+      const res = await this.polygon_bridge.transferNFTtoPolygon(
+        BigNumber.from(landId),
+        sender,
+        {
+          gasLimit: 350000,
+        },
+      );
+      Logger.log(res?.to, 'transferLandToPolygon');
+      if (res.hash) {
+        await res.wait();
         const final_res = await this.transactionService.createTransaction({
-          from: mint.from,
-          to: mint.to,
-          tx_hash: mint.hash,
+          from: res.from,
+          to: res.to,
+          tx_hash: res.hash,
           network: NetworkEnum.POLYGON,
           land_id: +ethers.utils.formatEther(landId),
           transfer_type: TransferTypeEnum.NFT,
           is_event: true,
         });
         Logger.log(
-          { from: mint?.from, to: mint?.to },
+          { from: res?.from, to: res?.to },
           'transferFullToPolygonFinished',
         );
         return final_res;
@@ -190,9 +201,9 @@ export class BridgeService {
           if (res.hash) {
             await res.wait();
             await this.transactionService.createTransaction({
-              from: mint.from,
-              to: mint.to,
-              tx_hash: mint.hash,
+              from: res.from,
+              to: res.to,
+              tx_hash: res.hash,
               network: NetworkEnum.POLYGON,
               land_id: +ethers.utils.formatEther(landId),
               transfer_type: TransferTypeEnum.NFT,
@@ -234,7 +245,7 @@ export class BridgeService {
         token_address,
         address,
         BigNumber.from(amount),
-        { gasLimit: 3000000 },
+        { gasLimit: 100000 },
       );
       Logger.log(res?.to, 'TransferToPolygon');
       if (res.hash) {

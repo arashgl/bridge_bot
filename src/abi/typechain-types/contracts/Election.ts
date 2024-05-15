@@ -29,7 +29,6 @@ import type {
 export interface ElectionInterface extends utils.Interface {
   functions: {
     "beCandidate()": FunctionFragment;
-    "candidateAddresses(uint256)": FunctionFragment;
     "candidates(address,uint256)": FunctionFragment;
     "checkVotingPeriod()": FunctionFragment;
     "cycleCount()": FunctionFragment;
@@ -39,9 +38,8 @@ export interface ElectionInterface extends utils.Interface {
     "getVoterStake(address)": FunctionFragment;
     "isOwner(address)": FunctionFragment;
     "owner()": FunctionFragment;
-    "owners(uint256)": FunctionFragment;
+    "ownersOfCycle(uint256,uint256)": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
-    "setWinners()": FunctionFragment;
     "stake()": FunctionFragment;
     "startTime()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
@@ -56,7 +54,6 @@ export interface ElectionInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "beCandidate"
-      | "candidateAddresses"
       | "candidates"
       | "checkVotingPeriod"
       | "cycleCount"
@@ -66,9 +63,8 @@ export interface ElectionInterface extends utils.Interface {
       | "getVoterStake"
       | "isOwner"
       | "owner"
-      | "owners"
+      | "ownersOfCycle"
       | "renounceOwnership"
-      | "setWinners"
       | "stake"
       | "startTime"
       | "transferOwnership"
@@ -83,10 +79,6 @@ export interface ElectionInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "beCandidate",
     values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "candidateAddresses",
-    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "candidates",
@@ -113,15 +105,11 @@ export interface ElectionInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "isOwner", values: [string]): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "owners",
-    values: [BigNumberish]
+    functionFragment: "ownersOfCycle",
+    values: [BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "renounceOwnership",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setWinners",
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "stake", values?: undefined): string;
@@ -156,10 +144,6 @@ export interface ElectionInterface extends utils.Interface {
     functionFragment: "beCandidate",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "candidateAddresses",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "candidates", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "checkVotingPeriod",
@@ -178,12 +162,14 @@ export interface ElectionInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "isOwner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "owners", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "ownersOfCycle",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "renounceOwnership",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "setWinners", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "stake", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "startTime", data: BytesLike): Result;
   decodeFunctionResult(
@@ -256,11 +242,6 @@ export interface Election extends BaseContract {
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
 
-    candidateAddresses(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
-
     candidates(
       arg0: string,
       arg1: BigNumberish,
@@ -285,17 +266,17 @@ export interface Election extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
-    isOwner(arg0: string, overrides?: CallOverrides): Promise<[boolean]>;
+    isOwner(user: string, overrides?: CallOverrides): Promise<[boolean]>;
 
     owner(overrides?: CallOverrides): Promise<[string]>;
 
-    owners(arg0: BigNumberish, overrides?: CallOverrides): Promise<[string]>;
+    ownersOfCycle(
+      arg0: BigNumberish,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
 
     renounceOwnership(
-      overrides?: Overrides & { from?: string }
-    ): Promise<ContractTransaction>;
-
-    setWinners(
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
 
@@ -339,11 +320,6 @@ export interface Election extends BaseContract {
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
 
-  candidateAddresses(
-    arg0: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<string>;
-
   candidates(
     arg0: string,
     arg1: BigNumberish,
@@ -365,17 +341,17 @@ export interface Election extends BaseContract {
 
   getVoterStake(voter: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-  isOwner(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+  isOwner(user: string, overrides?: CallOverrides): Promise<boolean>;
 
   owner(overrides?: CallOverrides): Promise<string>;
 
-  owners(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
+  ownersOfCycle(
+    arg0: BigNumberish,
+    arg1: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<string>;
 
   renounceOwnership(
-    overrides?: Overrides & { from?: string }
-  ): Promise<ContractTransaction>;
-
-  setWinners(
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
 
@@ -417,11 +393,6 @@ export interface Election extends BaseContract {
   callStatic: {
     beCandidate(overrides?: CallOverrides): Promise<void>;
 
-    candidateAddresses(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<string>;
-
     candidates(
       arg0: string,
       arg1: BigNumberish,
@@ -443,15 +414,17 @@ export interface Election extends BaseContract {
 
     getVoterStake(voter: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    isOwner(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+    isOwner(user: string, overrides?: CallOverrides): Promise<boolean>;
 
     owner(overrides?: CallOverrides): Promise<string>;
 
-    owners(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
+    ownersOfCycle(
+      arg0: BigNumberish,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
-
-    setWinners(overrides?: CallOverrides): Promise<void>;
 
     stake(overrides?: CallOverrides): Promise<string>;
 
@@ -501,11 +474,6 @@ export interface Election extends BaseContract {
   estimateGas: {
     beCandidate(overrides?: Overrides & { from?: string }): Promise<BigNumber>;
 
-    candidateAddresses(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     candidates(
       arg0: string,
       arg1: BigNumberish,
@@ -527,17 +495,19 @@ export interface Election extends BaseContract {
 
     getVoterStake(voter: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    isOwner(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+    isOwner(user: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
-    owners(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+    ownersOfCycle(
+      arg0: BigNumberish,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
-
-    setWinners(overrides?: Overrides & { from?: string }): Promise<BigNumber>;
 
     stake(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -580,11 +550,6 @@ export interface Election extends BaseContract {
       overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 
-    candidateAddresses(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     candidates(
       arg0: string,
       arg1: BigNumberish,
@@ -610,22 +575,19 @@ export interface Election extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     isOwner(
-      arg0: string,
+      user: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    owners(
+    ownersOfCycle(
       arg0: BigNumberish,
+      arg1: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     renounceOwnership(
-      overrides?: Overrides & { from?: string }
-    ): Promise<PopulatedTransaction>;
-
-    setWinners(
       overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 

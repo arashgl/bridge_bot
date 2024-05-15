@@ -122,6 +122,16 @@ export declare namespace UsersStruct {
     exists: boolean;
     data: string;
   };
+
+  export type UserInfoStruct = {
+    user: UsersStruct.UserStruct;
+    user_address: string;
+  };
+
+  export type UserInfoStructOutput = [UsersStruct.UserStructOutput, string] & {
+    user: UsersStruct.UserStructOutput;
+    user_address: string;
+  };
 }
 
 export declare namespace OrdersStruct {
@@ -156,6 +166,30 @@ export declare namespace OrdersStruct {
     seller_token: BigNumber;
     date: BigNumber;
     data: string;
+    exists: boolean;
+  };
+}
+
+export declare namespace Sellers {
+  export type SellerStruct = {
+    id: BigNumberish;
+    seller_addr: string;
+    bv_value: BigNumberish;
+    token_withdraw_value: BigNumberish;
+    exists: boolean;
+  };
+
+  export type SellerStructOutput = [
+    BigNumber,
+    string,
+    BigNumber,
+    BigNumber,
+    boolean
+  ] & {
+    id: BigNumber;
+    seller_addr: string;
+    bv_value: BigNumber;
+    token_withdraw_value: BigNumber;
     exists: boolean;
   };
 }
@@ -208,7 +242,12 @@ export interface GatewayInterface extends utils.Interface {
     "floor(uint256,uint256)": FunctionFragment;
     "getBit(bytes1,uint8)": FunctionFragment;
     "getOrderList(uint256)": FunctionFragment;
+    "getOrderLists(uint256,uint256)": FunctionFragment;
+    "getSeller(uint256,bool)": FunctionFragment;
+    "getSellerList(uint256,uint256)": FunctionFragment;
+    "getUser(uint256,bool)": FunctionFragment;
     "getUser(address)": FunctionFragment;
+    "getUserList(uint256,uint256)": FunctionFragment;
     "isChildOfParent((uint256,(uint256,uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256,uint256,uint256,uint256,uint256,bool,bytes32),(uint256,(uint256,uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256,uint256,uint256,uint256,uint256,bool,bytes32))": FunctionFragment;
     "isDev()": FunctionFragment;
     "last_withdrawal_time()": FunctionFragment;
@@ -230,7 +269,6 @@ export interface GatewayInterface extends utils.Interface {
     "withdrawToken1Balance()": FunctionFragment;
     "withdrawToken2Balance()": FunctionFragment;
     "withdrawWithDao(uint256,address)": FunctionFragment;
-    "withraw_token()": FunctionFragment;
   };
 
   getFunction(
@@ -257,7 +295,12 @@ export interface GatewayInterface extends utils.Interface {
       | "floor"
       | "getBit"
       | "getOrderList"
-      | "getUser"
+      | "getOrderLists"
+      | "getSeller"
+      | "getSellerList"
+      | "getUser(uint256,bool)"
+      | "getUser(address)"
+      | "getUserList"
       | "isChildOfParent"
       | "isDev"
       | "last_withdrawal_time"
@@ -279,7 +322,6 @@ export interface GatewayInterface extends utils.Interface {
       | "withdrawToken1Balance"
       | "withdrawToken2Balance"
       | "withdrawWithDao"
-      | "withraw_token"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -352,7 +394,30 @@ export interface GatewayInterface extends utils.Interface {
     functionFragment: "getOrderList",
     values: [BigNumberish]
   ): string;
-  encodeFunctionData(functionFragment: "getUser", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "getOrderLists",
+    values: [BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getSeller",
+    values: [BigNumberish, boolean]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getSellerList",
+    values: [BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getUser(uint256,bool)",
+    values: [BigNumberish, boolean]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getUser(address)",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getUserList",
+    values: [BigNumberish, BigNumberish]
+  ): string;
   encodeFunctionData(
     functionFragment: "isChildOfParent",
     values: [UsersStruct.UserStruct, UsersStruct.UserStruct]
@@ -422,10 +487,6 @@ export interface GatewayInterface extends utils.Interface {
     functionFragment: "withdrawWithDao",
     values: [BigNumberish, string]
   ): string;
-  encodeFunctionData(
-    functionFragment: "withraw_token",
-    values?: undefined
-  ): string;
 
   decodeFunctionResult(functionFragment: "BVPlan", data: BytesLike): Result;
   decodeFunctionResult(
@@ -476,7 +537,27 @@ export interface GatewayInterface extends utils.Interface {
     functionFragment: "getOrderList",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "getUser", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getOrderLists",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "getSeller", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getSellerList",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getUser(uint256,bool)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getUser(address)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getUserList",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "isChildOfParent",
     data: BytesLike
@@ -546,17 +627,81 @@ export interface GatewayInterface extends utils.Interface {
     functionFragment: "withdrawWithDao",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "withraw_token",
-    data: BytesLike
-  ): Result;
 
   events: {
+    "AddedSaleVolume(address,uint256,uint256)": EventFragment;
+    "CreatedSeller(uint256,address)": EventFragment;
+    "CreatedUser(address,uint256)": EventFragment;
+    "LevelUp(uint256,uint256,uint256)": EventFragment;
+    "NewOrderEvent(uint256,uint256,uint256)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: "AddedSaleVolume"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "CreatedSeller"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "CreatedUser"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "LevelUp"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "NewOrderEvent"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
 }
+
+export interface AddedSaleVolumeEventObject {
+  seller_addr: string;
+  added_volume: BigNumber;
+  current_bv: BigNumber;
+}
+export type AddedSaleVolumeEvent = TypedEvent<
+  [string, BigNumber, BigNumber],
+  AddedSaleVolumeEventObject
+>;
+
+export type AddedSaleVolumeEventFilter = TypedEventFilter<AddedSaleVolumeEvent>;
+
+export interface CreatedSellerEventObject {
+  id: BigNumber;
+  seller_addr: string;
+}
+export type CreatedSellerEvent = TypedEvent<
+  [BigNumber, string],
+  CreatedSellerEventObject
+>;
+
+export type CreatedSellerEventFilter = TypedEventFilter<CreatedSellerEvent>;
+
+export interface CreatedUserEventObject {
+  user_address: string;
+  user_id: BigNumber;
+}
+export type CreatedUserEvent = TypedEvent<
+  [string, BigNumber],
+  CreatedUserEventObject
+>;
+
+export type CreatedUserEventFilter = TypedEventFilter<CreatedUserEvent>;
+
+export interface LevelUpEventObject {
+  user_id: BigNumber;
+  date: BigNumber;
+  level: BigNumber;
+}
+export type LevelUpEvent = TypedEvent<
+  [BigNumber, BigNumber, BigNumber],
+  LevelUpEventObject
+>;
+
+export type LevelUpEventFilter = TypedEventFilter<LevelUpEvent>;
+
+export interface NewOrderEventEventObject {
+  id: BigNumber;
+  seller_id: BigNumber;
+  user_id: BigNumber;
+}
+export type NewOrderEventEvent = TypedEvent<
+  [BigNumber, BigNumber, BigNumber],
+  NewOrderEventEventObject
+>;
+
+export type NewOrderEventEventFilter = TypedEventFilter<NewOrderEventEvent>;
 
 export interface OwnershipTransferredEventObject {
   previousOwner: string;
@@ -746,13 +891,49 @@ export interface Gateway extends BaseContract {
 
     getOrderList(
       _order_id: BigNumberish,
-      overrides?: Overrides & { from?: string }
-    ): Promise<ContractTransaction>;
+      overrides?: CallOverrides
+    ): Promise<
+      [OrdersStruct.OrderStructOutput] & {
+        order: OrdersStruct.OrderStructOutput;
+      }
+    >;
 
-    getUser(
+    getOrderLists(
+      fromId: BigNumberish,
+      toId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[OrdersStruct.OrderStructOutput[]]>;
+
+    getSeller(
+      _seller_id: BigNumberish,
+      ignore_vaildation: boolean,
+      overrides?: CallOverrides
+    ): Promise<[Sellers.SellerStructOutput]>;
+
+    getSellerList(
+      fromId: BigNumberish,
+      toId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[Sellers.SellerStructOutput[]]>;
+
+    "getUser(uint256,bool)"(
+      _user_id: BigNumberish,
+      ignore_validation: boolean,
+      overrides?: CallOverrides
+    ): Promise<[string, UsersStruct.UserStructOutput]>;
+
+    "getUser(address)"(
       user_address: string,
-      overrides?: Overrides & { from?: string }
-    ): Promise<ContractTransaction>;
+      overrides?: CallOverrides
+    ): Promise<
+      [UsersStruct.UserStructOutput] & { user: UsersStruct.UserStructOutput }
+    >;
+
+    getUserList(
+      fromId: BigNumberish,
+      toId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[UsersStruct.UserInfoStructOutput[]]>;
 
     isChildOfParent(
       parent: UsersStruct.UserStruct,
@@ -844,10 +1025,6 @@ export interface Gateway extends BaseContract {
     withdrawWithDao(
       withdraw_amount: BigNumberish,
       withdrawal_address: string,
-      overrides?: Overrides & { from?: string }
-    ): Promise<ContractTransaction>;
-
-    withraw_token(
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
   };
@@ -995,13 +1172,43 @@ export interface Gateway extends BaseContract {
 
   getOrderList(
     _order_id: BigNumberish,
-    overrides?: Overrides & { from?: string }
-  ): Promise<ContractTransaction>;
+    overrides?: CallOverrides
+  ): Promise<OrdersStruct.OrderStructOutput>;
 
-  getUser(
+  getOrderLists(
+    fromId: BigNumberish,
+    toId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<OrdersStruct.OrderStructOutput[]>;
+
+  getSeller(
+    _seller_id: BigNumberish,
+    ignore_vaildation: boolean,
+    overrides?: CallOverrides
+  ): Promise<Sellers.SellerStructOutput>;
+
+  getSellerList(
+    fromId: BigNumberish,
+    toId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<Sellers.SellerStructOutput[]>;
+
+  "getUser(uint256,bool)"(
+    _user_id: BigNumberish,
+    ignore_validation: boolean,
+    overrides?: CallOverrides
+  ): Promise<[string, UsersStruct.UserStructOutput]>;
+
+  "getUser(address)"(
     user_address: string,
-    overrides?: Overrides & { from?: string }
-  ): Promise<ContractTransaction>;
+    overrides?: CallOverrides
+  ): Promise<UsersStruct.UserStructOutput>;
+
+  getUserList(
+    fromId: BigNumberish,
+    toId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<UsersStruct.UserInfoStructOutput[]>;
 
   isChildOfParent(
     parent: UsersStruct.UserStruct,
@@ -1093,10 +1300,6 @@ export interface Gateway extends BaseContract {
   withdrawWithDao(
     withdraw_amount: BigNumberish,
     withdrawal_address: string,
-    overrides?: Overrides & { from?: string }
-  ): Promise<ContractTransaction>;
-
-  withraw_token(
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
 
@@ -1248,10 +1451,40 @@ export interface Gateway extends BaseContract {
       overrides?: CallOverrides
     ): Promise<OrdersStruct.OrderStructOutput>;
 
-    getUser(
+    getOrderLists(
+      fromId: BigNumberish,
+      toId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<OrdersStruct.OrderStructOutput[]>;
+
+    getSeller(
+      _seller_id: BigNumberish,
+      ignore_vaildation: boolean,
+      overrides?: CallOverrides
+    ): Promise<Sellers.SellerStructOutput>;
+
+    getSellerList(
+      fromId: BigNumberish,
+      toId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<Sellers.SellerStructOutput[]>;
+
+    "getUser(uint256,bool)"(
+      _user_id: BigNumberish,
+      ignore_validation: boolean,
+      overrides?: CallOverrides
+    ): Promise<[string, UsersStruct.UserStructOutput]>;
+
+    "getUser(address)"(
       user_address: string,
       overrides?: CallOverrides
     ): Promise<UsersStruct.UserStructOutput>;
+
+    getUserList(
+      fromId: BigNumberish,
+      toId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<UsersStruct.UserInfoStructOutput[]>;
 
     isChildOfParent(
       parent: UsersStruct.UserStruct,
@@ -1331,11 +1564,60 @@ export interface Gateway extends BaseContract {
       withdrawal_address: string,
       overrides?: CallOverrides
     ): Promise<void>;
-
-    withraw_token(overrides?: CallOverrides): Promise<void>;
   };
 
   filters: {
+    "AddedSaleVolume(address,uint256,uint256)"(
+      seller_addr?: string | null,
+      added_volume?: null,
+      current_bv?: null
+    ): AddedSaleVolumeEventFilter;
+    AddedSaleVolume(
+      seller_addr?: string | null,
+      added_volume?: null,
+      current_bv?: null
+    ): AddedSaleVolumeEventFilter;
+
+    "CreatedSeller(uint256,address)"(
+      id?: BigNumberish | null,
+      seller_addr?: string | null
+    ): CreatedSellerEventFilter;
+    CreatedSeller(
+      id?: BigNumberish | null,
+      seller_addr?: string | null
+    ): CreatedSellerEventFilter;
+
+    "CreatedUser(address,uint256)"(
+      user_address?: string | null,
+      user_id?: BigNumberish | null
+    ): CreatedUserEventFilter;
+    CreatedUser(
+      user_address?: string | null,
+      user_id?: BigNumberish | null
+    ): CreatedUserEventFilter;
+
+    "LevelUp(uint256,uint256,uint256)"(
+      user_id?: BigNumberish | null,
+      date?: BigNumberish | null,
+      level?: BigNumberish | null
+    ): LevelUpEventFilter;
+    LevelUp(
+      user_id?: BigNumberish | null,
+      date?: BigNumberish | null,
+      level?: BigNumberish | null
+    ): LevelUpEventFilter;
+
+    "NewOrderEvent(uint256,uint256,uint256)"(
+      id?: BigNumberish | null,
+      seller_id?: BigNumberish | null,
+      user_id?: BigNumberish | null
+    ): NewOrderEventEventFilter;
+    NewOrderEvent(
+      id?: BigNumberish | null,
+      seller_id?: BigNumberish | null,
+      user_id?: BigNumberish | null
+    ): NewOrderEventEventFilter;
+
     "OwnershipTransferred(address,address)"(
       previousOwner?: string | null,
       newOwner?: string | null
@@ -1434,12 +1716,42 @@ export interface Gateway extends BaseContract {
 
     getOrderList(
       _order_id: BigNumberish,
-      overrides?: Overrides & { from?: string }
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getUser(
+    getOrderLists(
+      fromId: BigNumberish,
+      toId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getSeller(
+      _seller_id: BigNumberish,
+      ignore_vaildation: boolean,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getSellerList(
+      fromId: BigNumberish,
+      toId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "getUser(uint256,bool)"(
+      _user_id: BigNumberish,
+      ignore_validation: boolean,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "getUser(address)"(
       user_address: string,
-      overrides?: Overrides & { from?: string }
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getUserList(
+      fromId: BigNumberish,
+      toId: BigNumberish,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     isChildOfParent(
@@ -1532,10 +1844,6 @@ export interface Gateway extends BaseContract {
     withdrawWithDao(
       withdraw_amount: BigNumberish,
       withdrawal_address: string,
-      overrides?: Overrides & { from?: string }
-    ): Promise<BigNumber>;
-
-    withraw_token(
       overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
   };
@@ -1637,12 +1945,42 @@ export interface Gateway extends BaseContract {
 
     getOrderList(
       _order_id: BigNumberish,
-      overrides?: Overrides & { from?: string }
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    getUser(
+    getOrderLists(
+      fromId: BigNumberish,
+      toId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getSeller(
+      _seller_id: BigNumberish,
+      ignore_vaildation: boolean,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getSellerList(
+      fromId: BigNumberish,
+      toId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "getUser(uint256,bool)"(
+      _user_id: BigNumberish,
+      ignore_validation: boolean,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "getUser(address)"(
       user_address: string,
-      overrides?: Overrides & { from?: string }
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getUserList(
+      fromId: BigNumberish,
+      toId: BigNumberish,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     isChildOfParent(
@@ -1739,10 +2077,6 @@ export interface Gateway extends BaseContract {
     withdrawWithDao(
       withdraw_amount: BigNumberish,
       withdrawal_address: string,
-      overrides?: Overrides & { from?: string }
-    ): Promise<PopulatedTransaction>;
-
-    withraw_token(
       overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
   };

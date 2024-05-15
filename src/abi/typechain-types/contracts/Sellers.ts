@@ -7,13 +7,15 @@ import type {
   BigNumberish,
   BytesLike,
   CallOverrides,
-  ContractTransaction,
-  Overrides,
   PopulatedTransaction,
   Signer,
   utils,
 } from "ethers";
-import type { FunctionFragment, Result } from "@ethersproject/abi";
+import type {
+  FunctionFragment,
+  Result,
+  EventFragment,
+} from "@ethersproject/abi";
 import type { Listener, Provider } from "@ethersproject/providers";
 import type {
   TypedEventFilter,
@@ -22,20 +24,46 @@ import type {
   OnEvent,
 } from "../common";
 
+export declare namespace Sellers {
+  export type SellerStruct = {
+    id: BigNumberish;
+    seller_addr: string;
+    bv_value: BigNumberish;
+    token_withdraw_value: BigNumberish;
+    exists: boolean;
+  };
+
+  export type SellerStructOutput = [
+    BigNumber,
+    string,
+    BigNumber,
+    BigNumber,
+    boolean
+  ] & {
+    id: BigNumber;
+    seller_addr: string;
+    bv_value: BigNumber;
+    token_withdraw_value: BigNumber;
+    exists: boolean;
+  };
+}
+
 export interface SellersInterface extends utils.Interface {
   functions: {
     "SellerAddress(uint256)": FunctionFragment;
     "SellerList(address)": FunctionFragment;
+    "getSeller(uint256,bool)": FunctionFragment;
+    "getSellerList(uint256,uint256)": FunctionFragment;
     "seller_id()": FunctionFragment;
-    "withraw_token()": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
       | "SellerAddress"
       | "SellerList"
+      | "getSeller"
+      | "getSellerList"
       | "seller_id"
-      | "withraw_token"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -43,25 +71,59 @@ export interface SellersInterface extends utils.Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "SellerList", values: [string]): string;
-  encodeFunctionData(functionFragment: "seller_id", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "withraw_token",
-    values?: undefined
+    functionFragment: "getSeller",
+    values: [BigNumberish, boolean]
   ): string;
+  encodeFunctionData(
+    functionFragment: "getSellerList",
+    values: [BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(functionFragment: "seller_id", values?: undefined): string;
 
   decodeFunctionResult(
     functionFragment: "SellerAddress",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "SellerList", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "seller_id", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "getSeller", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "withraw_token",
+    functionFragment: "getSellerList",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "seller_id", data: BytesLike): Result;
 
-  events: {};
+  events: {
+    "AddedSaleVolume(address,uint256,uint256)": EventFragment;
+    "CreatedSeller(uint256,address)": EventFragment;
+  };
+
+  getEvent(nameOrSignatureOrTopic: "AddedSaleVolume"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "CreatedSeller"): EventFragment;
 }
+
+export interface AddedSaleVolumeEventObject {
+  seller_addr: string;
+  added_volume: BigNumber;
+  current_bv: BigNumber;
+}
+export type AddedSaleVolumeEvent = TypedEvent<
+  [string, BigNumber, BigNumber],
+  AddedSaleVolumeEventObject
+>;
+
+export type AddedSaleVolumeEventFilter = TypedEventFilter<AddedSaleVolumeEvent>;
+
+export interface CreatedSellerEventObject {
+  id: BigNumber;
+  seller_addr: string;
+}
+export type CreatedSellerEvent = TypedEvent<
+  [BigNumber, string],
+  CreatedSellerEventObject
+>;
+
+export type CreatedSellerEventFilter = TypedEventFilter<CreatedSellerEvent>;
 
 export interface Sellers extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -108,11 +170,19 @@ export interface Sellers extends BaseContract {
       }
     >;
 
-    seller_id(overrides?: CallOverrides): Promise<[BigNumber]>;
+    getSeller(
+      _seller_id: BigNumberish,
+      ignore_vaildation: boolean,
+      overrides?: CallOverrides
+    ): Promise<[Sellers.SellerStructOutput]>;
 
-    withraw_token(
-      overrides?: Overrides & { from?: string }
-    ): Promise<ContractTransaction>;
+    getSellerList(
+      fromId: BigNumberish,
+      toId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[Sellers.SellerStructOutput[]]>;
+
+    seller_id(overrides?: CallOverrides): Promise<[BigNumber]>;
   };
 
   SellerAddress(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
@@ -130,11 +200,19 @@ export interface Sellers extends BaseContract {
     }
   >;
 
-  seller_id(overrides?: CallOverrides): Promise<BigNumber>;
+  getSeller(
+    _seller_id: BigNumberish,
+    ignore_vaildation: boolean,
+    overrides?: CallOverrides
+  ): Promise<Sellers.SellerStructOutput>;
 
-  withraw_token(
-    overrides?: Overrides & { from?: string }
-  ): Promise<ContractTransaction>;
+  getSellerList(
+    fromId: BigNumberish,
+    toId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<Sellers.SellerStructOutput[]>;
+
+  seller_id(overrides?: CallOverrides): Promise<BigNumber>;
 
   callStatic: {
     SellerAddress(
@@ -155,12 +233,42 @@ export interface Sellers extends BaseContract {
       }
     >;
 
-    seller_id(overrides?: CallOverrides): Promise<BigNumber>;
+    getSeller(
+      _seller_id: BigNumberish,
+      ignore_vaildation: boolean,
+      overrides?: CallOverrides
+    ): Promise<Sellers.SellerStructOutput>;
 
-    withraw_token(overrides?: CallOverrides): Promise<void>;
+    getSellerList(
+      fromId: BigNumberish,
+      toId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<Sellers.SellerStructOutput[]>;
+
+    seller_id(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
-  filters: {};
+  filters: {
+    "AddedSaleVolume(address,uint256,uint256)"(
+      seller_addr?: string | null,
+      added_volume?: null,
+      current_bv?: null
+    ): AddedSaleVolumeEventFilter;
+    AddedSaleVolume(
+      seller_addr?: string | null,
+      added_volume?: null,
+      current_bv?: null
+    ): AddedSaleVolumeEventFilter;
+
+    "CreatedSeller(uint256,address)"(
+      id?: BigNumberish | null,
+      seller_addr?: string | null
+    ): CreatedSellerEventFilter;
+    CreatedSeller(
+      id?: BigNumberish | null,
+      seller_addr?: string | null
+    ): CreatedSellerEventFilter;
+  };
 
   estimateGas: {
     SellerAddress(
@@ -170,11 +278,19 @@ export interface Sellers extends BaseContract {
 
     SellerList(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    seller_id(overrides?: CallOverrides): Promise<BigNumber>;
-
-    withraw_token(
-      overrides?: Overrides & { from?: string }
+    getSeller(
+      _seller_id: BigNumberish,
+      ignore_vaildation: boolean,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    getSellerList(
+      fromId: BigNumberish,
+      toId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    seller_id(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -188,10 +304,18 @@ export interface Sellers extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    seller_id(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    withraw_token(
-      overrides?: Overrides & { from?: string }
+    getSeller(
+      _seller_id: BigNumberish,
+      ignore_vaildation: boolean,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    getSellerList(
+      fromId: BigNumberish,
+      toId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    seller_id(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

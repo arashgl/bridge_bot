@@ -42,6 +42,9 @@ export class Transaction extends BaseEntity {
   @Column()
   tx_hash: string;
 
+  @Column({ default: false })
+  is_filled: boolean;
+
   @Column({ default: true })
   is_event: boolean;
 }

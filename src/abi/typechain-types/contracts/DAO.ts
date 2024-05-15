@@ -260,11 +260,12 @@ export interface DAO extends BaseContract {
       _txIndex: BigNumberish,
       overrides?: CallOverrides
     ): Promise<
-      [string, BigNumber, string, boolean, BigNumber] & {
+      [string, BigNumber, string, boolean, BigNumber, BigNumber] & {
         to: string;
         value: BigNumber;
         data: string;
         executed: boolean;
+        cycleCount: BigNumber;
         numConfirmations: BigNumber;
       }
     >;
@@ -295,11 +296,12 @@ export interface DAO extends BaseContract {
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<
-      [string, BigNumber, string, boolean, BigNumber] & {
+      [string, BigNumber, string, boolean, BigNumber, BigNumber] & {
         to: string;
         value: BigNumber;
         data: string;
         executed: boolean;
+        cycleCount: BigNumber;
         numConfirmations: BigNumber;
       }
     >;
@@ -323,11 +325,12 @@ export interface DAO extends BaseContract {
     _txIndex: BigNumberish,
     overrides?: CallOverrides
   ): Promise<
-    [string, BigNumber, string, boolean, BigNumber] & {
+    [string, BigNumber, string, boolean, BigNumber, BigNumber] & {
       to: string;
       value: BigNumber;
       data: string;
       executed: boolean;
+      cycleCount: BigNumber;
       numConfirmations: BigNumber;
     }
   >;
@@ -358,11 +361,12 @@ export interface DAO extends BaseContract {
     arg0: BigNumberish,
     overrides?: CallOverrides
   ): Promise<
-    [string, BigNumber, string, boolean, BigNumber] & {
+    [string, BigNumber, string, boolean, BigNumber, BigNumber] & {
       to: string;
       value: BigNumber;
       data: string;
       executed: boolean;
+      cycleCount: BigNumber;
       numConfirmations: BigNumber;
     }
   >;
@@ -386,11 +390,12 @@ export interface DAO extends BaseContract {
       _txIndex: BigNumberish,
       overrides?: CallOverrides
     ): Promise<
-      [string, BigNumber, string, boolean, BigNumber] & {
+      [string, BigNumber, string, boolean, BigNumber, BigNumber] & {
         to: string;
         value: BigNumber;
         data: string;
         executed: boolean;
+        cycleCount: BigNumber;
         numConfirmations: BigNumber;
       }
     >;
@@ -421,11 +426,12 @@ export interface DAO extends BaseContract {
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<
-      [string, BigNumber, string, boolean, BigNumber] & {
+      [string, BigNumber, string, boolean, BigNumber, BigNumber] & {
         to: string;
         value: BigNumber;
         data: string;
         executed: boolean;
+        cycleCount: BigNumber;
         numConfirmations: BigNumber;
       }
     >;

@@ -8,7 +8,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: new CustomLogger(),
   });
-  await app.get(AppService).listenForConnections();
+  await app.init();
   Logger.verbose('App Started Successfully', 'Bootstrap');
 }
 bootstrap();

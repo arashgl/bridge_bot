@@ -1,0 +1,57 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "IMarketplaceError",
+  "sourceName": "contracts/market/errors/IMarketplaceError.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "ForbiddenMinter",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "GatewayFail",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InsufficientFunds",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidOfferSeller",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "signer",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "actualSigner",
+          "type": "address"
+        }
+      ],
+      "name": "InvalidSigner",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidToken",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "SoldOut",
+      "type": "error"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

@@ -7,13 +7,15 @@ import type {
   BigNumberish,
   BytesLike,
   CallOverrides,
-  ContractTransaction,
-  Overrides,
   PopulatedTransaction,
   Signer,
   utils,
 } from "ethers";
-import type { FunctionFragment, Result } from "@ethersproject/abi";
+import type {
+  FunctionFragment,
+  Result,
+  EventFragment,
+} from "@ethersproject/abi";
 import type { Listener, Provider } from "@ethersproject/providers";
 import type {
   TypedEventFilter,
@@ -62,11 +64,16 @@ export interface OrdersInterface extends utils.Interface {
   functions: {
     "OrderList(uint256)": FunctionFragment;
     "getOrderList(uint256)": FunctionFragment;
+    "getOrderLists(uint256,uint256)": FunctionFragment;
     "order_id()": FunctionFragment;
   };
 
   getFunction(
-    nameOrSignatureOrTopic: "OrderList" | "getOrderList" | "order_id"
+    nameOrSignatureOrTopic:
+      | "OrderList"
+      | "getOrderList"
+      | "getOrderLists"
+      | "order_id"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -77,6 +84,10 @@ export interface OrdersInterface extends utils.Interface {
     functionFragment: "getOrderList",
     values: [BigNumberish]
   ): string;
+  encodeFunctionData(
+    functionFragment: "getOrderLists",
+    values: [BigNumberish, BigNumberish]
+  ): string;
   encodeFunctionData(functionFragment: "order_id", values?: undefined): string;
 
   decodeFunctionResult(functionFragment: "OrderList", data: BytesLike): Result;
@@ -84,10 +95,30 @@ export interface OrdersInterface extends utils.Interface {
     functionFragment: "getOrderList",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "getOrderLists",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "order_id", data: BytesLike): Result;
 
-  events: {};
+  events: {
+    "NewOrderEvent(uint256,uint256,uint256)": EventFragment;
+  };
+
+  getEvent(nameOrSignatureOrTopic: "NewOrderEvent"): EventFragment;
 }
+
+export interface NewOrderEventEventObject {
+  id: BigNumber;
+  seller_id: BigNumber;
+  user_id: BigNumber;
+}
+export type NewOrderEventEvent = TypedEvent<
+  [BigNumber, BigNumber, BigNumber],
+  NewOrderEventEventObject
+>;
+
+export type NewOrderEventEventFilter = TypedEventFilter<NewOrderEventEvent>;
 
 export interface Orders extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -145,8 +176,18 @@ export interface Orders extends BaseContract {
 
     getOrderList(
       _order_id: BigNumberish,
-      overrides?: Overrides & { from?: string }
-    ): Promise<ContractTransaction>;
+      overrides?: CallOverrides
+    ): Promise<
+      [OrdersStruct.OrderStructOutput] & {
+        order: OrdersStruct.OrderStructOutput;
+      }
+    >;
+
+    getOrderLists(
+      fromId: BigNumberish,
+      toId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[OrdersStruct.OrderStructOutput[]]>;
 
     order_id(overrides?: CallOverrides): Promise<[BigNumber]>;
   };
@@ -180,8 +221,14 @@ export interface Orders extends BaseContract {
 
   getOrderList(
     _order_id: BigNumberish,
-    overrides?: Overrides & { from?: string }
-  ): Promise<ContractTransaction>;
+    overrides?: CallOverrides
+  ): Promise<OrdersStruct.OrderStructOutput>;
+
+  getOrderLists(
+    fromId: BigNumberish,
+    toId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<OrdersStruct.OrderStructOutput[]>;
 
   order_id(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -218,10 +265,27 @@ export interface Orders extends BaseContract {
       overrides?: CallOverrides
     ): Promise<OrdersStruct.OrderStructOutput>;
 
+    getOrderLists(
+      fromId: BigNumberish,
+      toId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<OrdersStruct.OrderStructOutput[]>;
+
     order_id(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
-  filters: {};
+  filters: {
+    "NewOrderEvent(uint256,uint256,uint256)"(
+      id?: BigNumberish | null,
+      seller_id?: BigNumberish | null,
+      user_id?: BigNumberish | null
+    ): NewOrderEventEventFilter;
+    NewOrderEvent(
+      id?: BigNumberish | null,
+      seller_id?: BigNumberish | null,
+      user_id?: BigNumberish | null
+    ): NewOrderEventEventFilter;
+  };
 
   estimateGas: {
     OrderList(
@@ -231,7 +295,13 @@ export interface Orders extends BaseContract {
 
     getOrderList(
       _order_id: BigNumberish,
-      overrides?: Overrides & { from?: string }
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getOrderLists(
+      fromId: BigNumberish,
+      toId: BigNumberish,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     order_id(overrides?: CallOverrides): Promise<BigNumber>;
@@ -245,7 +315,13 @@ export interface Orders extends BaseContract {
 
     getOrderList(
       _order_id: BigNumberish,
-      overrides?: Overrides & { from?: string }
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getOrderLists(
+      fromId: BigNumberish,
+      toId: BigNumberish,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     order_id(overrides?: CallOverrides): Promise<PopulatedTransaction>;

@@ -29,6 +29,14 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC721Errors__factory>;
     getContractFactory(
+      name: "IERC4906",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC4906__factory>;
+    getContractFactory(
+      name: "IERC5267",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC5267__factory>;
+    getContractFactory(
       name: "ERC20",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ERC20__factory>;
@@ -45,6 +53,18 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ERC721__factory>;
     getContractFactory(
+      name: "ERC721Enumerable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC721Enumerable__factory>;
+    getContractFactory(
+      name: "ERC721URIStorage",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC721URIStorage__factory>;
+    getContractFactory(
+      name: "IERC721Enumerable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC721Enumerable__factory>;
+    getContractFactory(
       name: "IERC721Metadata",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC721Metadata__factory>;
@@ -56,6 +76,18 @@ declare module "hardhat/types/runtime" {
       name: "IERC721Receiver",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC721Receiver__factory>;
+    getContractFactory(
+      name: "ERC721Holder",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC721Holder__factory>;
+    getContractFactory(
+      name: "ECDSA",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ECDSA__factory>;
+    getContractFactory(
+      name: "EIP712",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.EIP712__factory>;
     getContractFactory(
       name: "ERC165",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -72,6 +104,10 @@ declare module "hardhat/types/runtime" {
       name: "ReentrancyGuard",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ReentrancyGuard__factory>;
+    getContractFactory(
+      name: "ShortStrings",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ShortStrings__factory>;
     getContractFactory(
       name: "Strings",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -101,6 +137,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Dex__factory>;
     getContractFactory(
+      name: "DNM",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.DNM__factory>;
+    getContractFactory(
       name: "Election",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Election__factory>;
@@ -121,6 +161,26 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IStakeMeta__factory>;
     getContractFactory(
+      name: "ILazyMintError",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ILazyMintError__factory>;
+    getContractFactory(
+      name: "IMarketplaceError",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IMarketplaceError__factory>;
+    getContractFactory(
+      name: "LazyMint",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.LazyMint__factory>;
+    getContractFactory(
+      name: "Market",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Market__factory>;
+    getContractFactory(
+      name: "GetListModifier",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.GetListModifier__factory>;
+    getContractFactory(
       name: "NFTLand",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.NFTLand__factory>;
@@ -140,6 +200,10 @@ declare module "hardhat/types/runtime" {
       name: "Plan",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Plan__factory>;
+    getContractFactory(
+      name: "ProductNFT",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ProductNFT__factory>;
     getContractFactory(
       name: "SC",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -196,6 +260,10 @@ declare module "hardhat/types/runtime" {
       name: "Withdrawal",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Withdrawal__factory>;
+    getContractFactory(
+      name: "Wrapper",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Wrapper__factory>;
     getContractFactory(
       name: "IERC165",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -286,6 +354,16 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IERC721Errors>;
     getContractAt(
+      name: "IERC4906",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC4906>;
+    getContractAt(
+      name: "IERC5267",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC5267>;
+    getContractAt(
       name: "ERC20",
       address: string,
       signer?: ethers.Signer
@@ -306,6 +384,21 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.ERC721>;
     getContractAt(
+      name: "ERC721Enumerable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC721Enumerable>;
+    getContractAt(
+      name: "ERC721URIStorage",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC721URIStorage>;
+    getContractAt(
+      name: "IERC721Enumerable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC721Enumerable>;
+    getContractAt(
       name: "IERC721Metadata",
       address: string,
       signer?: ethers.Signer
@@ -320,6 +413,21 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.IERC721Receiver>;
+    getContractAt(
+      name: "ERC721Holder",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC721Holder>;
+    getContractAt(
+      name: "ECDSA",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ECDSA>;
+    getContractAt(
+      name: "EIP712",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.EIP712>;
     getContractAt(
       name: "ERC165",
       address: string,
@@ -340,6 +448,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.ReentrancyGuard>;
+    getContractAt(
+      name: "ShortStrings",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ShortStrings>;
     getContractAt(
       name: "Strings",
       address: string,
@@ -376,6 +489,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.Dex>;
     getContractAt(
+      name: "DNM",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.DNM>;
+    getContractAt(
       name: "Election",
       address: string,
       signer?: ethers.Signer
@@ -401,6 +519,31 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IStakeMeta>;
     getContractAt(
+      name: "ILazyMintError",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ILazyMintError>;
+    getContractAt(
+      name: "IMarketplaceError",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IMarketplaceError>;
+    getContractAt(
+      name: "LazyMint",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.LazyMint>;
+    getContractAt(
+      name: "Market",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Market>;
+    getContractAt(
+      name: "GetListModifier",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.GetListModifier>;
+    getContractAt(
       name: "NFTLand",
       address: string,
       signer?: ethers.Signer
@@ -425,6 +568,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.Plan>;
+    getContractAt(
+      name: "ProductNFT",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ProductNFT>;
     getContractAt(
       name: "SC",
       address: string,
@@ -495,6 +643,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.Withdrawal>;
+    getContractAt(
+      name: "Wrapper",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Wrapper>;
     getContractAt(
       name: "IERC165",
       address: string,

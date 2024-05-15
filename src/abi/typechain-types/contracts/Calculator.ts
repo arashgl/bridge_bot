@@ -13,7 +13,11 @@ import type {
   Signer,
   utils,
 } from "ethers";
-import type { FunctionFragment, Result } from "@ethersproject/abi";
+import type {
+  FunctionFragment,
+  Result,
+  EventFragment,
+} from "@ethersproject/abi";
 import type { Listener, Provider } from "@ethersproject/providers";
 import type {
   TypedEventFilter,
@@ -96,6 +100,16 @@ export declare namespace UsersStruct {
     exists: boolean;
     data: string;
   };
+
+  export type UserInfoStruct = {
+    user: UsersStruct.UserStruct;
+    user_address: string;
+  };
+
+  export type UserInfoStructOutput = [UsersStruct.UserStructOutput, string] & {
+    user: UsersStruct.UserStructOutput;
+    user_address: string;
+  };
 }
 
 export declare namespace OrdersStruct {
@@ -147,7 +161,10 @@ export interface CalculatorInterface extends utils.Interface {
     "calcW((uint256,(uint256,uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256,uint256,uint256,uint256,uint256,bool,bytes32))": FunctionFragment;
     "calculateOrder((uint256,(uint256,uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256,uint256,uint256,uint256,uint256,bool,bytes32),(uint256,uint256,uint256,uint256,uint256,uint256,uint256,bytes32,bool),uint256,uint256)": FunctionFragment;
     "getOrderList(uint256)": FunctionFragment;
+    "getOrderLists(uint256,uint256)": FunctionFragment;
+    "getUser(uint256,bool)": FunctionFragment;
     "getUser(address)": FunctionFragment;
+    "getUserList(uint256,uint256)": FunctionFragment;
     "getWeekNumber(uint256)": FunctionFragment;
     "level_up_data_index()": FunctionFragment;
     "order_id()": FunctionFragment;
@@ -167,7 +184,10 @@ export interface CalculatorInterface extends utils.Interface {
       | "calcW"
       | "calculateOrder"
       | "getOrderList"
-      | "getUser"
+      | "getOrderLists"
+      | "getUser(uint256,bool)"
+      | "getUser(address)"
+      | "getUserList"
       | "getWeekNumber"
       | "level_up_data_index"
       | "order_id"
@@ -220,7 +240,22 @@ export interface CalculatorInterface extends utils.Interface {
     functionFragment: "getOrderList",
     values: [BigNumberish]
   ): string;
-  encodeFunctionData(functionFragment: "getUser", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "getOrderLists",
+    values: [BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getUser(uint256,bool)",
+    values: [BigNumberish, boolean]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getUser(address)",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getUserList",
+    values: [BigNumberish, BigNumberish]
+  ): string;
   encodeFunctionData(
     functionFragment: "getWeekNumber",
     values: [BigNumberish]
@@ -261,7 +296,22 @@ export interface CalculatorInterface extends utils.Interface {
     functionFragment: "getOrderList",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "getUser", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getOrderLists",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getUser(uint256,bool)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getUser(address)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getUserList",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getWeekNumber",
     data: BytesLike
@@ -273,8 +323,51 @@ export interface CalculatorInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "order_id", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "user_id", data: BytesLike): Result;
 
-  events: {};
+  events: {
+    "CreatedUser(address,uint256)": EventFragment;
+    "LevelUp(uint256,uint256,uint256)": EventFragment;
+    "NewOrderEvent(uint256,uint256,uint256)": EventFragment;
+  };
+
+  getEvent(nameOrSignatureOrTopic: "CreatedUser"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "LevelUp"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "NewOrderEvent"): EventFragment;
 }
+
+export interface CreatedUserEventObject {
+  user_address: string;
+  user_id: BigNumber;
+}
+export type CreatedUserEvent = TypedEvent<
+  [string, BigNumber],
+  CreatedUserEventObject
+>;
+
+export type CreatedUserEventFilter = TypedEventFilter<CreatedUserEvent>;
+
+export interface LevelUpEventObject {
+  user_id: BigNumber;
+  date: BigNumber;
+  level: BigNumber;
+}
+export type LevelUpEvent = TypedEvent<
+  [BigNumber, BigNumber, BigNumber],
+  LevelUpEventObject
+>;
+
+export type LevelUpEventFilter = TypedEventFilter<LevelUpEvent>;
+
+export interface NewOrderEventEventObject {
+  id: BigNumber;
+  seller_id: BigNumber;
+  user_id: BigNumber;
+}
+export type NewOrderEventEvent = TypedEvent<
+  [BigNumber, BigNumber, BigNumber],
+  NewOrderEventEventObject
+>;
+
+export type NewOrderEventEventFilter = TypedEventFilter<NewOrderEventEvent>;
 
 export interface Calculator extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -406,13 +499,37 @@ export interface Calculator extends BaseContract {
 
     getOrderList(
       _order_id: BigNumberish,
-      overrides?: Overrides & { from?: string }
-    ): Promise<ContractTransaction>;
+      overrides?: CallOverrides
+    ): Promise<
+      [OrdersStruct.OrderStructOutput] & {
+        order: OrdersStruct.OrderStructOutput;
+      }
+    >;
 
-    getUser(
+    getOrderLists(
+      fromId: BigNumberish,
+      toId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[OrdersStruct.OrderStructOutput[]]>;
+
+    "getUser(uint256,bool)"(
+      _user_id: BigNumberish,
+      ignore_validation: boolean,
+      overrides?: CallOverrides
+    ): Promise<[string, UsersStruct.UserStructOutput]>;
+
+    "getUser(address)"(
       user_address: string,
-      overrides?: Overrides & { from?: string }
-    ): Promise<ContractTransaction>;
+      overrides?: CallOverrides
+    ): Promise<
+      [UsersStruct.UserStructOutput] & { user: UsersStruct.UserStructOutput }
+    >;
+
+    getUserList(
+      fromId: BigNumberish,
+      toId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[UsersStruct.UserInfoStructOutput[]]>;
 
     getWeekNumber(
       timestamp: BigNumberish,
@@ -526,13 +643,31 @@ export interface Calculator extends BaseContract {
 
   getOrderList(
     _order_id: BigNumberish,
-    overrides?: Overrides & { from?: string }
-  ): Promise<ContractTransaction>;
+    overrides?: CallOverrides
+  ): Promise<OrdersStruct.OrderStructOutput>;
 
-  getUser(
+  getOrderLists(
+    fromId: BigNumberish,
+    toId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<OrdersStruct.OrderStructOutput[]>;
+
+  "getUser(uint256,bool)"(
+    _user_id: BigNumberish,
+    ignore_validation: boolean,
+    overrides?: CallOverrides
+  ): Promise<[string, UsersStruct.UserStructOutput]>;
+
+  "getUser(address)"(
     user_address: string,
-    overrides?: Overrides & { from?: string }
-  ): Promise<ContractTransaction>;
+    overrides?: CallOverrides
+  ): Promise<UsersStruct.UserStructOutput>;
+
+  getUserList(
+    fromId: BigNumberish,
+    toId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<UsersStruct.UserInfoStructOutput[]>;
 
   getWeekNumber(
     timestamp: BigNumberish,
@@ -649,10 +784,28 @@ export interface Calculator extends BaseContract {
       overrides?: CallOverrides
     ): Promise<OrdersStruct.OrderStructOutput>;
 
-    getUser(
+    getOrderLists(
+      fromId: BigNumberish,
+      toId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<OrdersStruct.OrderStructOutput[]>;
+
+    "getUser(uint256,bool)"(
+      _user_id: BigNumberish,
+      ignore_validation: boolean,
+      overrides?: CallOverrides
+    ): Promise<[string, UsersStruct.UserStructOutput]>;
+
+    "getUser(address)"(
       user_address: string,
       overrides?: CallOverrides
     ): Promise<UsersStruct.UserStructOutput>;
+
+    getUserList(
+      fromId: BigNumberish,
+      toId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<UsersStruct.UserInfoStructOutput[]>;
 
     getWeekNumber(
       timestamp: BigNumberish,
@@ -666,7 +819,38 @@ export interface Calculator extends BaseContract {
     user_id(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
-  filters: {};
+  filters: {
+    "CreatedUser(address,uint256)"(
+      user_address?: string | null,
+      user_id?: BigNumberish | null
+    ): CreatedUserEventFilter;
+    CreatedUser(
+      user_address?: string | null,
+      user_id?: BigNumberish | null
+    ): CreatedUserEventFilter;
+
+    "LevelUp(uint256,uint256,uint256)"(
+      user_id?: BigNumberish | null,
+      date?: BigNumberish | null,
+      level?: BigNumberish | null
+    ): LevelUpEventFilter;
+    LevelUp(
+      user_id?: BigNumberish | null,
+      date?: BigNumberish | null,
+      level?: BigNumberish | null
+    ): LevelUpEventFilter;
+
+    "NewOrderEvent(uint256,uint256,uint256)"(
+      id?: BigNumberish | null,
+      seller_id?: BigNumberish | null,
+      user_id?: BigNumberish | null
+    ): NewOrderEventEventFilter;
+    NewOrderEvent(
+      id?: BigNumberish | null,
+      seller_id?: BigNumberish | null,
+      user_id?: BigNumberish | null
+    ): NewOrderEventEventFilter;
+  };
 
   estimateGas: {
     BVPlan(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
@@ -721,12 +905,30 @@ export interface Calculator extends BaseContract {
 
     getOrderList(
       _order_id: BigNumberish,
-      overrides?: Overrides & { from?: string }
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getUser(
+    getOrderLists(
+      fromId: BigNumberish,
+      toId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "getUser(uint256,bool)"(
+      _user_id: BigNumberish,
+      ignore_validation: boolean,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "getUser(address)"(
       user_address: string,
-      overrides?: Overrides & { from?: string }
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getUserList(
+      fromId: BigNumberish,
+      toId: BigNumberish,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     getWeekNumber(
@@ -800,12 +1002,30 @@ export interface Calculator extends BaseContract {
 
     getOrderList(
       _order_id: BigNumberish,
-      overrides?: Overrides & { from?: string }
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    getUser(
+    getOrderLists(
+      fromId: BigNumberish,
+      toId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "getUser(uint256,bool)"(
+      _user_id: BigNumberish,
+      ignore_validation: boolean,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "getUser(address)"(
       user_address: string,
-      overrides?: Overrides & { from?: string }
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getUserList(
+      fromId: BigNumberish,
+      toId: BigNumberish,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     getWeekNumber(

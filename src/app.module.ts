@@ -11,7 +11,6 @@ process.on('unhandledRejection', (reason, promise) => {
 @Module({
   imports: [
     BridgeModule,
-    ScheduleModule.forRoot(),
     ConfigModule.forRoot({ isGlobal: true }),
     TransactionsModule,
     DatabaseModule,

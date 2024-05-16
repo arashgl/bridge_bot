@@ -1,7 +1,8 @@
 import { Column, Entity } from 'typeorm';
 import { BaseEntity } from '../database/base-entity';
-import { NetworkEnum } from './network.enum';
+import { NetworkEnum } from './enums/network.enum';
 import { TransferTypeEnum } from './transfer-type.enum';
+import { TransferStatusEnum } from './enums/transfer-status.enum';
 
 @Entity()
 export class Transaction extends BaseEntity {
@@ -28,10 +29,10 @@ export class Transaction extends BaseEntity {
   land_id?: number;
 
   @Column()
-  from: string;
+  recipient_address: string;
 
   @Column()
-  to: string;
+  block_number?: number;
 
   @Column({ nullable: true })
   amount?: string;
@@ -39,9 +40,13 @@ export class Transaction extends BaseEntity {
   @Column({ nullable: true })
   token_address?: string;
 
-  @Column()
-  tx_hash: string;
+  @Column({
+    type: 'enum',
+    enum: TransferStatusEnum,
+    default: TransferStatusEnum.Pending,
+  })
+  status: TransferStatusEnum;
 
-  @Column({ default: true })
-  is_event: boolean;
+  @Column({ unique: true })
+  tx_hash: string;
 }

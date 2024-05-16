@@ -8,8 +8,10 @@ import { WalletProvider } from '../ethers/wallet.provider';
 import { TransactionService } from '../transactions/transaction.service';
 import { abi as BridgeAbi } from 'src/abi/contracts/Bridge.sol/Bridge.json';
 import { BridgeService } from './bridge.service';
-import { Cron, CronExpression, Interval } from '@nestjs/schedule';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { TransferTypeEnum } from '../transactions/transfer-type.enum';
+import { TransferStatusEnum } from '../transactions/enums/transfer-status.enum';
+import { NetworkEnum } from '../transactions/enums/network.enum';
 
 @Injectable()
 export class BridgeIntervalService {
@@ -33,107 +35,51 @@ export class BridgeIntervalService {
     );
   }
 
-  @Cron(CronExpression.EVERY_12_HOURS)
-  async transferFromBscListener() {
-    const block_number =
-      await this.ethersProvider.bscTestnetProvider.getBlockNumber();
-    const filter = this.bsc_bridge.filters.Transfer();
-    const events = await this.bsc_bridge.queryFilter(
-      filter,
-      block_number - 1990,
-    );
-    for (const event of events) {
-      if (event.blockNumber + +this.confirmationBlock < block_number) {
-        this.transactionService
-          .findOne({
-            where: {
-              tx_hash: event.transactionHash,
-              transfer_type: TransferTypeEnum.Transfer,
-            },
-          })
-          .then(async (wallet_transaction) => {
-            console.log(wallet_transaction?.id);
-            if (!wallet_transaction) {
-              const res = await this.bridgeService.transferToPolygon(
-                event.args[1],
-                event.args[3],
-                event.args[4],
-                true,
-              );
-              if (res)
-                Logger.log(`TransferFromBSC ID:${res.id}`, 'IntervalService');
-            }
-          });
-      }
-    }
-  }
-  @Cron(CronExpression.EVERY_12_HOURS)
-  async transferFromFullBscListener() {
-    const block_number =
-      await this.ethersProvider.bscTestnetProvider.getBlockNumber();
-    const filter = this.bsc_bridge.filters.FullTransfer();
-    const events = await this.bsc_bridge.queryFilter(
-      filter,
-      block_number - 1800,
-    );
-    for (const event of events) {
-      if (event.blockNumber + +this.confirmationBlock < block_number) {
-        this.transactionService
-          .findOne({
-            where: {
-              tx_hash: event.transactionHash,
-              transfer_type: TransferTypeEnum.FullTransfer,
-            },
-          })
-          .then(async (wallet_transaction) => {
-            if (!wallet_transaction) {
-              const res = await this.bridgeService.transferFullToPolygon(
-                event.args[4],
-                event.args[3],
-                event.args[5],
-                event.args[1],
-                event.args[6],
-              );
-
-              if (res)
-                Logger.log(`TransferFullFromBSC ${res.id}`, 'IntervalService');
-            }
-          });
-      }
+  @Cron(CronExpression.EVERY_5_SECONDS)
+  async transferFromBsc() {
+    const pendingTransactions = await this.transactionService.findAll({
+      where: {
+        status: TransferStatusEnum.Pending,
+        network: NetworkEnum.BSC,
+        transfer_type: TransferTypeEnum.Transfer,
+      },
+    });
+    for (const transaction of pendingTransactions) {
+      transaction.status = TransferStatusEnum.Processing;
+      await transaction.save();
+      await this.bridgeService.transferToPolygon(transaction);
     }
   }
 
-  @Cron(CronExpression.EVERY_12_HOURS)
-  // @Interval(6000)
+  @Cron(CronExpression.EVERY_MINUTE)
   async transferNFTFromBscListener() {
-    const block_number =
-      await this.ethersProvider.bscTestnetProvider.getBlockNumber();
-    const filter = this.bsc_bridge.filters.TransferNFT();
-    const events = await this.bsc_bridge.queryFilter(
-      filter,
-      block_number - 1800,
-    );
-    for (const event of events) {
-      if (event.blockNumber + +this.confirmationBlock < block_number) {
-        this.transactionService
-          .findOne({
-            where: {
-              tx_hash: event.transactionHash,
-              transfer_type: TransferTypeEnum.NFT,
-            },
-          })
-          .then(async (wallet_transaction) => {
-            if (!wallet_transaction) {
-              const res = await this.bridgeService.transferLandToPolygon(
-                event.args[1],
-                event.args[2],
-              );
+    const pendingTransactions = await this.transactionService.findAll({
+      where: {
+        status: TransferStatusEnum.Pending,
+        network: NetworkEnum.BSC,
+        transfer_type: TransferTypeEnum.NFT,
+      },
+    });
+    for (const transaction of pendingTransactions) {
+      transaction.status = TransferStatusEnum.Processing;
+      await transaction.save();
+      await this.bridgeService.transferLandToPolygon(transaction);
+    }
+  }
 
-              if (res)
-                Logger.log(`TransferLandFromBSC ${res.id}`, 'IntervalService');
-            }
-          });
-      }
+  @Cron(CronExpression.EVERY_MINUTE)
+  async transferFromFullBscListener() {
+    const pendingTransactions = await this.transactionService.findAll({
+      where: {
+        status: TransferStatusEnum.Pending,
+        network: NetworkEnum.BSC,
+        transfer_type: TransferTypeEnum.FullTransfer,
+      },
+    });
+    for (const transaction of pendingTransactions) {
+      transaction.status = TransferStatusEnum.Processing;
+      await transaction.save();
+      await this.bridgeService.transferFullToPolygon(transaction);
     }
   }
 }

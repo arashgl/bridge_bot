@@ -9,8 +9,9 @@ import { abi as StakeAbi } from 'src/abi/contracts/StakeMeta.sol/StakeMeta.json'
 import { abi as NFTLandAbi } from 'src/abi/contracts/NFT.sol/NFTLand.json';
 import { WalletProvider } from '../ethers/wallet.provider';
 import { TransactionService } from '../transactions/transaction.service';
-import { NetworkEnum } from '../transactions/network.enum';
-import { TransferTypeEnum } from '../transactions/transfer-type.enum';
+
+import { Transaction } from '../transactions/transaction.entity';
+import { TransferStatusEnum } from '../transactions/enums/transfer-status.enum';
 
 @Injectable()
 export class BridgeService {
@@ -57,39 +58,14 @@ export class BridgeService {
     ) as StakeMeta;
   }
 
-  async transferFullToPolygon(
-    dnmAmount: BigNumber,
-    uvmAmount: BigNumber,
-    landId: BigNumber,
-    sender: string,
-    stakeDuration: BigNumber,
-  ) {
+  async transferFullToPolygon(transaction: Transaction) {
     try {
-      let landOwner: string;
-      try {
-        landOwner = await this.nft_contract.ownerOf(landId);
-      } catch (e) {
-        landOwner = null;
-      }
-      if (landOwner !== this.polygon_bridge.address) {
-        const mint = await this.nft_contract.mint(
-          this.polygon_bridge.address,
-          landId,
-          { gasLimit: 100000 },
-        );
-        if (mint.hash) {
-          await mint.wait();
-          const owner = await this.nft_contract.ownerOf(landId);
-          Logger.log({ mintedAddress: owner }, '<<< Mint');
-        }
-      }
-
       const res = await this.polygon_bridge.fullTransferToPolygon(
-        uvmAmount,
-        dnmAmount,
-        landId,
-        stakeDuration,
-        sender,
+        ethers.utils.parseEther(transaction.uvm_amount),
+        ethers.utils.parseEther(transaction.dnm_amount),
+        transaction.land_id,
+        transaction.stake_duration,
+        transaction.recipient_address,
         { gasLimit: 100000 },
       );
 
@@ -97,51 +73,10 @@ export class BridgeService {
         console.log('Waiting for Stake');
         await res.wait();
         console.log('Finished for Stake');
-        const final_res = await this.transactionService.createTransaction({
-          from: res.from,
-          to: res.to,
-          tx_hash: res.hash,
-          network: NetworkEnum.POLYGON,
-          land_id: +ethers.utils.formatEther(landId),
-          dnm_amount: ethers.utils.formatEther(dnmAmount),
-          uvm_amount: ethers.utils.formatEther(uvmAmount),
-          transfer_type: TransferTypeEnum.FullTransfer,
-          stake_duration: +ethers.utils.formatEther(stakeDuration),
-          is_event: true,
-        });
+        transaction.status = TransferStatusEnum.Success;
+        await transaction.save();
         Logger.log({ stakedAddress: res.to }, '<<< Staked');
-        return final_res;
-        // }
-        // } else {
-        // await this.transferLandToPolygon(landId, sender);
-        // const res = await this.polygon_bridge.fullTransferToPolygon(
-        //   BigNumber.from(uvmAmount),
-        //   BigNumber.from(dnmAmount),
-        //   BigNumber.from(landId),
-        //   BigNumber.from(stakeDuration),
-        //   sender,
-        //   { gasLimit: 3000000 },
-        // );
-        // Logger.log(res?.to, 'transferFullToPolygon');
-        // if (res.hash) {
-        //   const result = await res.wait();
-        //   await this.transactionService.createTransaction({
-        //     from: result.from,
-        //     to: result.to,
-        //     tx_hash: res.hash,
-        //     network: NetworkEnum.POLYGON,
-        //     land_id: +ethers.utils.formatEther(landId),
-        //     dnm_amount: ethers.utils.formatEther(dnmAmount),
-        //     uvm_amount: ethers.utils.formatEther(uvmAmount),
-        //     transfer_type: TransferTypeEnum.FullTransfer,
-        //     stake_duration: +ethers.utils.formatEther(stakeDuration),
-        //     is_event: true,
-        //   });
-        //   Logger.log(
-        //     { from: result?.from, to: result?.to },
-        //     'transferFullToPolygonFinished',
-        //   );
-        // }
+        return transaction;
       }
     } catch (err) {
       Logger.error(
@@ -149,72 +84,38 @@ export class BridgeService {
         'transferFullToPolygon',
       );
       console.log(err);
+      transaction.status = TransferStatusEnum.Pending;
+      await transaction.save();
     }
   }
 
-  async transferLandToPolygon(landId: BigNumber, sender: string) {
+  async transferLandToPolygon(transaction: Transaction) {
     try {
       const myWalletAddress = this.walletProvider.polygon_wallet.address;
       console.log(
         {
           myWalletAddress,
-          sender,
-          landID: landId.toNumber(),
+          sender: transaction.recipient_address,
+          landID: transaction.land_id,
         },
         '<<<<<LAND',
       );
       const res = await this.polygon_bridge.transferNFTtoPolygon(
-        BigNumber.from(landId),
-        sender,
+        BigNumber.from(transaction.land_id),
+        transaction.recipient_address,
         {
           gasLimit: 350000,
         },
       );
-      Logger.log(res?.to, 'transferLandToPolygon');
       if (res.hash) {
         await res.wait();
-        const final_res = await this.transactionService.createTransaction({
-          from: res.from,
-          to: res.to,
-          tx_hash: res.hash,
-          network: NetworkEnum.POLYGON,
-          land_id: +ethers.utils.formatEther(landId),
-          transfer_type: TransferTypeEnum.NFT,
-          is_event: true,
-        });
+        transaction.status = TransferStatusEnum.Success;
+        await transaction.save();
         Logger.log(
           { from: res?.from, to: res?.to },
-          'transferFullToPolygonFinished',
+          'transferLandToPolygonFinished',
         );
-        return final_res;
-      } else {
-        const owner = await this.nft_contract.ownerOf(landId);
-        if (owner === sender) {
-          throw new Error('Mint transaction failed');
-        }
-        if (owner === this.walletProvider.polygon_wallet.address) {
-          const res = await this.nft_contract.transferFrom(
-            myWalletAddress,
-            sender,
-            landId,
-          );
-          if (res.hash) {
-            await res.wait();
-            await this.transactionService.createTransaction({
-              from: res.from,
-              to: res.to,
-              tx_hash: res.hash,
-              network: NetworkEnum.POLYGON,
-              land_id: +ethers.utils.formatEther(landId),
-              transfer_type: TransferTypeEnum.NFT,
-              is_event: true,
-            });
-            Logger.log(
-              { from: res?.from, to: res?.to },
-              'transferLandToPolygonFinished',
-            );
-          }
-        }
+        return transaction;
       }
     } catch (err) {
       Logger.error(
@@ -222,16 +123,15 @@ export class BridgeService {
         'transferFullToPolygon',
       );
       console.log(err);
+      transaction.status = TransferStatusEnum.Pending;
+      await transaction.save();
     }
   }
 
-  async transferToPolygon(
-    address: string,
-    amount: BigNumber,
-    tokenAddress: string,
-    is_interval?: boolean,
-  ) {
+  async transferToPolygon(transaction: Transaction) {
     try {
+      const tokenAddress = transaction.token_address;
+      const amount = ethers.utils.parseEther(transaction.amount);
       const token_address =
         tokenAddress === this.uvm_bsc
           ? this.uvm_polygon
@@ -239,31 +139,28 @@ export class BridgeService {
             ? this.dnm_polygon
             : null;
 
-      if (!token_address) return;
-
+      console.log(tokenAddress, this.uvm_bsc);
+      if (!token_address) throw new Error('Invalid Token Address');
+      console.log('1');
       const res = await this.polygon_bridge.transferToPolygon(
         token_address,
-        address,
+        transaction.recipient_address,
         BigNumber.from(amount),
         { gasLimit: 100000 },
       );
+      console.log('2');
       Logger.log(res?.to, 'TransferToPolygon');
       if (res.hash) {
+        console.log('3');
         const result = await res.wait();
-        const final_res = await this.transactionService.createTransaction({
-          from: result.from,
-          to: result.to,
-          amount: ethers.utils.formatEther(amount),
-          tx_hash: res.hash,
-          network: NetworkEnum.POLYGON,
-          token_address: tokenAddress,
-          is_event: !is_interval,
-        });
+        transaction.status = TransferStatusEnum.Success;
+        await transaction.save();
+        console.log('4');
         Logger.log(
           { from: result?.from, to: result?.to },
           'TransferToPolygonFinished',
         );
-        return final_res;
+        return transaction;
       }
     } catch (err) {
       Logger.error(
@@ -271,6 +168,8 @@ export class BridgeService {
         'TransferToPolygon',
       );
       console.log(err);
+      transaction.status = TransferStatusEnum.Pending;
+      await transaction.save();
     }
   }
 }

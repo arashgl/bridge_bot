@@ -23,6 +23,7 @@ export interface Env {
   CONFIRMATION_BLOCKS: string;
   POLYGON_NFT_ADDRESS: string;
   POLYGON_STAKE_ADDRESS: string;
+  BSC_API_KEY: string;
 }
 
 declare global {

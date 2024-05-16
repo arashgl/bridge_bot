@@ -1,6 +1,5 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { AppService } from './app.service';
 import { CustomLogger } from './base/utils/custom-logger';
 import { Logger } from '@nestjs/common';
 

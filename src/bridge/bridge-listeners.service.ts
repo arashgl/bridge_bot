@@ -57,38 +57,42 @@ export class BridgeListenersService {
           { id, tokenAddress, sender, receiver, amount },
           '<<<Transfer',
         );
-        this.ethersProvider.bscTestnetProvider.on(
-          'block',
-          (new_block_number) => {
-            const events =
-              this.ethersProvider.bscTestnetProvider.listeners('block');
-            if (
-              new_block_number - txReceipt.blockNumber >
-              this.confirmationBlock
-            ) {
-              console.log('CONFIRMED On ', new_block_number);
-              this.ethersProvider.bscTestnetProvider.removeListener(
-                'block',
-                events[0],
-              );
-              this.transactionService
-                .createTransaction({
-                  from: sender,
-                  to: receiver,
-                  amount: ethers.utils.formatEther(amount),
-                  tx_hash: txReceipt.transactionHash,
-                  network: NetworkEnum.BSC,
-                  token_address: tokenAddress,
-                  is_event: true,
-                })
-                .catch((e) => Logger.error(e));
-              this.bridgeService
-                .transferToPolygon(sender, amount, tokenAddress)
-                .catch((e) => Logger.error(e));
-              return false;
-            }
-          },
-        );
+        const ID = setInterval(async () => {
+          const new_block_number =
+            await this.ethersProvider.bscTestnetProvider.getBlockNumber();
+
+          if (
+            new_block_number - txReceipt.blockNumber >
+            this.confirmationBlock
+          ) {
+            console.log('CONFIRMED On ', new_block_number);
+            clearInterval(ID);
+            this.transactionService
+              .createTransaction({
+                from: sender,
+                to: receiver,
+                amount: ethers.utils.formatEther(amount),
+                tx_hash: txReceipt.transactionHash,
+                network: NetworkEnum.BSC,
+                token_address: tokenAddress,
+                is_event: true,
+              })
+              .catch((e) => Logger.error(e));
+            this.bridgeService
+              .transferToPolygon(sender, amount, tokenAddress)
+              .catch((e) => Logger.error(e));
+            return false;
+          }
+        }, 10000);
+        // this.ethersProvider.bscTestnetProvider.on(
+        //   'block',
+        //   (new_block_number) => {
+        //   this.ethersProvider.bscTestnetProvider.removeListener(
+        //             //   'block',
+        //             //   events[0],
+        //             // );
+        //   },
+        // );
       },
     );
   }
@@ -110,48 +114,52 @@ export class BridgeListenersService {
           { id, dnmAmount, sender, receiver, uvmAmount, landId },
           '<<<TransferFull',
         );
-        this.ethersProvider.bscTestnetProvider.on(
-          'block',
-          (new_block_number) => {
-            const events =
-              this.ethersProvider.bscTestnetProvider.listeners('block');
-            if (
-              new_block_number - txReceipt.blockNumber >
-              +this.confirmationBlock
-            ) {
-              console.log('CONFIRMED On ', new_block_number);
-              this.ethersProvider.bscTestnetProvider.removeListener(
-                'block',
-                events[0],
-              );
-              this.transactionService
-                .createTransaction({
-                  from: sender,
-                  to: receiver,
-                  amount: ethers.utils.formatEther(dnmAmount),
-                  tx_hash: txReceipt.transactionHash,
-                  network: NetworkEnum.BSC,
-                  is_event: true,
-                  transfer_type: TransferTypeEnum.FullTransfer,
-                  uvm_amount: ethers.utils.formatEther(uvmAmount),
-                  dnm_amount: ethers.utils.formatEther(dnmAmount),
-                  land_id: +ethers.utils.formatEther(landId),
-                  stake_duration: +ethers.utils.formatEther(stakeDuration),
-                })
-                .catch((e) => Logger.log(e));
-              this.bridgeService
-                .transferFullToPolygon(
-                  dnmAmount,
-                  uvmAmount,
-                  landId,
-                  sender,
-                  stakeDuration,
-                )
-                .catch((e) => Logger.log(e));
-              return false;
-            }
-          },
-        );
+        const ID = setInterval(async () => {
+          const new_block_number =
+            await this.ethersProvider.bscTestnetProvider.getBlockNumber();
+
+          if (
+            new_block_number - txReceipt.blockNumber >
+            +this.confirmationBlock
+          ) {
+            console.log('CONFIRMED On ', new_block_number);
+            clearInterval(ID);
+            this.transactionService
+              .createTransaction({
+                from: sender,
+                to: receiver,
+                amount: ethers.utils.formatEther(dnmAmount),
+                tx_hash: txReceipt.transactionHash,
+                network: NetworkEnum.BSC,
+                is_event: true,
+                transfer_type: TransferTypeEnum.FullTransfer,
+                uvm_amount: ethers.utils.formatEther(uvmAmount),
+                dnm_amount: ethers.utils.formatEther(dnmAmount),
+                land_id: +ethers.utils.formatEther(landId),
+                stake_duration: +ethers.utils.formatEther(stakeDuration),
+              })
+              .catch((e) => Logger.log(e));
+            this.bridgeService
+              .transferFullToPolygon(
+                dnmAmount,
+                uvmAmount,
+                landId,
+                sender,
+                stakeDuration,
+              )
+              .catch((e) => Logger.log(e));
+            return false;
+          }
+        }, 10000);
+
+        // this.ethersProvider.bscTestnetProvider.on(
+        //   'block',
+        //   (new_block_number) => {
+        //     const events =
+        //       this.ethersProvider.bscTestnetProvider.listeners('block');
+        //
+        //   },
+        // );
       },
     );
   }
@@ -196,7 +204,7 @@ export class BridgeListenersService {
               .catch((e) => Logger.error(e));
             return false;
           }
-        }, 5000);
+        }, 10000);
         // this.ethersProvider.bscTestnetProvider.on(
         //   'block',
         //   (new_block_number) => {

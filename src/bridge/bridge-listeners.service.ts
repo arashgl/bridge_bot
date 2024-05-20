@@ -4,7 +4,6 @@ import { NetworkEnum } from '../transactions/enums/network.enum';
 import { Bridge } from '../abi/typechain-types';
 import { ConfigService } from '@nestjs/config';
 import { Env } from '../../environments';
-import { EthersProvider } from '../ethers/ethers.provider';
 import { WalletProvider } from '../ethers/wallet.provider';
 import { TransactionService } from '../transactions/transaction.service';
 import { abi as BridgeAbi } from 'src/abi/contracts/Bridge.sol/Bridge.json';
@@ -46,15 +45,6 @@ export class BridgeListenersService {
       BridgeAbi,
       walletProvider.polygon_wallet,
     ) as Bridge;
-
-    this.listenForConnectionsInBsc().catch((e) => Logger.error(e));
-  }
-
-  async listenForConnectionsInBsc() {
-    Logger.log('Listening For Connections In BSC', 'BridgeListenersService');
-    // this.transferFromBscListener();
-    // this.transferFromFullBscListener();
-    // this.transferNFTFromBscListener();
   }
 
   @Cron(CronExpression.EVERY_30_SECONDS)
@@ -135,145 +125,4 @@ export class BridgeListenersService {
     );
     return data.result;
   }
-
-  // transferFromBscListener() {
-  //   this.bsc_bridge.on(
-  //     'Transfer',
-  //     (
-  //       id: number,
-  //       sender: string,
-  //       receiver: string,
-  //       amount: BigNumber,
-  //       tokenAddress: string,
-  //       txReceipt: TransactionReceipt,
-  //     ) => {
-  //       Logger.log(
-  //         { id, tokenAddress, sender, receiver, amount },
-  //         '<<<Transfer',
-  //       );
-  //       const ID = setInterval(async () => {
-  //         const new_block_number =
-  //           await this.ethersProvider.bscTestnetProvider.getBlockNumber();
-  //
-  //         if (
-  //           new_block_number - txReceipt.blockNumber >
-  //           this.confirmationBlock
-  //         ) {
-  //           console.log('CONFIRMED On ', new_block_number);
-  //           clearInterval(ID);
-  //           const tx = await this.transactionService.findOne({
-  //             where: {
-  //               tx_hash: txReceipt.transactionHash,
-  //             },
-  //           });
-  //           if (!tx) {
-  //             this.transactionService
-  //               .createTransaction({
-  //                 recipient_address: txReceipt.from,
-  //                 amount: ethers.utils.formatEther(amount),
-  //                 tx_hash: txReceipt.transactionHash,
-  //                 network: NetworkEnum.BSC,
-  //                 token_address: tokenAddress,
-  //               })
-  //               .catch((e) => Logger.error(e));
-  //           }
-  //
-  //           return false;
-  //         }
-  //       }, 10000);
-  //     },
-  //   );
-  // }
-  //
-  // transferFromFullBscListener() {
-  //   this.bsc_bridge.on(
-  //     'FullTransfer',
-  //     (
-  //       id: number,
-  //       sender: string,
-  //       receiver: string,
-  //       uvmAmount: BigNumber,
-  //       dnmAmount: BigNumber,
-  //       landId: BigNumber,
-  //       stakeDuration: BigNumber,
-  //       txReceipt: TransactionReceipt,
-  //     ) => {
-  //       Logger.log(
-  //         { id, dnmAmount, sender, receiver, uvmAmount, landId },
-  //         '<<<TransferFull',
-  //       );
-  //       const ID = setInterval(async () => {
-  //         const new_block_number =
-  //           await this.ethersProvider.bscTestnetProvider.getBlockNumber();
-  //
-  //         if (
-  //           new_block_number - txReceipt.blockNumber >
-  //           +this.confirmationBlock
-  //         ) {
-  //           console.log('CONFIRMED On ', new_block_number);
-  //           clearInterval(ID);
-  //           this.transactionService
-  //             .createTransaction({
-  //               recipient_address: txReceipt.from,
-  //               amount: ethers.utils.formatEther(dnmAmount),
-  //               tx_hash: txReceipt.transactionHash,
-  //               network: NetworkEnum.BSC,
-  //               transfer_type: TransferTypeEnum.FullTransfer,
-  //               uvm_amount: ethers.utils.formatEther(uvmAmount),
-  //               dnm_amount: ethers.utils.formatEther(dnmAmount),
-  //               land_id: +ethers.utils.formatEther(landId),
-  //               stake_duration: +ethers.utils.formatEther(stakeDuration),
-  //             })
-  //             .catch((e) => Logger.log(e));
-  //
-  //           return false;
-  //         }
-  //       }, 10000);
-  //     },
-  //   );
-  // }
-  //
-  // transferNFTFromBscListener() {
-  //   this.bsc_bridge.on(
-  //     'TransferNFT',
-  //     (
-  //       id: BigNumber,
-  //       landId: BigNumber,
-  //       sender: string,
-  //       receiver: string,
-  //       txReceipt: TransactionReceipt,
-  //     ) => {
-  //       Logger.log({ id, sender, receiver, landId }, '<<<TransferNFT');
-  //       const ID = setInterval(async () => {
-  //         const new_block_number =
-  //           await this.ethersProvider.bscTestnetProvider.getBlockNumber();
-  //         if (
-  //           new_block_number - txReceipt.blockNumber >
-  //           +this.confirmationBlock
-  //         ) {
-  //           clearInterval(ID);
-  //           console.log('CONFIRMED On ', new_block_number);
-  //           const tx = await this.transactionService.findOne({
-  //             where: {
-  //               tx_hash: txReceipt.transactionHash,
-  //             },
-  //           });
-  //           if (!tx) {
-  //             this.transactionService
-  //               .createTransaction({
-  //                 recipient_address: txReceipt.from,
-  //                 tx_hash: txReceipt.transactionHash,
-  //                 network: NetworkEnum.BSC,
-  //                 transfer_type: TransferTypeEnum.NFT,
-  //                 land_id: +ethers.utils.formatEther(landId),
-  //               })
-  //               .catch((e) => Logger.error(e));
-  //           }
-  //
-  //           return false;
-  //         }
-  //       }, 10000);
-  //     },
-  //   );
-  // }
 }

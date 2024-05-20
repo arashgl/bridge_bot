@@ -13,16 +13,16 @@ export class WalletProvider {
     configService: ConfigService<Env>,
     ethersProvider: EthersProvider,
   ) {
-    const env = configService.getOrThrow('NODE_ENV');
+    const env = configService.getOrThrow('NET_MODE');
     this.bsc_wallet = new ethers.Wallet(
       configService.getOrThrow('ORIGIN_PRIVATE_KEY'),
-      env === 'DEVELOPMENT'
+      env === 'TEST'
         ? ethersProvider.bscTestnetProvider
         : ethersProvider.bscMainnetProvider,
     );
     this.polygon_wallet = new ethers.Wallet(
       configService.getOrThrow('ORIGIN_PRIVATE_KEY'),
-      env === 'DEVELOPMENT'
+      env === 'TEST'
         ? ethersProvider.mumbaiProvider
         : ethersProvider.polygonProvider,
     );

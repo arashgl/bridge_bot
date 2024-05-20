@@ -21,7 +21,7 @@ import { Env } from '../../environments';
         timeout: 10000,
         maxRedirects: 5,
         baseURL:
-          configService.getOrThrow('NODE_ENV') === 'DEVELOPMENT'
+          configService.getOrThrow('NET_MODE') === 'TEST'
             ? 'https://api-testnet.bscscan.com'
             : '`https://api.bscscan.com',
       }),

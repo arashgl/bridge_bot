@@ -24,6 +24,7 @@ export interface Env {
   POLYGON_NFT_ADDRESS: string;
   POLYGON_STAKE_ADDRESS: string;
   BSC_API_KEY: string;
+  NET_MODE: 'TEST' | 'MAIN';
 }
 
 declare global {

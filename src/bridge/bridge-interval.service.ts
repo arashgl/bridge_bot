@@ -67,7 +67,7 @@ export class BridgeIntervalService {
     }
   }
 
-  @Cron(CronExpression.EVERY_MINUTE)
+  // @Cron(CronExpression.EVERY_MINUTE)
   async transferFromFullBscListener() {
     const pendingTransactions = await this.transactionService.findAll({
       where: {

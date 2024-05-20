@@ -120,7 +120,7 @@ export class BridgeService {
     } catch (err) {
       Logger.error(
         err?.reason || err?.error?.reason || err,
-        'transferFullToPolygon',
+        'transferLandToPolygon',
       );
       console.log(err);
       transaction.status = TransferStatusEnum.Pending;

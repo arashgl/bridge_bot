@@ -2,13 +2,10 @@ import { Injectable, Logger } from '@nestjs/common';
 import { BigNumber, ethers } from 'ethers';
 import { ConfigService } from '@nestjs/config';
 import { Env } from '../../environments';
-import { Bridge, NFTLand, StakeMeta } from '../abi/typechain-types';
-import { EthersProvider } from '../ethers/ethers.provider';
+import { Bridge, Wrapper } from '../abi/typechain-types';
 import { abi as BridgeAbi } from 'src/abi/contracts/Bridge.sol/Bridge.json';
-import { abi as StakeAbi } from 'src/abi/contracts/StakeMeta.sol/StakeMeta.json';
-import { abi as NFTLandAbi } from 'src/abi/contracts/NFT.sol/NFTLand.json';
+import { abi as WrapperAbi } from 'src/abi/contracts/Wrapper.sol/Wrapper.json';
 import { WalletProvider } from '../ethers/wallet.provider';
-import { TransactionService } from '../transactions/transaction.service';
 
 import { Transaction } from '../transactions/transaction.entity';
 import { TransferStatusEnum } from '../transactions/enums/transfer-status.enum';
@@ -16,8 +13,7 @@ import { TransferStatusEnum } from '../transactions/enums/transfer-status.enum';
 @Injectable()
 export class BridgeService {
   private readonly polygon_bridge: Bridge;
-  private readonly stake_contract: StakeMeta;
-  private readonly nft_contract: NFTLand;
+  private readonly polygon_wrapper: Wrapper;
 
   private readonly uvm_bsc: string;
   private readonly uvm_polygon: string;
@@ -26,9 +22,7 @@ export class BridgeService {
 
   constructor(
     private readonly configService: ConfigService<Env>,
-    private readonly ethersProvider: EthersProvider,
     private readonly walletProvider: WalletProvider,
-    private readonly transactionService: TransactionService,
   ) {
     this.uvm_bsc = this.configService.getOrThrow('BSC_UVM_ADDRESS');
     this.uvm_polygon = this.configService.getOrThrow('POLYGON_UVM_ADDRESS');
@@ -43,30 +37,29 @@ export class BridgeService {
       walletProvider.polygon_wallet,
     ) as Bridge;
 
-    this.nft_contract = new ethers.Contract(
-      this.configService.getOrThrow('POLYGON_NFT_ADDRESS'),
-      NFTLandAbi,
+    this.polygon_wrapper = new ethers.Contract(
+      this.configService.getOrThrow('POLYGON_WRAPPER_ADDRESS'),
+      WrapperAbi,
       walletProvider.polygon_wallet,
-    ) as NFTLand;
-
-    //** Stake Initializer **//
-
-    this.stake_contract = new ethers.Contract(
-      this.configService.getOrThrow('POLYGON_STAKE_ADDRESS'),
-      StakeAbi,
-      walletProvider.polygon_wallet,
-    ) as StakeMeta;
+    ) as Wrapper;
   }
 
   async transferFullToPolygon(transaction: Transaction) {
     try {
+      console.log(
+        ethers.utils.parseEther(transaction.uvm_amount).toString(),
+        ethers.utils.parseEther(transaction.dnm_amount).toString(),
+        transaction.land_id,
+        transaction.stake_duration,
+        transaction.recipient_address,
+      );
       const res = await this.polygon_bridge.fullTransferToPolygon(
         ethers.utils.parseEther(transaction.uvm_amount),
         ethers.utils.parseEther(transaction.dnm_amount),
         transaction.land_id,
         transaction.stake_duration,
         transaction.recipient_address,
-        { gasLimit: 100000 },
+        { gasLimit: 1_000_000 },
       );
 
       if (res.hash) {

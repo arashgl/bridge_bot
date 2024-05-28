@@ -25,6 +25,7 @@ export interface Env {
   POLYGON_STAKE_ADDRESS: string;
   BSC_API_KEY: string;
   NET_MODE: 'TEST' | 'MAIN';
+  POLYGON_WRAPPER_ADDRESS: string;
 }
 
 declare global {

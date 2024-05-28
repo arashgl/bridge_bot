@@ -30,12 +30,18 @@ export declare namespace UsersStruct {
   export type BusinessValueStruct = {
     left: BigNumberish;
     right: BigNumberish;
+    all_left: BigNumberish;
+    all_right: BigNumberish;
     dir: BigNumberish;
     level: BigNumberish;
     summ: BigNumberish;
+    dnm_withdraw: BigNumberish;
   };
 
   export type BusinessValueStructOutput = [
+    BigNumber,
+    BigNumber,
+    BigNumber,
     BigNumber,
     BigNumber,
     BigNumber,
@@ -44,9 +50,12 @@ export declare namespace UsersStruct {
   ] & {
     left: BigNumber;
     right: BigNumber;
+    all_left: BigNumber;
+    all_right: BigNumber;
     dir: BigNumber;
     level: BigNumber;
     summ: BigNumber;
+    dnm_withdraw: BigNumber;
   };
 
   export type LastOrderStruct = {
@@ -62,25 +71,34 @@ export declare namespace UsersStruct {
   };
 
   export type ImportUserStruct = {
-    userAddr: string;
-    parent_addr: string;
-    bvlevel: BigNumberish;
-    bvsum: BigNumberish;
-    levelup_date: BigNumberish;
+    left: BigNumberish;
+    right: BigNumberish;
+    allLeft: BigNumberish;
+    allRight: BigNumberish;
+    bv_level: BigNumberish;
+    user_address: string;
+    parent_address: string;
+    level_up_date: BigNumberish;
   };
 
   export type ImportUserStructOutput = [
-    string,
-    string,
     BigNumber,
     BigNumber,
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    string,
+    string,
     BigNumber
   ] & {
-    userAddr: string;
-    parent_addr: string;
-    bvlevel: BigNumber;
-    bvsum: BigNumber;
-    levelup_date: BigNumber;
+    left: BigNumber;
+    right: BigNumber;
+    allLeft: BigNumber;
+    allRight: BigNumber;
+    bv_level: BigNumber;
+    user_address: string;
+    parent_address: string;
+    level_up_date: BigNumber;
   };
 
   export type UserStruct = {
@@ -143,14 +161,14 @@ export interface UsersInterface extends utils.Interface {
     "UserList(address)": FunctionFragment;
     "UsersPaths(uint256,uint256)": FunctionFragment;
     "UsersPathsHash(uint256,uint256)": FunctionFragment;
-    "addUserBulk((address,address,uint256,uint256,uint256)[])": FunctionFragment;
+    "addUserBulk((uint256,uint256,uint256,uint256,uint256,address,address,uint256)[])": FunctionFragment;
     "calculator()": FunctionFragment;
     "floor(uint256,uint256)": FunctionFragment;
     "getBit(bytes1,uint8)": FunctionFragment;
     "getUser(uint256,bool)": FunctionFragment;
     "getUser(address)": FunctionFragment;
     "getUserList(uint256,uint256)": FunctionFragment;
-    "isChildOfParent((uint256,(uint256,uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256,uint256,uint256,uint256,uint256,bool,bytes32),(uint256,(uint256,uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256,uint256,uint256,uint256,uint256,bool,bytes32))": FunctionFragment;
+    "isChildOfParent((uint256,(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256,uint256,uint256,uint256,uint256,bool,bytes32),(uint256,(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256,uint256,uint256,uint256,uint256,bool,bytes32))": FunctionFragment;
     "isDev()": FunctionFragment;
     "level_up_data_index()": FunctionFragment;
     "owner()": FunctionFragment;

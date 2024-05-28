@@ -21,6 +21,11 @@ const _abi = [
     type: "error",
   },
   {
+    inputs: [],
+    name: "MintDNMError",
+    type: "error",
+  },
+  {
     inputs: [
       {
         internalType: "address",
@@ -70,6 +75,19 @@ const _abi = [
     ],
     name: "OwnershipTransferred",
     type: "event",
+  },
+  {
+    inputs: [],
+    name: "DnmTokenAddress",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
   },
   {
     inputs: [],

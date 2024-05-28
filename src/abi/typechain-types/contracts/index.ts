@@ -3,6 +3,8 @@
 /* eslint-disable */
 import type * as gatewaySol from "./Gateway.sol";
 export type { gatewaySol };
+import type * as paymentsSol from "./Payments.sol";
+export type { paymentsSol };
 import type * as uvmTokenSol from "./UVM_TOKEN.sol";
 export type { uvmTokenSol };
 import type * as gatewayHelpers from "./gateway_helpers";
@@ -26,7 +28,6 @@ export type { Election } from "./Election";
 export type { NFTLand } from "./NFTLand";
 export type { Orders } from "./Orders";
 export type { OrdersStruct } from "./OrdersStruct";
-export type { Payments } from "./Payments";
 export type { Plan } from "./Plan";
 export type { ProductNFT } from "./ProductNFT";
 export type { SC } from "./SC";

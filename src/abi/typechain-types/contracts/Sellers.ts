@@ -30,6 +30,7 @@ export declare namespace Sellers {
     seller_addr: string;
     bv_value: BigNumberish;
     token_withdraw_value: BigNumberish;
+    dnm_withdraw: BigNumberish;
     exists: boolean;
   };
 
@@ -38,12 +39,14 @@ export declare namespace Sellers {
     string,
     BigNumber,
     BigNumber,
+    BigNumber,
     boolean
   ] & {
     id: BigNumber;
     seller_addr: string;
     bv_value: BigNumber;
     token_withdraw_value: BigNumber;
+    dnm_withdraw: BigNumber;
     exists: boolean;
   };
 }
@@ -161,11 +164,12 @@ export interface Sellers extends BaseContract {
       arg0: string,
       overrides?: CallOverrides
     ): Promise<
-      [BigNumber, string, BigNumber, BigNumber, boolean] & {
+      [BigNumber, string, BigNumber, BigNumber, BigNumber, boolean] & {
         id: BigNumber;
         seller_addr: string;
         bv_value: BigNumber;
         token_withdraw_value: BigNumber;
+        dnm_withdraw: BigNumber;
         exists: boolean;
       }
     >;
@@ -191,11 +195,12 @@ export interface Sellers extends BaseContract {
     arg0: string,
     overrides?: CallOverrides
   ): Promise<
-    [BigNumber, string, BigNumber, BigNumber, boolean] & {
+    [BigNumber, string, BigNumber, BigNumber, BigNumber, boolean] & {
       id: BigNumber;
       seller_addr: string;
       bv_value: BigNumber;
       token_withdraw_value: BigNumber;
+      dnm_withdraw: BigNumber;
       exists: boolean;
     }
   >;
@@ -224,11 +229,12 @@ export interface Sellers extends BaseContract {
       arg0: string,
       overrides?: CallOverrides
     ): Promise<
-      [BigNumber, string, BigNumber, BigNumber, boolean] & {
+      [BigNumber, string, BigNumber, BigNumber, BigNumber, boolean] & {
         id: BigNumber;
         seller_addr: string;
         bv_value: BigNumber;
         token_withdraw_value: BigNumber;
+        dnm_withdraw: BigNumber;
         exists: boolean;
       }
     >;

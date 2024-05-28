@@ -177,6 +177,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Market__factory>;
     getContractFactory(
+      name: "NFTLandMarket",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.NFTLandMarket__factory>;
+    getContractFactory(
       name: "GetListModifier",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.GetListModifier__factory>;
@@ -192,6 +196,10 @@ declare module "hardhat/types/runtime" {
       name: "OrdersStruct",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.OrdersStruct__factory>;
+    getContractFactory(
+      name: "DNMToken",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.DNMToken__factory>;
     getContractFactory(
       name: "Payments",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -539,6 +547,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.Market>;
     getContractAt(
+      name: "NFTLandMarket",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.NFTLandMarket>;
+    getContractAt(
       name: "GetListModifier",
       address: string,
       signer?: ethers.Signer
@@ -558,6 +571,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.OrdersStruct>;
+    getContractAt(
+      name: "DNMToken",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.DNMToken>;
     getContractAt(
       name: "Payments",
       address: string,

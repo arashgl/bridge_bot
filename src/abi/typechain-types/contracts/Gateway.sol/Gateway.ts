@@ -30,12 +30,18 @@ export declare namespace UsersStruct {
   export type BusinessValueStruct = {
     left: BigNumberish;
     right: BigNumberish;
+    all_left: BigNumberish;
+    all_right: BigNumberish;
     dir: BigNumberish;
     level: BigNumberish;
     summ: BigNumberish;
+    dnm_withdraw: BigNumberish;
   };
 
   export type BusinessValueStructOutput = [
+    BigNumber,
+    BigNumber,
+    BigNumber,
     BigNumber,
     BigNumber,
     BigNumber,
@@ -44,9 +50,12 @@ export declare namespace UsersStruct {
   ] & {
     left: BigNumber;
     right: BigNumber;
+    all_left: BigNumber;
+    all_right: BigNumber;
     dir: BigNumber;
     level: BigNumber;
     summ: BigNumber;
+    dnm_withdraw: BigNumber;
   };
 
   export type LastOrderStruct = {
@@ -62,25 +71,34 @@ export declare namespace UsersStruct {
   };
 
   export type ImportUserStruct = {
-    userAddr: string;
-    parent_addr: string;
-    bvlevel: BigNumberish;
-    bvsum: BigNumberish;
-    levelup_date: BigNumberish;
+    left: BigNumberish;
+    right: BigNumberish;
+    allLeft: BigNumberish;
+    allRight: BigNumberish;
+    bv_level: BigNumberish;
+    user_address: string;
+    parent_address: string;
+    level_up_date: BigNumberish;
   };
 
   export type ImportUserStructOutput = [
-    string,
-    string,
     BigNumber,
     BigNumber,
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    string,
+    string,
     BigNumber
   ] & {
-    userAddr: string;
-    parent_addr: string;
-    bvlevel: BigNumber;
-    bvsum: BigNumber;
-    levelup_date: BigNumber;
+    left: BigNumber;
+    right: BigNumber;
+    allLeft: BigNumber;
+    allRight: BigNumber;
+    bv_level: BigNumber;
+    user_address: string;
+    parent_address: string;
+    level_up_date: BigNumber;
   };
 
   export type UserStruct = {
@@ -176,6 +194,7 @@ export declare namespace Sellers {
     seller_addr: string;
     bv_value: BigNumberish;
     token_withdraw_value: BigNumberish;
+    dnm_withdraw: BigNumberish;
     exists: boolean;
   };
 
@@ -184,12 +203,14 @@ export declare namespace Sellers {
     string,
     BigNumber,
     BigNumber,
+    BigNumber,
     boolean
   ] & {
     id: BigNumber;
     seller_addr: string;
     bv_value: BigNumber;
     token_withdraw_value: BigNumber;
+    dnm_withdraw: BigNumber;
     exists: boolean;
   };
 }
@@ -221,6 +242,13 @@ export declare namespace Payments {
 export interface GatewayInterface extends utils.Interface {
   functions: {
     "BVPlan(uint256)": FunctionFragment;
+    "DNM_SELLER_CURRENT_REWARD()": FunctionFragment;
+    "DNM_SELLER_MAX_REWARD()": FunctionFragment;
+    "DNM_USER_CURRENT_REWARD()": FunctionFragment;
+    "DNM_USER_MAX_REWARD()": FunctionFragment;
+    "DNM_VOUCHER_CURRENT_REWARD()": FunctionFragment;
+    "DNM_VOUCHER_MAX_REWARD()": FunctionFragment;
+    "DnmTokenAddress()": FunctionFragment;
     "ListLevelUpDate(uint256)": FunctionFragment;
     "OrderList(uint256)": FunctionFragment;
     "SellerAddress(uint256)": FunctionFragment;
@@ -232,7 +260,7 @@ export interface GatewayInterface extends utils.Interface {
     "UserList(address)": FunctionFragment;
     "UsersPaths(uint256,uint256)": FunctionFragment;
     "UsersPathsHash(uint256,uint256)": FunctionFragment;
-    "addUserBulk((address,address,uint256,uint256,uint256)[])": FunctionFragment;
+    "addUserBulk((uint256,uint256,uint256,uint256,uint256,address,address,uint256)[])": FunctionFragment;
     "calculate(uint256[])": FunctionFragment;
     "calculateWeek()": FunctionFragment;
     "calculator()": FunctionFragment;
@@ -240,6 +268,7 @@ export interface GatewayInterface extends utils.Interface {
     "dao()": FunctionFragment;
     "feeWallet()": FunctionFragment;
     "floor(uint256,uint256)": FunctionFragment;
+    "getAllowance(address,address)": FunctionFragment;
     "getBit(bytes1,uint8)": FunctionFragment;
     "getOrderList(uint256)": FunctionFragment;
     "getOrderLists(uint256,uint256)": FunctionFragment;
@@ -248,7 +277,7 @@ export interface GatewayInterface extends utils.Interface {
     "getUser(uint256,bool)": FunctionFragment;
     "getUser(address)": FunctionFragment;
     "getUserList(uint256,uint256)": FunctionFragment;
-    "isChildOfParent((uint256,(uint256,uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256,uint256,uint256,uint256,uint256,bool,bytes32),(uint256,(uint256,uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256,uint256,uint256,uint256,uint256,bool,bytes32))": FunctionFragment;
+    "isChildOfParent((uint256,(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256,uint256,uint256,uint256,uint256,bool,bytes32),(uint256,(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256,uint256,uint256,uint256,uint256,bool,bytes32))": FunctionFragment;
     "isDev()": FunctionFragment;
     "last_withdrawal_time()": FunctionFragment;
     "level_up_data_index()": FunctionFragment;
@@ -261,11 +290,14 @@ export interface GatewayInterface extends utils.Interface {
     "renounceOwnership()": FunctionFragment;
     "revokeAllowance(address)": FunctionFragment;
     "seller_id()": FunctionFragment;
+    "seller_withraw_dnm(uint256)": FunctionFragment;
     "setAllowance(address,uint256)": FunctionFragment;
     "setCalculator(address)": FunctionFragment;
     "switchToProduction()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "user_id()": FunctionFragment;
+    "user_withraw_dnm(uint256)": FunctionFragment;
+    "user_withraw_dnm_voucher(uint256)": FunctionFragment;
     "withdrawToken1Balance()": FunctionFragment;
     "withdrawToken2Balance()": FunctionFragment;
     "withdrawWithDao(uint256,address)": FunctionFragment;
@@ -274,6 +306,13 @@ export interface GatewayInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "BVPlan"
+      | "DNM_SELLER_CURRENT_REWARD"
+      | "DNM_SELLER_MAX_REWARD"
+      | "DNM_USER_CURRENT_REWARD"
+      | "DNM_USER_MAX_REWARD"
+      | "DNM_VOUCHER_CURRENT_REWARD"
+      | "DNM_VOUCHER_MAX_REWARD"
+      | "DnmTokenAddress"
       | "ListLevelUpDate"
       | "OrderList"
       | "SellerAddress"
@@ -293,6 +332,7 @@ export interface GatewayInterface extends utils.Interface {
       | "dao"
       | "feeWallet"
       | "floor"
+      | "getAllowance"
       | "getBit"
       | "getOrderList"
       | "getOrderLists"
@@ -314,11 +354,14 @@ export interface GatewayInterface extends utils.Interface {
       | "renounceOwnership"
       | "revokeAllowance"
       | "seller_id"
+      | "seller_withraw_dnm"
       | "setAllowance"
       | "setCalculator"
       | "switchToProduction"
       | "transferOwnership"
       | "user_id"
+      | "user_withraw_dnm"
+      | "user_withraw_dnm_voucher"
       | "withdrawToken1Balance"
       | "withdrawToken2Balance"
       | "withdrawWithDao"
@@ -327,6 +370,34 @@ export interface GatewayInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "BVPlan",
     values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "DNM_SELLER_CURRENT_REWARD",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "DNM_SELLER_MAX_REWARD",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "DNM_USER_CURRENT_REWARD",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "DNM_USER_MAX_REWARD",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "DNM_VOUCHER_CURRENT_REWARD",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "DNM_VOUCHER_MAX_REWARD",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "DnmTokenAddress",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "ListLevelUpDate",
@@ -385,6 +456,10 @@ export interface GatewayInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "floor",
     values: [BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getAllowance",
+    values: [string, string]
   ): string;
   encodeFunctionData(
     functionFragment: "getBit",
@@ -459,6 +534,10 @@ export interface GatewayInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "seller_id", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "seller_withraw_dnm",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "setAllowance",
     values: [string, BigNumberish]
   ): string;
@@ -476,6 +555,14 @@ export interface GatewayInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "user_id", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "user_withraw_dnm",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "user_withraw_dnm_voucher",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "withdrawToken1Balance",
     values?: undefined
   ): string;
@@ -489,6 +576,34 @@ export interface GatewayInterface extends utils.Interface {
   ): string;
 
   decodeFunctionResult(functionFragment: "BVPlan", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "DNM_SELLER_CURRENT_REWARD",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "DNM_SELLER_MAX_REWARD",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "DNM_USER_CURRENT_REWARD",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "DNM_USER_MAX_REWARD",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "DNM_VOUCHER_CURRENT_REWARD",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "DNM_VOUCHER_MAX_REWARD",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "DnmTokenAddress",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "ListLevelUpDate",
     data: BytesLike
@@ -532,6 +647,10 @@ export interface GatewayInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "dao", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "feeWallet", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "floor", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getAllowance",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "getBit", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getOrderList",
@@ -599,6 +718,10 @@ export interface GatewayInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "seller_id", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "seller_withraw_dnm",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "setAllowance",
     data: BytesLike
   ): Result;
@@ -616,6 +739,14 @@ export interface GatewayInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "user_id", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "user_withraw_dnm",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "user_withraw_dnm_voucher",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "withdrawToken1Balance",
     data: BytesLike
   ): Result;
@@ -630,6 +761,8 @@ export interface GatewayInterface extends utils.Interface {
 
   events: {
     "AddedSaleVolume(address,uint256,uint256)": EventFragment;
+    "Calculated(uint256,uint256)": EventFragment;
+    "CalculatedWeek(uint256,uint256)": EventFragment;
     "CreatedSeller(uint256,address)": EventFragment;
     "CreatedUser(address,uint256)": EventFragment;
     "LevelUp(uint256,uint256,uint256)": EventFragment;
@@ -638,6 +771,8 @@ export interface GatewayInterface extends utils.Interface {
   };
 
   getEvent(nameOrSignatureOrTopic: "AddedSaleVolume"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Calculated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "CalculatedWeek"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "CreatedSeller"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "CreatedUser"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "LevelUp"): EventFragment;
@@ -656,6 +791,28 @@ export type AddedSaleVolumeEvent = TypedEvent<
 >;
 
 export type AddedSaleVolumeEventFilter = TypedEventFilter<AddedSaleVolumeEvent>;
+
+export interface CalculatedEventObject {
+  user_id: BigNumber;
+  order_id: BigNumber;
+}
+export type CalculatedEvent = TypedEvent<
+  [BigNumber, BigNumber],
+  CalculatedEventObject
+>;
+
+export type CalculatedEventFilter = TypedEventFilter<CalculatedEvent>;
+
+export interface CalculatedWeekEventObject {
+  user_id: BigNumber;
+  week_number: BigNumber;
+}
+export type CalculatedWeekEvent = TypedEvent<
+  [BigNumber, BigNumber],
+  CalculatedWeekEventObject
+>;
+
+export type CalculatedWeekEventFilter = TypedEventFilter<CalculatedWeekEvent>;
 
 export interface CreatedSellerEventObject {
   id: BigNumber;
@@ -744,6 +901,20 @@ export interface Gateway extends BaseContract {
   functions: {
     BVPlan(arg0: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    DNM_SELLER_CURRENT_REWARD(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    DNM_SELLER_MAX_REWARD(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    DNM_USER_CURRENT_REWARD(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    DNM_USER_MAX_REWARD(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    DNM_VOUCHER_CURRENT_REWARD(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    DNM_VOUCHER_MAX_REWARD(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    DnmTokenAddress(overrides?: CallOverrides): Promise<[string]>;
+
     ListLevelUpDate(
       arg0: BigNumberish,
       overrides?: CallOverrides
@@ -785,11 +956,12 @@ export interface Gateway extends BaseContract {
       arg0: string,
       overrides?: CallOverrides
     ): Promise<
-      [BigNumber, string, BigNumber, BigNumber, boolean] & {
+      [BigNumber, string, BigNumber, BigNumber, BigNumber, boolean] & {
         id: BigNumber;
         seller_addr: string;
         bv_value: BigNumber;
         token_withdraw_value: BigNumber;
+        dnm_withdraw: BigNumber;
         exists: boolean;
       }
     >;
@@ -880,6 +1052,12 @@ export interface Gateway extends BaseContract {
     floor(
       a: BigNumberish,
       b: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    getAllowance(
+      owner: string,
+      spender: string,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
@@ -992,6 +1170,11 @@ export interface Gateway extends BaseContract {
 
     seller_id(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    seller_withraw_dnm(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
+
     setAllowance(
       spender: string,
       amount: BigNumberish,
@@ -1014,6 +1197,16 @@ export interface Gateway extends BaseContract {
 
     user_id(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    user_withraw_dnm(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
+
+    user_withraw_dnm_voucher(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
+
     withdrawToken1Balance(
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
@@ -1030,6 +1223,20 @@ export interface Gateway extends BaseContract {
   };
 
   BVPlan(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+
+  DNM_SELLER_CURRENT_REWARD(overrides?: CallOverrides): Promise<BigNumber>;
+
+  DNM_SELLER_MAX_REWARD(overrides?: CallOverrides): Promise<BigNumber>;
+
+  DNM_USER_CURRENT_REWARD(overrides?: CallOverrides): Promise<BigNumber>;
+
+  DNM_USER_MAX_REWARD(overrides?: CallOverrides): Promise<BigNumber>;
+
+  DNM_VOUCHER_CURRENT_REWARD(overrides?: CallOverrides): Promise<BigNumber>;
+
+  DNM_VOUCHER_MAX_REWARD(overrides?: CallOverrides): Promise<BigNumber>;
+
+  DnmTokenAddress(overrides?: CallOverrides): Promise<string>;
 
   ListLevelUpDate(
     arg0: BigNumberish,
@@ -1069,11 +1276,12 @@ export interface Gateway extends BaseContract {
     arg0: string,
     overrides?: CallOverrides
   ): Promise<
-    [BigNumber, string, BigNumber, BigNumber, boolean] & {
+    [BigNumber, string, BigNumber, BigNumber, BigNumber, boolean] & {
       id: BigNumber;
       seller_addr: string;
       bv_value: BigNumber;
       token_withdraw_value: BigNumber;
+      dnm_withdraw: BigNumber;
       exists: boolean;
     }
   >;
@@ -1161,6 +1369,12 @@ export interface Gateway extends BaseContract {
   floor(
     a: BigNumberish,
     b: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  getAllowance(
+    owner: string,
+    spender: string,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
@@ -1267,6 +1481,11 @@ export interface Gateway extends BaseContract {
 
   seller_id(overrides?: CallOverrides): Promise<BigNumber>;
 
+  seller_withraw_dnm(
+    amount: BigNumberish,
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
+
   setAllowance(
     spender: string,
     amount: BigNumberish,
@@ -1289,6 +1508,16 @@ export interface Gateway extends BaseContract {
 
   user_id(overrides?: CallOverrides): Promise<BigNumber>;
 
+  user_withraw_dnm(
+    amount: BigNumberish,
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
+
+  user_withraw_dnm_voucher(
+    amount: BigNumberish,
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
+
   withdrawToken1Balance(
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
@@ -1305,6 +1534,20 @@ export interface Gateway extends BaseContract {
 
   callStatic: {
     BVPlan(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+
+    DNM_SELLER_CURRENT_REWARD(overrides?: CallOverrides): Promise<BigNumber>;
+
+    DNM_SELLER_MAX_REWARD(overrides?: CallOverrides): Promise<BigNumber>;
+
+    DNM_USER_CURRENT_REWARD(overrides?: CallOverrides): Promise<BigNumber>;
+
+    DNM_USER_MAX_REWARD(overrides?: CallOverrides): Promise<BigNumber>;
+
+    DNM_VOUCHER_CURRENT_REWARD(overrides?: CallOverrides): Promise<BigNumber>;
+
+    DNM_VOUCHER_MAX_REWARD(overrides?: CallOverrides): Promise<BigNumber>;
+
+    DnmTokenAddress(overrides?: CallOverrides): Promise<string>;
 
     ListLevelUpDate(
       arg0: BigNumberish,
@@ -1347,11 +1590,12 @@ export interface Gateway extends BaseContract {
       arg0: string,
       overrides?: CallOverrides
     ): Promise<
-      [BigNumber, string, BigNumber, BigNumber, boolean] & {
+      [BigNumber, string, BigNumber, BigNumber, BigNumber, boolean] & {
         id: BigNumber;
         seller_addr: string;
         bv_value: BigNumber;
         token_withdraw_value: BigNumber;
+        dnm_withdraw: BigNumber;
         exists: boolean;
       }
     >;
@@ -1437,6 +1681,12 @@ export interface Gateway extends BaseContract {
     floor(
       a: BigNumberish,
       b: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getAllowance(
+      owner: string,
+      spender: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -1538,6 +1788,11 @@ export interface Gateway extends BaseContract {
 
     seller_id(overrides?: CallOverrides): Promise<BigNumber>;
 
+    seller_withraw_dnm(
+      amount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     setAllowance(
       spender: string,
       amount: BigNumberish,
@@ -1554,6 +1809,16 @@ export interface Gateway extends BaseContract {
     ): Promise<void>;
 
     user_id(overrides?: CallOverrides): Promise<BigNumber>;
+
+    user_withraw_dnm(
+      amount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    user_withraw_dnm_voucher(
+      amount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     withdrawToken1Balance(overrides?: CallOverrides): Promise<void>;
 
@@ -1577,6 +1842,24 @@ export interface Gateway extends BaseContract {
       added_volume?: null,
       current_bv?: null
     ): AddedSaleVolumeEventFilter;
+
+    "Calculated(uint256,uint256)"(
+      user_id?: BigNumberish | null,
+      order_id?: BigNumberish | null
+    ): CalculatedEventFilter;
+    Calculated(
+      user_id?: BigNumberish | null,
+      order_id?: BigNumberish | null
+    ): CalculatedEventFilter;
+
+    "CalculatedWeek(uint256,uint256)"(
+      user_id?: BigNumberish | null,
+      week_number?: BigNumberish | null
+    ): CalculatedWeekEventFilter;
+    CalculatedWeek(
+      user_id?: BigNumberish | null,
+      week_number?: BigNumberish | null
+    ): CalculatedWeekEventFilter;
 
     "CreatedSeller(uint256,address)"(
       id?: BigNumberish | null,
@@ -1630,6 +1913,20 @@ export interface Gateway extends BaseContract {
 
   estimateGas: {
     BVPlan(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+
+    DNM_SELLER_CURRENT_REWARD(overrides?: CallOverrides): Promise<BigNumber>;
+
+    DNM_SELLER_MAX_REWARD(overrides?: CallOverrides): Promise<BigNumber>;
+
+    DNM_USER_CURRENT_REWARD(overrides?: CallOverrides): Promise<BigNumber>;
+
+    DNM_USER_MAX_REWARD(overrides?: CallOverrides): Promise<BigNumber>;
+
+    DNM_VOUCHER_CURRENT_REWARD(overrides?: CallOverrides): Promise<BigNumber>;
+
+    DNM_VOUCHER_MAX_REWARD(overrides?: CallOverrides): Promise<BigNumber>;
+
+    DnmTokenAddress(overrides?: CallOverrides): Promise<BigNumber>;
 
     ListLevelUpDate(
       arg0: BigNumberish,
@@ -1705,6 +2002,12 @@ export interface Gateway extends BaseContract {
     floor(
       a: BigNumberish,
       b: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getAllowance(
+      owner: string,
+      spender: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -1811,6 +2114,11 @@ export interface Gateway extends BaseContract {
 
     seller_id(overrides?: CallOverrides): Promise<BigNumber>;
 
+    seller_withraw_dnm(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+
     setAllowance(
       spender: string,
       amount: BigNumberish,
@@ -1833,6 +2141,16 @@ export interface Gateway extends BaseContract {
 
     user_id(overrides?: CallOverrides): Promise<BigNumber>;
 
+    user_withraw_dnm(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+
+    user_withraw_dnm_voucher(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+
     withdrawToken1Balance(
       overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
@@ -1853,6 +2171,32 @@ export interface Gateway extends BaseContract {
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    DNM_SELLER_CURRENT_REWARD(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    DNM_SELLER_MAX_REWARD(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    DNM_USER_CURRENT_REWARD(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    DNM_USER_MAX_REWARD(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    DNM_VOUCHER_CURRENT_REWARD(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    DNM_VOUCHER_MAX_REWARD(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    DnmTokenAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     ListLevelUpDate(
       arg0: BigNumberish,
@@ -1934,6 +2278,12 @@ export interface Gateway extends BaseContract {
     floor(
       a: BigNumberish,
       b: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getAllowance(
+      owner: string,
+      spender: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -2044,6 +2394,11 @@ export interface Gateway extends BaseContract {
 
     seller_id(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    seller_withraw_dnm(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
+
     setAllowance(
       spender: string,
       amount: BigNumberish,
@@ -2065,6 +2420,16 @@ export interface Gateway extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     user_id(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    user_withraw_dnm(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
+
+    user_withraw_dnm_voucher(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
 
     withdrawToken1Balance(
       overrides?: Overrides & { from?: string }

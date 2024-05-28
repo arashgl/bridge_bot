@@ -28,6 +28,7 @@ import type {
 
 export interface WithdrawalInterface extends utils.Interface {
   functions: {
+    "DnmTokenAddress()": FunctionFragment;
     "Token1()": FunctionFragment;
     "Token2()": FunctionFragment;
     "changeFeeWallet(address)": FunctionFragment;
@@ -46,6 +47,7 @@ export interface WithdrawalInterface extends utils.Interface {
 
   getFunction(
     nameOrSignatureOrTopic:
+      | "DnmTokenAddress"
       | "Token1"
       | "Token2"
       | "changeFeeWallet"
@@ -62,6 +64,10 @@ export interface WithdrawalInterface extends utils.Interface {
       | "withdrawWithDao"
   ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "DnmTokenAddress",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "Token1", values?: undefined): string;
   encodeFunctionData(functionFragment: "Token2", values?: undefined): string;
   encodeFunctionData(
@@ -101,6 +107,10 @@ export interface WithdrawalInterface extends utils.Interface {
     values: [BigNumberish, string]
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "DnmTokenAddress",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "Token1", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "Token2", data: BytesLike): Result;
   decodeFunctionResult(
@@ -186,6 +196,8 @@ export interface Withdrawal extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    DnmTokenAddress(overrides?: CallOverrides): Promise<[string]>;
+
     Token1(overrides?: CallOverrides): Promise<[string]>;
 
     Token2(overrides?: CallOverrides): Promise<[string]>;
@@ -232,6 +244,8 @@ export interface Withdrawal extends BaseContract {
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
   };
+
+  DnmTokenAddress(overrides?: CallOverrides): Promise<string>;
 
   Token1(overrides?: CallOverrides): Promise<string>;
 
@@ -280,6 +294,8 @@ export interface Withdrawal extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    DnmTokenAddress(overrides?: CallOverrides): Promise<string>;
+
     Token1(overrides?: CallOverrides): Promise<string>;
 
     Token2(overrides?: CallOverrides): Promise<string>;
@@ -331,6 +347,8 @@ export interface Withdrawal extends BaseContract {
   };
 
   estimateGas: {
+    DnmTokenAddress(overrides?: CallOverrides): Promise<BigNumber>;
+
     Token1(overrides?: CallOverrides): Promise<BigNumber>;
 
     Token2(overrides?: CallOverrides): Promise<BigNumber>;
@@ -379,6 +397,8 @@ export interface Withdrawal extends BaseContract {
   };
 
   populateTransaction: {
+    DnmTokenAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     Token1(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     Token2(overrides?: CallOverrides): Promise<PopulatedTransaction>;

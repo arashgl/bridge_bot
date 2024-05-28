@@ -87,6 +87,7 @@ export interface StakeMetaInterface extends utils.Interface {
     "TOTAL_UVM_STAKED()": FunctionFragment;
     "TWO_YEAR_DURATION()": FunctionFragment;
     "USER_LIST_ID()": FunctionFragment;
+    "UVM_FEE_BALANCE()": FunctionFragment;
     "UVM_POOL_BALANCE()": FunctionFragment;
     "UVM_TOKEN()": FunctionFragment;
     "addSideContract(address)": FunctionFragment;
@@ -95,6 +96,7 @@ export interface StakeMetaInterface extends utils.Interface {
     "calDnmUvmRatio(uint256)": FunctionFragment;
     "calculateReward(uint16,uint256,uint256,uint256,uint256)": FunctionFragment;
     "calculateRewardForStake(uint256)": FunctionFragment;
+    "dao()": FunctionFragment;
     "finalizeContract()": FunctionFragment;
     "getActiveStake()": FunctionFragment;
     "getAllStake()": FunctionFragment;
@@ -109,6 +111,7 @@ export interface StakeMetaInterface extends utils.Interface {
     "owner()": FunctionFragment;
     "removeSideContract()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
+    "setDao(address)": FunctionFragment;
     "stake(uint256,uint256,uint256)": FunctionFragment;
     "stakeFrom(address,uint256,uint256,uint256)": FunctionFragment;
     "stakeList(uint256)": FunctionFragment;
@@ -117,6 +120,7 @@ export interface StakeMetaInterface extends utils.Interface {
     "updateTopUp()": FunctionFragment;
     "userList(uint256)": FunctionFragment;
     "withdrawAllowance((uint256,bool,uint8,uint256,uint256,uint256,uint256,uint256,uint256,uint256))": FunctionFragment;
+    "withdrawFeeByDao(uint256,address)": FunctionFragment;
     "withdrawReward(uint256)": FunctionFragment;
     "withdrawStake(uint256,bool)": FunctionFragment;
   };
@@ -143,6 +147,7 @@ export interface StakeMetaInterface extends utils.Interface {
       | "TOTAL_UVM_STAKED"
       | "TWO_YEAR_DURATION"
       | "USER_LIST_ID"
+      | "UVM_FEE_BALANCE"
       | "UVM_POOL_BALANCE"
       | "UVM_TOKEN"
       | "addSideContract"
@@ -151,6 +156,7 @@ export interface StakeMetaInterface extends utils.Interface {
       | "calDnmUvmRatio"
       | "calculateReward"
       | "calculateRewardForStake"
+      | "dao"
       | "finalizeContract"
       | "getActiveStake"
       | "getAllStake"
@@ -165,6 +171,7 @@ export interface StakeMetaInterface extends utils.Interface {
       | "owner"
       | "removeSideContract"
       | "renounceOwnership"
+      | "setDao"
       | "stake"
       | "stakeFrom"
       | "stakeList"
@@ -173,6 +180,7 @@ export interface StakeMetaInterface extends utils.Interface {
       | "updateTopUp"
       | "userList"
       | "withdrawAllowance"
+      | "withdrawFeeByDao"
       | "withdrawReward"
       | "withdrawStake"
   ): FunctionFragment;
@@ -249,6 +257,10 @@ export interface StakeMetaInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "UVM_FEE_BALANCE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "UVM_POOL_BALANCE",
     values?: undefined
   ): string;
@@ -283,6 +295,7 @@ export interface StakeMetaInterface extends utils.Interface {
     functionFragment: "calculateRewardForStake",
     values: [BigNumberish]
   ): string;
+  encodeFunctionData(functionFragment: "dao", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "finalizeContract",
     values?: undefined
@@ -333,6 +346,7 @@ export interface StakeMetaInterface extends utils.Interface {
     functionFragment: "renounceOwnership",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "setDao", values: [string]): string;
   encodeFunctionData(
     functionFragment: "stake",
     values: [BigNumberish, BigNumberish, BigNumberish]
@@ -364,6 +378,10 @@ export interface StakeMetaInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "withdrawAllowance",
     values: [StakeMeta.StakePlanStruct]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawFeeByDao",
+    values: [BigNumberish, string]
   ): string;
   encodeFunctionData(
     functionFragment: "withdrawReward",
@@ -443,6 +461,10 @@ export interface StakeMetaInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "UVM_FEE_BALANCE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "UVM_POOL_BALANCE",
     data: BytesLike
   ): Result;
@@ -471,6 +493,7 @@ export interface StakeMetaInterface extends utils.Interface {
     functionFragment: "calculateRewardForStake",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "dao", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "finalizeContract",
     data: BytesLike
@@ -518,6 +541,7 @@ export interface StakeMetaInterface extends utils.Interface {
     functionFragment: "renounceOwnership",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "setDao", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "stake", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "stakeFrom", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "stakeList", data: BytesLike): Result;
@@ -536,6 +560,10 @@ export interface StakeMetaInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "userList", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "withdrawAllowance",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawFeeByDao",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -750,6 +778,8 @@ export interface StakeMeta extends BaseContract {
 
     USER_LIST_ID(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    UVM_FEE_BALANCE(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     UVM_POOL_BALANCE(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     UVM_TOKEN(overrides?: CallOverrides): Promise<[string]>;
@@ -787,6 +817,8 @@ export interface StakeMeta extends BaseContract {
       stake_id: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
+
+    dao(overrides?: CallOverrides): Promise<[string]>;
 
     finalizeContract(
       overrides?: Overrides & { from?: string }
@@ -844,6 +876,11 @@ export interface StakeMeta extends BaseContract {
     ): Promise<ContractTransaction>;
 
     renounceOwnership(
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
+
+    setDao(
+      _dao: string,
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
 
@@ -913,6 +950,12 @@ export interface StakeMeta extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    withdrawFeeByDao(
+      amount: BigNumberish,
+      to: string,
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
+
     withdrawReward(
       stake_id: BigNumberish,
       overrides?: Overrides & { from?: string }
@@ -965,6 +1008,8 @@ export interface StakeMeta extends BaseContract {
 
   USER_LIST_ID(overrides?: CallOverrides): Promise<BigNumber>;
 
+  UVM_FEE_BALANCE(overrides?: CallOverrides): Promise<BigNumber>;
+
   UVM_POOL_BALANCE(overrides?: CallOverrides): Promise<BigNumber>;
 
   UVM_TOKEN(overrides?: CallOverrides): Promise<string>;
@@ -1002,6 +1047,8 @@ export interface StakeMeta extends BaseContract {
     stake_id: BigNumberish,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
+
+  dao(overrides?: CallOverrides): Promise<string>;
 
   finalizeContract(
     overrides?: Overrides & { from?: string }
@@ -1055,6 +1102,11 @@ export interface StakeMeta extends BaseContract {
   ): Promise<ContractTransaction>;
 
   renounceOwnership(
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
+
+  setDao(
+    _dao: string,
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
 
@@ -1124,6 +1176,12 @@ export interface StakeMeta extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  withdrawFeeByDao(
+    amount: BigNumberish,
+    to: string,
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
+
   withdrawReward(
     stake_id: BigNumberish,
     overrides?: Overrides & { from?: string }
@@ -1176,6 +1234,8 @@ export interface StakeMeta extends BaseContract {
 
     USER_LIST_ID(overrides?: CallOverrides): Promise<BigNumber>;
 
+    UVM_FEE_BALANCE(overrides?: CallOverrides): Promise<BigNumber>;
+
     UVM_POOL_BALANCE(overrides?: CallOverrides): Promise<BigNumber>;
 
     UVM_TOKEN(overrides?: CallOverrides): Promise<string>;
@@ -1213,6 +1273,8 @@ export interface StakeMeta extends BaseContract {
       stake_id: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    dao(overrides?: CallOverrides): Promise<string>;
 
     finalizeContract(overrides?: CallOverrides): Promise<void>;
 
@@ -1262,6 +1324,8 @@ export interface StakeMeta extends BaseContract {
     removeSideContract(overrides?: CallOverrides): Promise<void>;
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
+
+    setDao(_dao: string, overrides?: CallOverrides): Promise<void>;
 
     stake(
       dnmAmount: BigNumberish,
@@ -1326,6 +1390,12 @@ export interface StakeMeta extends BaseContract {
       sp: StakeMeta.StakePlanStruct,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    withdrawFeeByDao(
+      amount: BigNumberish,
+      to: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     withdrawReward(
       stake_id: BigNumberish,
@@ -1452,6 +1522,8 @@ export interface StakeMeta extends BaseContract {
 
     USER_LIST_ID(overrides?: CallOverrides): Promise<BigNumber>;
 
+    UVM_FEE_BALANCE(overrides?: CallOverrides): Promise<BigNumber>;
+
     UVM_POOL_BALANCE(overrides?: CallOverrides): Promise<BigNumber>;
 
     UVM_TOKEN(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1489,6 +1561,8 @@ export interface StakeMeta extends BaseContract {
       stake_id: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    dao(overrides?: CallOverrides): Promise<BigNumber>;
 
     finalizeContract(
       overrides?: Overrides & { from?: string }
@@ -1536,6 +1610,11 @@ export interface StakeMeta extends BaseContract {
       overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
 
+    setDao(
+      _dao: string,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+
     stake(
       dnmAmount: BigNumberish,
       land_id: BigNumberish,
@@ -1574,6 +1653,12 @@ export interface StakeMeta extends BaseContract {
     withdrawAllowance(
       sp: StakeMeta.StakePlanStruct,
       overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    withdrawFeeByDao(
+      amount: BigNumberish,
+      to: string,
+      overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
 
     withdrawReward(
@@ -1633,6 +1718,8 @@ export interface StakeMeta extends BaseContract {
 
     USER_LIST_ID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    UVM_FEE_BALANCE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     UVM_POOL_BALANCE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     UVM_TOKEN(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -1670,6 +1757,8 @@ export interface StakeMeta extends BaseContract {
       stake_id: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    dao(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     finalizeContract(
       overrides?: Overrides & { from?: string }
@@ -1724,6 +1813,11 @@ export interface StakeMeta extends BaseContract {
       overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 
+    setDao(
+      _dao: string,
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
+
     stake(
       dnmAmount: BigNumberish,
       land_id: BigNumberish,
@@ -1767,6 +1861,12 @@ export interface StakeMeta extends BaseContract {
     withdrawAllowance(
       sp: StakeMeta.StakePlanStruct,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    withdrawFeeByDao(
+      amount: BigNumberish,
+      to: string,
+      overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 
     withdrawReward(

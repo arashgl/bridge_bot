@@ -6,3 +6,4 @@ export type { marketplace721Sol };
 import type * as errors from "./errors";
 export type { errors };
 export type { LazyMint } from "./LazyMint";
+export type { NFTLandMarket } from "./NFTLandMarket";

@@ -30,12 +30,18 @@ export declare namespace UsersStruct {
   export type BusinessValueStruct = {
     left: BigNumberish;
     right: BigNumberish;
+    all_left: BigNumberish;
+    all_right: BigNumberish;
     dir: BigNumberish;
     level: BigNumberish;
     summ: BigNumberish;
+    dnm_withdraw: BigNumberish;
   };
 
   export type BusinessValueStructOutput = [
+    BigNumber,
+    BigNumber,
+    BigNumber,
     BigNumber,
     BigNumber,
     BigNumber,
@@ -44,9 +50,12 @@ export declare namespace UsersStruct {
   ] & {
     left: BigNumber;
     right: BigNumber;
+    all_left: BigNumber;
+    all_right: BigNumber;
     dir: BigNumber;
     level: BigNumber;
     summ: BigNumber;
+    dnm_withdraw: BigNumber;
   };
 
   export type LastOrderStruct = {
@@ -151,6 +160,7 @@ export declare namespace OrdersStruct {
 export interface CalculatorInterface extends utils.Interface {
   functions: {
     "BVPlan(uint256)": FunctionFragment;
+    "DNM_VOUCHER_MAX_REWARD()": FunctionFragment;
     "ListLevelUpDate(uint256)": FunctionFragment;
     "OrderList(uint256)": FunctionFragment;
     "UserAddress(uint256)": FunctionFragment;
@@ -158,8 +168,8 @@ export interface CalculatorInterface extends utils.Interface {
     "UserList(address)": FunctionFragment;
     "UsersPaths(uint256,uint256)": FunctionFragment;
     "UsersPathsHash(uint256,uint256)": FunctionFragment;
-    "calcW((uint256,(uint256,uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256,uint256,uint256,uint256,uint256,bool,bytes32))": FunctionFragment;
-    "calculateOrder((uint256,(uint256,uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256,uint256,uint256,uint256,uint256,bool,bytes32),(uint256,uint256,uint256,uint256,uint256,uint256,uint256,bytes32,bool),uint256,uint256)": FunctionFragment;
+    "calcW((uint256,(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256,uint256,uint256,uint256,uint256,bool,bytes32),uint256)": FunctionFragment;
+    "calculateOrder((uint256,(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256,uint256,uint256,uint256,uint256,bool,bytes32),(uint256,uint256,uint256,uint256,uint256,uint256,uint256,bytes32,bool),uint256,uint256,uint256)": FunctionFragment;
     "getOrderList(uint256)": FunctionFragment;
     "getOrderLists(uint256,uint256)": FunctionFragment;
     "getUser(uint256,bool)": FunctionFragment;
@@ -174,6 +184,7 @@ export interface CalculatorInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "BVPlan"
+      | "DNM_VOUCHER_MAX_REWARD"
       | "ListLevelUpDate"
       | "OrderList"
       | "UserAddress"
@@ -197,6 +208,10 @@ export interface CalculatorInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "BVPlan",
     values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "DNM_VOUCHER_MAX_REWARD",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "ListLevelUpDate",
@@ -225,13 +240,14 @@ export interface CalculatorInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "calcW",
-    values: [UsersStruct.UserStruct]
+    values: [UsersStruct.UserStruct, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "calculateOrder",
     values: [
       UsersStruct.UserStruct,
       OrdersStruct.OrderStruct,
+      BigNumberish,
       BigNumberish,
       BigNumberish
     ]
@@ -268,6 +284,10 @@ export interface CalculatorInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "user_id", values?: undefined): string;
 
   decodeFunctionResult(functionFragment: "BVPlan", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "DNM_VOUCHER_MAX_REWARD",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "ListLevelUpDate",
     data: BytesLike
@@ -324,15 +344,31 @@ export interface CalculatorInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "user_id", data: BytesLike): Result;
 
   events: {
+    "Ceil(uint256,uint256,uint256)": EventFragment;
     "CreatedUser(address,uint256)": EventFragment;
     "LevelUp(uint256,uint256,uint256)": EventFragment;
     "NewOrderEvent(uint256,uint256,uint256)": EventFragment;
+    "WeekCalculate(uint256,uint256)": EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: "Ceil"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "CreatedUser"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "LevelUp"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "NewOrderEvent"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "WeekCalculate"): EventFragment;
 }
+
+export interface CeilEventObject {
+  user_id: BigNumber;
+  week: BigNumber;
+  level: BigNumber;
+}
+export type CeilEvent = TypedEvent<
+  [BigNumber, BigNumber, BigNumber],
+  CeilEventObject
+>;
+
+export type CeilEventFilter = TypedEventFilter<CeilEvent>;
 
 export interface CreatedUserEventObject {
   user_address: string;
@@ -369,6 +405,17 @@ export type NewOrderEventEvent = TypedEvent<
 
 export type NewOrderEventEventFilter = TypedEventFilter<NewOrderEventEvent>;
 
+export interface WeekCalculateEventObject {
+  user_id: BigNumber;
+  week: BigNumber;
+}
+export type WeekCalculateEvent = TypedEvent<
+  [BigNumber, BigNumber],
+  WeekCalculateEventObject
+>;
+
+export type WeekCalculateEventFilter = TypedEventFilter<WeekCalculateEvent>;
+
 export interface Calculator extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
@@ -397,6 +444,8 @@ export interface Calculator extends BaseContract {
 
   functions: {
     BVPlan(arg0: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    DNM_VOUCHER_MAX_REWARD(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     ListLevelUpDate(
       arg0: BigNumberish,
@@ -486,6 +535,7 @@ export interface Calculator extends BaseContract {
 
     calcW(
       user: UsersStruct.UserStruct,
+      voucher_paid: BigNumberish,
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
 
@@ -494,6 +544,7 @@ export interface Calculator extends BaseContract {
       order: OrdersStruct.OrderStruct,
       ulevel: BigNumberish,
       lr: BigNumberish,
+      voucher_paid: BigNumberish,
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
 
@@ -544,6 +595,8 @@ export interface Calculator extends BaseContract {
   };
 
   BVPlan(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+
+  DNM_VOUCHER_MAX_REWARD(overrides?: CallOverrides): Promise<BigNumber>;
 
   ListLevelUpDate(
     arg0: BigNumberish,
@@ -630,6 +683,7 @@ export interface Calculator extends BaseContract {
 
   calcW(
     user: UsersStruct.UserStruct,
+    voucher_paid: BigNumberish,
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
 
@@ -638,6 +692,7 @@ export interface Calculator extends BaseContract {
     order: OrdersStruct.OrderStruct,
     ulevel: BigNumberish,
     lr: BigNumberish,
+    voucher_paid: BigNumberish,
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
 
@@ -682,6 +737,8 @@ export interface Calculator extends BaseContract {
 
   callStatic: {
     BVPlan(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+
+    DNM_VOUCHER_MAX_REWARD(overrides?: CallOverrides): Promise<BigNumber>;
 
     ListLevelUpDate(
       arg0: BigNumberish,
@@ -768,6 +825,7 @@ export interface Calculator extends BaseContract {
 
     calcW(
       user: UsersStruct.UserStruct,
+      voucher_paid: BigNumberish,
       overrides?: CallOverrides
     ): Promise<UsersStruct.UserStructOutput>;
 
@@ -776,6 +834,7 @@ export interface Calculator extends BaseContract {
       order: OrdersStruct.OrderStruct,
       ulevel: BigNumberish,
       lr: BigNumberish,
+      voucher_paid: BigNumberish,
       overrides?: CallOverrides
     ): Promise<UsersStruct.UserStructOutput>;
 
@@ -820,6 +879,13 @@ export interface Calculator extends BaseContract {
   };
 
   filters: {
+    "Ceil(uint256,uint256,uint256)"(
+      user_id?: null,
+      week?: null,
+      level?: null
+    ): CeilEventFilter;
+    Ceil(user_id?: null, week?: null, level?: null): CeilEventFilter;
+
     "CreatedUser(address,uint256)"(
       user_address?: string | null,
       user_id?: BigNumberish | null
@@ -850,10 +916,18 @@ export interface Calculator extends BaseContract {
       seller_id?: BigNumberish | null,
       user_id?: BigNumberish | null
     ): NewOrderEventEventFilter;
+
+    "WeekCalculate(uint256,uint256)"(
+      user_id?: null,
+      week?: null
+    ): WeekCalculateEventFilter;
+    WeekCalculate(user_id?: null, week?: null): WeekCalculateEventFilter;
   };
 
   estimateGas: {
     BVPlan(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+
+    DNM_VOUCHER_MAX_REWARD(overrides?: CallOverrides): Promise<BigNumber>;
 
     ListLevelUpDate(
       arg0: BigNumberish,
@@ -892,6 +966,7 @@ export interface Calculator extends BaseContract {
 
     calcW(
       user: UsersStruct.UserStruct,
+      voucher_paid: BigNumberish,
       overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
 
@@ -900,6 +975,7 @@ export interface Calculator extends BaseContract {
       order: OrdersStruct.OrderStruct,
       ulevel: BigNumberish,
       lr: BigNumberish,
+      voucher_paid: BigNumberish,
       overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
 
@@ -949,6 +1025,10 @@ export interface Calculator extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    DNM_VOUCHER_MAX_REWARD(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     ListLevelUpDate(
       arg0: BigNumberish,
       overrides?: CallOverrides
@@ -989,6 +1069,7 @@ export interface Calculator extends BaseContract {
 
     calcW(
       user: UsersStruct.UserStruct,
+      voucher_paid: BigNumberish,
       overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 
@@ -997,6 +1078,7 @@ export interface Calculator extends BaseContract {
       order: OrdersStruct.OrderStruct,
       ulevel: BigNumberish,
       lr: BigNumberish,
+      voucher_paid: BigNumberish,
       overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 

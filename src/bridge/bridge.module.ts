@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { BridgeService } from './bridge.service';
 import { EthersModule } from '../ethers/ethers.module';
 import { TransactionsModule } from '../transactions/transactions.module';
-import { BridgeListenersService } from './bridge-listeners.service';
+import { BridgeIndexerService } from './bridge-indexer.service';
 import { BridgeIntervalService } from './bridge-interval.service';
 import { ScheduleModule } from '@nestjs/schedule';
 import { HttpModule } from '@nestjs/axios';
@@ -27,7 +27,7 @@ import { Env } from '../../environments';
       }),
     }),
   ],
-  providers: [BridgeService, BridgeListenersService, BridgeIntervalService],
-  exports: [BridgeService, BridgeListenersService],
+  providers: [BridgeService, BridgeIndexerService, BridgeIntervalService],
+  exports: [BridgeService, BridgeIndexerService],
 })
 export class BridgeModule {}

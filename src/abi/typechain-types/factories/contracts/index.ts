@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export * as gatewaySol from "./Gateway.sol";
+export * as paymentsSol from "./Payments.sol";
 export * as uvmTokenSol from "./UVM_TOKEN.sol";
 export * as gatewayHelpers from "./gateway_helpers";
 export * as interfaces from "./interfaces";
@@ -19,7 +20,6 @@ export { Election__factory } from "./Election__factory";
 export { NFTLand__factory } from "./NFTLand__factory";
 export { Orders__factory } from "./Orders__factory";
 export { OrdersStruct__factory } from "./OrdersStruct__factory";
-export { Payments__factory } from "./Payments__factory";
 export { Plan__factory } from "./Plan__factory";
 export { ProductNFT__factory } from "./ProductNFT__factory";
 export { SC__factory } from "./SC__factory";

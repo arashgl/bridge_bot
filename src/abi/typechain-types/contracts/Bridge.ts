@@ -52,6 +52,11 @@ export interface BridgeInterface extends utils.Interface {
     "transferNFTtoPolygon(uint256,address)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "transferToPolygon(address,address,uint256)": FunctionFragment;
+    "withdrawDNM(uint256)": FunctionFragment;
+    "withdrawLand(uint256)": FunctionFragment;
+    "withdrawUVM(uint256)": FunctionFragment;
+    "withdrawWrapper(uint256)": FunctionFragment;
+    "wrapper()": FunctionFragment;
   };
 
   getFunction(
@@ -80,6 +85,11 @@ export interface BridgeInterface extends utils.Interface {
       | "transferNFTtoPolygon"
       | "transferOwnership"
       | "transferToPolygon"
+      | "withdrawDNM"
+      | "withdrawLand"
+      | "withdrawUVM"
+      | "withdrawWrapper"
+      | "wrapper"
   ): FunctionFragment;
 
   encodeFunctionData(functionFragment: "DNM", values?: undefined): string;
@@ -157,6 +167,23 @@ export interface BridgeInterface extends utils.Interface {
     functionFragment: "transferToPolygon",
     values: [string, string, BigNumberish]
   ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawDNM",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawLand",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawUVM",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawWrapper",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(functionFragment: "wrapper", values?: undefined): string;
 
   decodeFunctionResult(functionFragment: "DNM", data: BytesLike): Result;
   decodeFunctionResult(
@@ -233,6 +260,23 @@ export interface BridgeInterface extends utils.Interface {
     functionFragment: "transferToPolygon",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawDNM",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawLand",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawUVM",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawWrapper",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "wrapper", data: BytesLike): Result;
 
   events: {
     "FullTransfer(uint256,address,address,uint256,uint256,uint256,uint256)": EventFragment;
@@ -416,6 +460,28 @@ export interface Bridge extends BaseContract {
       amount: BigNumberish,
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
+
+    withdrawDNM(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
+
+    withdrawLand(
+      land_id: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
+
+    withdrawUVM(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
+
+    withdrawWrapper(
+      land_id: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
+
+    wrapper(overrides?: CallOverrides): Promise<[string]>;
   };
 
   DNM(overrides?: CallOverrides): Promise<string>;
@@ -506,6 +572,28 @@ export interface Bridge extends BaseContract {
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
 
+  withdrawDNM(
+    amount: BigNumberish,
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
+
+  withdrawLand(
+    land_id: BigNumberish,
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
+
+  withdrawUVM(
+    amount: BigNumberish,
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
+
+  withdrawWrapper(
+    land_id: BigNumberish,
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
+
+  wrapper(overrides?: CallOverrides): Promise<string>;
+
   callStatic: {
     DNM(overrides?: CallOverrides): Promise<string>;
 
@@ -592,6 +680,22 @@ export interface Bridge extends BaseContract {
       amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    withdrawDNM(amount: BigNumberish, overrides?: CallOverrides): Promise<void>;
+
+    withdrawLand(
+      land_id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    withdrawUVM(amount: BigNumberish, overrides?: CallOverrides): Promise<void>;
+
+    withdrawWrapper(
+      land_id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    wrapper(overrides?: CallOverrides): Promise<string>;
   };
 
   filters: {
@@ -740,6 +844,28 @@ export interface Bridge extends BaseContract {
       amount: BigNumberish,
       overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
+
+    withdrawDNM(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+
+    withdrawLand(
+      land_id: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+
+    withdrawUVM(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+
+    withdrawWrapper(
+      land_id: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+
+    wrapper(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -834,5 +960,27 @@ export interface Bridge extends BaseContract {
       amount: BigNumberish,
       overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
+
+    withdrawDNM(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
+
+    withdrawLand(
+      land_id: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
+
+    withdrawUVM(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
+
+    withdrawWrapper(
+      land_id: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
+
+    wrapper(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

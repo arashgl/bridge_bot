@@ -28,12 +28,18 @@ export declare namespace UsersStruct {
   export type BusinessValueStruct = {
     left: BigNumberish;
     right: BigNumberish;
+    all_left: BigNumberish;
+    all_right: BigNumberish;
     dir: BigNumberish;
     level: BigNumberish;
     summ: BigNumberish;
+    dnm_withdraw: BigNumberish;
   };
 
   export type BusinessValueStructOutput = [
+    BigNumber,
+    BigNumber,
+    BigNumber,
     BigNumber,
     BigNumber,
     BigNumber,
@@ -42,9 +48,12 @@ export declare namespace UsersStruct {
   ] & {
     left: BigNumber;
     right: BigNumber;
+    all_left: BigNumber;
+    all_right: BigNumber;
     dir: BigNumber;
     level: BigNumber;
     summ: BigNumber;
+    dnm_withdraw: BigNumber;
   };
 
   export type LastOrderStruct = {

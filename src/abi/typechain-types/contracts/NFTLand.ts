@@ -37,7 +37,6 @@ export interface NFTLandInterface extends utils.Interface {
     "getApproved(uint256)": FunctionFragment;
     "getUserTokens(address)": FunctionFragment;
     "isApprovedForAll(address,address)": FunctionFragment;
-    "mint(address,uint256)": FunctionFragment;
     "name()": FunctionFragment;
     "operatorMint(uint256[],address)": FunctionFragment;
     "operators(address)": FunctionFragment;
@@ -69,7 +68,6 @@ export interface NFTLandInterface extends utils.Interface {
       | "getApproved"
       | "getUserTokens"
       | "isApprovedForAll"
-      | "mint"
       | "name"
       | "operatorMint"
       | "operators"
@@ -122,10 +120,6 @@ export interface NFTLandInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "isApprovedForAll",
     values: [string, string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "mint",
-    values: [string, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(
@@ -215,7 +209,6 @@ export interface NFTLandInterface extends utils.Interface {
     functionFragment: "isApprovedForAll",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "mint", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "operatorMint",
@@ -397,12 +390,6 @@ export interface NFTLand extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
-    mint(
-      _to: string,
-      _id: BigNumberish,
-      overrides?: Overrides & { from?: string }
-    ): Promise<ContractTransaction>;
-
     name(overrides?: CallOverrides): Promise<[string]>;
 
     operatorMint(
@@ -523,12 +510,6 @@ export interface NFTLand extends BaseContract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  mint(
-    _to: string,
-    _id: BigNumberish,
-    overrides?: Overrides & { from?: string }
-  ): Promise<ContractTransaction>;
-
   name(overrides?: CallOverrides): Promise<string>;
 
   operatorMint(
@@ -639,12 +620,6 @@ export interface NFTLand extends BaseContract {
       operator: string,
       overrides?: CallOverrides
     ): Promise<boolean>;
-
-    mint(
-      _to: string,
-      _id: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
 
     name(overrides?: CallOverrides): Promise<string>;
 
@@ -800,12 +775,6 @@ export interface NFTLand extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    mint(
-      _to: string,
-      _id: BigNumberish,
-      overrides?: Overrides & { from?: string }
-    ): Promise<BigNumber>;
-
     name(overrides?: CallOverrides): Promise<BigNumber>;
 
     operatorMint(
@@ -931,12 +900,6 @@ export interface NFTLand extends BaseContract {
       owner: string,
       operator: string,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    mint(
-      _to: string,
-      _id: BigNumberish,
-      overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;

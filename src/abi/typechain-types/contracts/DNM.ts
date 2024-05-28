@@ -28,13 +28,14 @@ import type {
 
 export interface DNMInterface extends utils.Interface {
   functions: {
-    "GATEWAY()": FunctionFragment;
     "MAX_SUPPLY()": FunctionFragment;
+    "OWNER()": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
+    "changeOwner(address)": FunctionFragment;
     "decimals()": FunctionFragment;
-    "mintByGateway(address,uint256)": FunctionFragment;
+    "mintByOwner(address,uint256)": FunctionFragment;
     "name()": FunctionFragment;
     "symbol()": FunctionFragment;
     "totalSupply()": FunctionFragment;
@@ -44,13 +45,14 @@ export interface DNMInterface extends utils.Interface {
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "GATEWAY"
       | "MAX_SUPPLY"
+      | "OWNER"
       | "allowance"
       | "approve"
       | "balanceOf"
+      | "changeOwner"
       | "decimals"
-      | "mintByGateway"
+      | "mintByOwner"
       | "name"
       | "symbol"
       | "totalSupply"
@@ -58,11 +60,11 @@ export interface DNMInterface extends utils.Interface {
       | "transferFrom"
   ): FunctionFragment;
 
-  encodeFunctionData(functionFragment: "GATEWAY", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "MAX_SUPPLY",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "OWNER", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "allowance",
     values: [string, string]
@@ -72,9 +74,10 @@ export interface DNMInterface extends utils.Interface {
     values: [string, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
+  encodeFunctionData(functionFragment: "changeOwner", values: [string]): string;
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "mintByGateway",
+    functionFragment: "mintByOwner",
     values: [string, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
@@ -92,14 +95,18 @@ export interface DNMInterface extends utils.Interface {
     values: [string, string, BigNumberish]
   ): string;
 
-  decodeFunctionResult(functionFragment: "GATEWAY", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "MAX_SUPPLY", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "OWNER", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "changeOwner",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "mintByGateway",
+    functionFragment: "mintByOwner",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
@@ -174,9 +181,9 @@ export interface DNM extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    GATEWAY(overrides?: CallOverrides): Promise<[string]>;
-
     MAX_SUPPLY(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    OWNER(overrides?: CallOverrides): Promise<[string]>;
 
     allowance(
       owner: string,
@@ -192,9 +199,14 @@ export interface DNM extends BaseContract {
 
     balanceOf(account: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    changeOwner(
+      owner: string,
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
+
     decimals(overrides?: CallOverrides): Promise<[number]>;
 
-    mintByGateway(
+    mintByOwner(
       send_to: string,
       amount: BigNumberish,
       overrides?: Overrides & { from?: string }
@@ -220,9 +232,9 @@ export interface DNM extends BaseContract {
     ): Promise<ContractTransaction>;
   };
 
-  GATEWAY(overrides?: CallOverrides): Promise<string>;
-
   MAX_SUPPLY(overrides?: CallOverrides): Promise<BigNumber>;
+
+  OWNER(overrides?: CallOverrides): Promise<string>;
 
   allowance(
     owner: string,
@@ -238,9 +250,14 @@ export interface DNM extends BaseContract {
 
   balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
+  changeOwner(
+    owner: string,
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
+
   decimals(overrides?: CallOverrides): Promise<number>;
 
-  mintByGateway(
+  mintByOwner(
     send_to: string,
     amount: BigNumberish,
     overrides?: Overrides & { from?: string }
@@ -266,9 +283,9 @@ export interface DNM extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    GATEWAY(overrides?: CallOverrides): Promise<string>;
-
     MAX_SUPPLY(overrides?: CallOverrides): Promise<BigNumber>;
+
+    OWNER(overrides?: CallOverrides): Promise<string>;
 
     allowance(
       owner: string,
@@ -284,9 +301,11 @@ export interface DNM extends BaseContract {
 
     balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
+    changeOwner(owner: string, overrides?: CallOverrides): Promise<void>;
+
     decimals(overrides?: CallOverrides): Promise<number>;
 
-    mintByGateway(
+    mintByOwner(
       send_to: string,
       amount: BigNumberish,
       overrides?: CallOverrides
@@ -337,9 +356,9 @@ export interface DNM extends BaseContract {
   };
 
   estimateGas: {
-    GATEWAY(overrides?: CallOverrides): Promise<BigNumber>;
-
     MAX_SUPPLY(overrides?: CallOverrides): Promise<BigNumber>;
+
+    OWNER(overrides?: CallOverrides): Promise<BigNumber>;
 
     allowance(
       owner: string,
@@ -355,9 +374,14 @@ export interface DNM extends BaseContract {
 
     balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
+    changeOwner(
+      owner: string,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+
     decimals(overrides?: CallOverrides): Promise<BigNumber>;
 
-    mintByGateway(
+    mintByOwner(
       send_to: string,
       amount: BigNumberish,
       overrides?: Overrides & { from?: string }
@@ -384,9 +408,9 @@ export interface DNM extends BaseContract {
   };
 
   populateTransaction: {
-    GATEWAY(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     MAX_SUPPLY(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    OWNER(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     allowance(
       owner: string,
@@ -405,9 +429,14 @@ export interface DNM extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    changeOwner(
+      owner: string,
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
+
     decimals(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    mintByGateway(
+    mintByOwner(
       send_to: string,
       amount: BigNumberish,
       overrides?: Overrides & { from?: string }

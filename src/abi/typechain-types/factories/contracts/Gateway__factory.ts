@@ -10,10 +10,7 @@ import {
   Overrides,
 } from "ethers";
 import type { Provider, TransactionRequest } from "@ethersproject/providers";
-import type {
-  Gateway,
-  GatewayInterface,
-} from "../../../contracts/Gateway.sol/Gateway";
+import type { Gateway, GatewayInterface } from "../../contracts/Gateway";
 
 const _abi = [
   {

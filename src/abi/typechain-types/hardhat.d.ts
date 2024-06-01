@@ -149,10 +149,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Dev__factory>;
     getContractFactory(
-      name: "CallBack",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.CallBack__factory>;
-    getContractFactory(
       name: "Gateway",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Gateway__factory>;
@@ -212,10 +208,6 @@ declare module "hardhat/types/runtime" {
       name: "ProductNFT",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ProductNFT__factory>;
-    getContractFactory(
-      name: "SC",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.SC__factory>;
     getContractFactory(
       name: "Sellers",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -512,11 +504,6 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.Dev>;
     getContractAt(
-      name: "CallBack",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.CallBack>;
-    getContractAt(
       name: "Gateway",
       address: string,
       signer?: ethers.Signer
@@ -591,11 +578,6 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.ProductNFT>;
-    getContractAt(
-      name: "SC",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.SC>;
     getContractAt(
       name: "Sellers",
       address: string,

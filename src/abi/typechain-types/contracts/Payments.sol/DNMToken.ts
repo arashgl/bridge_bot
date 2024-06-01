@@ -241,7 +241,7 @@ export interface DNMToken extends BaseContract {
       send_to: string,
       amount: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<boolean>;
+    ): Promise<void>;
 
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 

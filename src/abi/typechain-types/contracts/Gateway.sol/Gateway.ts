@@ -283,21 +283,22 @@ export interface GatewayInterface extends utils.Interface {
     "level_up_data_index()": FunctionFragment;
     "order_id()": FunctionFragment;
     "owner()": FunctionFragment;
-    "payment((uint256,uint256,uint256,address,bytes32),address,address)": FunctionFragment;
-    "payment((uint256,uint256,uint256,address,bytes32),uint256,address)": FunctionFragment;
+    "payment((uint256,uint256,uint256,address,bytes32),address)": FunctionFragment;
+    "payment((uint256,uint256,uint256,address,bytes32),uint256)": FunctionFragment;
     "paymentFrom((uint256,uint256,uint256,address,bytes32),address,address,uint256)": FunctionFragment;
     "paymentFrom((uint256,uint256,uint256,address,bytes32),address,address,address)": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
     "revokeAllowance(address)": FunctionFragment;
+    "sellerWithdrawDNM(uint256)": FunctionFragment;
     "seller_id()": FunctionFragment;
-    "seller_withraw_dnm(uint256)": FunctionFragment;
     "setAllowance(address,uint256)": FunctionFragment;
     "setCalculator(address)": FunctionFragment;
     "switchToProduction()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
+    "userWithdrawDNM(uint256)": FunctionFragment;
+    "userWithdrawDNMVoucher(uint256)": FunctionFragment;
+    "userWithdrawWeekUVM(uint256)": FunctionFragment;
     "user_id()": FunctionFragment;
-    "user_withraw_dnm(uint256)": FunctionFragment;
-    "user_withraw_dnm_voucher(uint256)": FunctionFragment;
     "withdrawToken1Balance()": FunctionFragment;
     "withdrawToken2Balance()": FunctionFragment;
     "withdrawWithDao(uint256,address)": FunctionFragment;
@@ -347,21 +348,22 @@ export interface GatewayInterface extends utils.Interface {
       | "level_up_data_index"
       | "order_id"
       | "owner"
-      | "payment((uint256,uint256,uint256,address,bytes32),address,address)"
-      | "payment((uint256,uint256,uint256,address,bytes32),uint256,address)"
+      | "payment((uint256,uint256,uint256,address,bytes32),address)"
+      | "payment((uint256,uint256,uint256,address,bytes32),uint256)"
       | "paymentFrom((uint256,uint256,uint256,address,bytes32),address,address,uint256)"
       | "paymentFrom((uint256,uint256,uint256,address,bytes32),address,address,address)"
       | "renounceOwnership"
       | "revokeAllowance"
+      | "sellerWithdrawDNM"
       | "seller_id"
-      | "seller_withraw_dnm"
       | "setAllowance"
       | "setCalculator"
       | "switchToProduction"
       | "transferOwnership"
+      | "userWithdrawDNM"
+      | "userWithdrawDNMVoucher"
+      | "userWithdrawWeekUVM"
       | "user_id"
-      | "user_withraw_dnm"
-      | "user_withraw_dnm_voucher"
       | "withdrawToken1Balance"
       | "withdrawToken2Balance"
       | "withdrawWithDao"
@@ -509,12 +511,12 @@ export interface GatewayInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "order_id", values?: undefined): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "payment((uint256,uint256,uint256,address,bytes32),address,address)",
-    values: [Payments.PaymentDataStruct, string, string]
+    functionFragment: "payment((uint256,uint256,uint256,address,bytes32),address)",
+    values: [Payments.PaymentDataStruct, string]
   ): string;
   encodeFunctionData(
-    functionFragment: "payment((uint256,uint256,uint256,address,bytes32),uint256,address)",
-    values: [Payments.PaymentDataStruct, BigNumberish, string]
+    functionFragment: "payment((uint256,uint256,uint256,address,bytes32),uint256)",
+    values: [Payments.PaymentDataStruct, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "paymentFrom((uint256,uint256,uint256,address,bytes32),address,address,uint256)",
@@ -532,11 +534,11 @@ export interface GatewayInterface extends utils.Interface {
     functionFragment: "revokeAllowance",
     values: [string]
   ): string;
-  encodeFunctionData(functionFragment: "seller_id", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "seller_withraw_dnm",
+    functionFragment: "sellerWithdrawDNM",
     values: [BigNumberish]
   ): string;
+  encodeFunctionData(functionFragment: "seller_id", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "setAllowance",
     values: [string, BigNumberish]
@@ -553,15 +555,19 @@ export interface GatewayInterface extends utils.Interface {
     functionFragment: "transferOwnership",
     values: [string]
   ): string;
+  encodeFunctionData(
+    functionFragment: "userWithdrawDNM",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "userWithdrawDNMVoucher",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "userWithdrawWeekUVM",
+    values: [BigNumberish]
+  ): string;
   encodeFunctionData(functionFragment: "user_id", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "user_withraw_dnm",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "user_withraw_dnm_voucher",
-    values: [BigNumberish]
-  ): string;
   encodeFunctionData(
     functionFragment: "withdrawToken1Balance",
     values?: undefined
@@ -693,11 +699,11 @@ export interface GatewayInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "order_id", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "payment((uint256,uint256,uint256,address,bytes32),address,address)",
+    functionFragment: "payment((uint256,uint256,uint256,address,bytes32),address)",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "payment((uint256,uint256,uint256,address,bytes32),uint256,address)",
+    functionFragment: "payment((uint256,uint256,uint256,address,bytes32),uint256)",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -716,11 +722,11 @@ export interface GatewayInterface extends utils.Interface {
     functionFragment: "revokeAllowance",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "seller_id", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "seller_withraw_dnm",
+    functionFragment: "sellerWithdrawDNM",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "seller_id", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "setAllowance",
     data: BytesLike
@@ -737,15 +743,19 @@ export interface GatewayInterface extends utils.Interface {
     functionFragment: "transferOwnership",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "userWithdrawDNM",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "userWithdrawDNMVoucher",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "userWithdrawWeekUVM",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "user_id", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "user_withraw_dnm",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "user_withraw_dnm_voucher",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "withdrawToken1Balance",
     data: BytesLike
@@ -1116,8 +1126,8 @@ export interface Gateway extends BaseContract {
     isChildOfParent(
       parent: UsersStruct.UserStruct,
       child: UsersStruct.UserStruct,
-      overrides?: Overrides & { from?: string }
-    ): Promise<ContractTransaction>;
+      overrides?: CallOverrides
+    ): Promise<[boolean, number]>;
 
     isDev(overrides?: CallOverrides): Promise<[boolean]>;
 
@@ -1129,17 +1139,15 @@ export interface Gateway extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<[string]>;
 
-    "payment((uint256,uint256,uint256,address,bytes32),address,address)"(
+    "payment((uint256,uint256,uint256,address,bytes32),address)"(
       _payment: Payments.PaymentDataStruct,
       parent_addr: string,
-      call_back: string,
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
 
-    "payment((uint256,uint256,uint256,address,bytes32),uint256,address)"(
+    "payment((uint256,uint256,uint256,address,bytes32),uint256)"(
       _payment: Payments.PaymentDataStruct,
       parent_id: BigNumberish,
-      call_back: string,
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
 
@@ -1168,12 +1176,12 @@ export interface Gateway extends BaseContract {
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
 
-    seller_id(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    seller_withraw_dnm(
+    sellerWithdrawDNM(
       amount: BigNumberish,
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
+
+    seller_id(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     setAllowance(
       spender: string,
@@ -1195,17 +1203,22 @@ export interface Gateway extends BaseContract {
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
 
+    userWithdrawDNM(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
+
+    userWithdrawDNMVoucher(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
+
+    userWithdrawWeekUVM(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
+
     user_id(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    user_withraw_dnm(
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string }
-    ): Promise<ContractTransaction>;
-
-    user_withraw_dnm_voucher(
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string }
-    ): Promise<ContractTransaction>;
 
     withdrawToken1Balance(
       overrides?: Overrides & { from?: string }
@@ -1427,8 +1440,8 @@ export interface Gateway extends BaseContract {
   isChildOfParent(
     parent: UsersStruct.UserStruct,
     child: UsersStruct.UserStruct,
-    overrides?: Overrides & { from?: string }
-  ): Promise<ContractTransaction>;
+    overrides?: CallOverrides
+  ): Promise<[boolean, number]>;
 
   isDev(overrides?: CallOverrides): Promise<boolean>;
 
@@ -1440,17 +1453,15 @@ export interface Gateway extends BaseContract {
 
   owner(overrides?: CallOverrides): Promise<string>;
 
-  "payment((uint256,uint256,uint256,address,bytes32),address,address)"(
+  "payment((uint256,uint256,uint256,address,bytes32),address)"(
     _payment: Payments.PaymentDataStruct,
     parent_addr: string,
-    call_back: string,
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
 
-  "payment((uint256,uint256,uint256,address,bytes32),uint256,address)"(
+  "payment((uint256,uint256,uint256,address,bytes32),uint256)"(
     _payment: Payments.PaymentDataStruct,
     parent_id: BigNumberish,
-    call_back: string,
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
 
@@ -1479,12 +1490,12 @@ export interface Gateway extends BaseContract {
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
 
-  seller_id(overrides?: CallOverrides): Promise<BigNumber>;
-
-  seller_withraw_dnm(
+  sellerWithdrawDNM(
     amount: BigNumberish,
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
+
+  seller_id(overrides?: CallOverrides): Promise<BigNumber>;
 
   setAllowance(
     spender: string,
@@ -1506,17 +1517,22 @@ export interface Gateway extends BaseContract {
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
 
+  userWithdrawDNM(
+    amount: BigNumberish,
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
+
+  userWithdrawDNMVoucher(
+    amount: BigNumberish,
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
+
+  userWithdrawWeekUVM(
+    amount: BigNumberish,
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
+
   user_id(overrides?: CallOverrides): Promise<BigNumber>;
-
-  user_withraw_dnm(
-    amount: BigNumberish,
-    overrides?: Overrides & { from?: string }
-  ): Promise<ContractTransaction>;
-
-  user_withraw_dnm_voucher(
-    amount: BigNumberish,
-    overrides?: Overrides & { from?: string }
-  ): Promise<ContractTransaction>;
 
   withdrawToken1Balance(
     overrides?: Overrides & { from?: string }
@@ -1752,17 +1768,15 @@ export interface Gateway extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<string>;
 
-    "payment((uint256,uint256,uint256,address,bytes32),address,address)"(
+    "payment((uint256,uint256,uint256,address,bytes32),address)"(
       _payment: Payments.PaymentDataStruct,
       parent_addr: string,
-      call_back: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    "payment((uint256,uint256,uint256,address,bytes32),uint256,address)"(
+    "payment((uint256,uint256,uint256,address,bytes32),uint256)"(
       _payment: Payments.PaymentDataStruct,
       parent_id: BigNumberish,
-      call_back: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -1786,12 +1800,12 @@ export interface Gateway extends BaseContract {
 
     revokeAllowance(spender: string, overrides?: CallOverrides): Promise<void>;
 
-    seller_id(overrides?: CallOverrides): Promise<BigNumber>;
-
-    seller_withraw_dnm(
+    sellerWithdrawDNM(
       amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    seller_id(overrides?: CallOverrides): Promise<BigNumber>;
 
     setAllowance(
       spender: string,
@@ -1808,17 +1822,22 @@ export interface Gateway extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    userWithdrawDNM(
+      amount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    userWithdrawDNMVoucher(
+      amount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    userWithdrawWeekUVM(
+      amount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     user_id(overrides?: CallOverrides): Promise<BigNumber>;
-
-    user_withraw_dnm(
-      amount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    user_withraw_dnm_voucher(
-      amount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
 
     withdrawToken1Balance(overrides?: CallOverrides): Promise<void>;
 
@@ -2060,7 +2079,7 @@ export interface Gateway extends BaseContract {
     isChildOfParent(
       parent: UsersStruct.UserStruct,
       child: UsersStruct.UserStruct,
-      overrides?: Overrides & { from?: string }
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     isDev(overrides?: CallOverrides): Promise<BigNumber>;
@@ -2073,17 +2092,15 @@ export interface Gateway extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "payment((uint256,uint256,uint256,address,bytes32),address,address)"(
+    "payment((uint256,uint256,uint256,address,bytes32),address)"(
       _payment: Payments.PaymentDataStruct,
       parent_addr: string,
-      call_back: string,
       overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
 
-    "payment((uint256,uint256,uint256,address,bytes32),uint256,address)"(
+    "payment((uint256,uint256,uint256,address,bytes32),uint256)"(
       _payment: Payments.PaymentDataStruct,
       parent_id: BigNumberish,
-      call_back: string,
       overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
 
@@ -2112,12 +2129,12 @@ export interface Gateway extends BaseContract {
       overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
 
-    seller_id(overrides?: CallOverrides): Promise<BigNumber>;
-
-    seller_withraw_dnm(
+    sellerWithdrawDNM(
       amount: BigNumberish,
       overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
+
+    seller_id(overrides?: CallOverrides): Promise<BigNumber>;
 
     setAllowance(
       spender: string,
@@ -2139,17 +2156,22 @@ export interface Gateway extends BaseContract {
       overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
 
+    userWithdrawDNM(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+
+    userWithdrawDNMVoucher(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+
+    userWithdrawWeekUVM(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+
     user_id(overrides?: CallOverrides): Promise<BigNumber>;
-
-    user_withraw_dnm(
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string }
-    ): Promise<BigNumber>;
-
-    user_withraw_dnm_voucher(
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string }
-    ): Promise<BigNumber>;
 
     withdrawToken1Balance(
       overrides?: Overrides & { from?: string }
@@ -2336,7 +2358,7 @@ export interface Gateway extends BaseContract {
     isChildOfParent(
       parent: UsersStruct.UserStruct,
       child: UsersStruct.UserStruct,
-      overrides?: Overrides & { from?: string }
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     isDev(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -2353,17 +2375,15 @@ export interface Gateway extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "payment((uint256,uint256,uint256,address,bytes32),address,address)"(
+    "payment((uint256,uint256,uint256,address,bytes32),address)"(
       _payment: Payments.PaymentDataStruct,
       parent_addr: string,
-      call_back: string,
       overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 
-    "payment((uint256,uint256,uint256,address,bytes32),uint256,address)"(
+    "payment((uint256,uint256,uint256,address,bytes32),uint256)"(
       _payment: Payments.PaymentDataStruct,
       parent_id: BigNumberish,
-      call_back: string,
       overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 
@@ -2392,12 +2412,12 @@ export interface Gateway extends BaseContract {
       overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 
-    seller_id(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    seller_withraw_dnm(
+    sellerWithdrawDNM(
       amount: BigNumberish,
       overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
+
+    seller_id(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     setAllowance(
       spender: string,
@@ -2419,17 +2439,22 @@ export interface Gateway extends BaseContract {
       overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 
+    userWithdrawDNM(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
+
+    userWithdrawDNMVoucher(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
+
+    userWithdrawWeekUVM(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
+
     user_id(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    user_withraw_dnm(
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string }
-    ): Promise<PopulatedTransaction>;
-
-    user_withraw_dnm_voucher(
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string }
-    ): Promise<PopulatedTransaction>;
 
     withdrawToken1Balance(
       overrides?: Overrides & { from?: string }

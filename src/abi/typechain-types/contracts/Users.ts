@@ -518,8 +518,8 @@ export interface Users extends BaseContract {
     isChildOfParent(
       parent: UsersStruct.UserStruct,
       child: UsersStruct.UserStruct,
-      overrides?: Overrides & { from?: string }
-    ): Promise<ContractTransaction>;
+      overrides?: CallOverrides
+    ): Promise<[boolean, number]>;
 
     isDev(overrides?: CallOverrides): Promise<[boolean]>;
 
@@ -640,8 +640,8 @@ export interface Users extends BaseContract {
   isChildOfParent(
     parent: UsersStruct.UserStruct,
     child: UsersStruct.UserStruct,
-    overrides?: Overrides & { from?: string }
-  ): Promise<ContractTransaction>;
+    overrides?: CallOverrides
+  ): Promise<[boolean, number]>;
 
   isDev(overrides?: CallOverrides): Promise<boolean>;
 
@@ -886,7 +886,7 @@ export interface Users extends BaseContract {
     isChildOfParent(
       parent: UsersStruct.UserStruct,
       child: UsersStruct.UserStruct,
-      overrides?: Overrides & { from?: string }
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     isDev(overrides?: CallOverrides): Promise<BigNumber>;
@@ -989,7 +989,7 @@ export interface Users extends BaseContract {
     isChildOfParent(
       parent: UsersStruct.UserStruct,
       child: UsersStruct.UserStruct,
-      overrides?: Overrides & { from?: string }
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     isDev(overrides?: CallOverrides): Promise<PopulatedTransaction>;

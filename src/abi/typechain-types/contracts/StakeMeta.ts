@@ -67,14 +67,13 @@ export declare namespace StakeMeta {
 
 export interface StakeMetaInterface extends utils.Interface {
   functions: {
-    "CONTACT_FINALIZED()": FunctionFragment;
     "DNM_TOKEN()": FunctionFragment;
     "EIGHTEEN_MONTH_DURATION()": FunctionFragment;
     "LAND_TOKEN()": FunctionFragment;
     "LAUNCH_TIME()": FunctionFragment;
     "ONE_YEAR_DURATION()": FunctionFragment;
+    "REWARD_DECAY_FACTOR()": FunctionFragment;
     "REWARD_DECAY_PERIOD()": FunctionFragment;
-    "SC_EXISTS()": FunctionFragment;
     "STAKE_LIST_ID()": FunctionFragment;
     "STAKE_MAX_DNM()": FunctionFragment;
     "STAKE_MAX_UVM()": FunctionFragment;
@@ -90,14 +89,12 @@ export interface StakeMetaInterface extends utils.Interface {
     "UVM_FEE_BALANCE()": FunctionFragment;
     "UVM_POOL_BALANCE()": FunctionFragment;
     "UVM_TOKEN()": FunctionFragment;
-    "addSideContract(address)": FunctionFragment;
     "addTokenToPool(uint256)": FunctionFragment;
     "allowedDnmAmountStake(uint8)": FunctionFragment;
     "calDnmUvmRatio(uint256)": FunctionFragment;
     "calculateReward(uint16,uint256,uint256,uint256,uint256)": FunctionFragment;
     "calculateRewardForStake(uint256)": FunctionFragment;
     "dao()": FunctionFragment;
-    "finalizeContract()": FunctionFragment;
     "getActiveStake()": FunctionFragment;
     "getAllStake()": FunctionFragment;
     "getContractDNMBalance()": FunctionFragment;
@@ -109,14 +106,13 @@ export interface StakeMetaInterface extends utils.Interface {
     "getUserStake(address)": FunctionFragment;
     "getUserStakeIds(address)": FunctionFragment;
     "owner()": FunctionFragment;
-    "removeSideContract()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
     "setDao(address)": FunctionFragment;
     "stake(uint256,uint256,uint256)": FunctionFragment;
     "stakeFrom(address,uint256,uint256,uint256)": FunctionFragment;
     "stakeList(uint256)": FunctionFragment;
+    "tempChangeStake(uint256,uint256)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
-    "transferRewardFromSideContract(uint256,address)": FunctionFragment;
     "updateTopUp()": FunctionFragment;
     "userList(uint256)": FunctionFragment;
     "withdrawAllowance((uint256,bool,uint8,uint256,uint256,uint256,uint256,uint256,uint256,uint256))": FunctionFragment;
@@ -127,14 +123,13 @@ export interface StakeMetaInterface extends utils.Interface {
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "CONTACT_FINALIZED"
       | "DNM_TOKEN"
       | "EIGHTEEN_MONTH_DURATION"
       | "LAND_TOKEN"
       | "LAUNCH_TIME"
       | "ONE_YEAR_DURATION"
+      | "REWARD_DECAY_FACTOR"
       | "REWARD_DECAY_PERIOD"
-      | "SC_EXISTS"
       | "STAKE_LIST_ID"
       | "STAKE_MAX_DNM"
       | "STAKE_MAX_UVM"
@@ -150,14 +145,12 @@ export interface StakeMetaInterface extends utils.Interface {
       | "UVM_FEE_BALANCE"
       | "UVM_POOL_BALANCE"
       | "UVM_TOKEN"
-      | "addSideContract"
       | "addTokenToPool"
       | "allowedDnmAmountStake"
       | "calDnmUvmRatio"
       | "calculateReward"
       | "calculateRewardForStake"
       | "dao"
-      | "finalizeContract"
       | "getActiveStake"
       | "getAllStake"
       | "getContractDNMBalance"
@@ -169,14 +162,13 @@ export interface StakeMetaInterface extends utils.Interface {
       | "getUserStake"
       | "getUserStakeIds"
       | "owner"
-      | "removeSideContract"
       | "renounceOwnership"
       | "setDao"
       | "stake"
       | "stakeFrom"
       | "stakeList"
+      | "tempChangeStake"
       | "transferOwnership"
-      | "transferRewardFromSideContract"
       | "updateTopUp"
       | "userList"
       | "withdrawAllowance"
@@ -185,10 +177,6 @@ export interface StakeMetaInterface extends utils.Interface {
       | "withdrawStake"
   ): FunctionFragment;
 
-  encodeFunctionData(
-    functionFragment: "CONTACT_FINALIZED",
-    values?: undefined
-  ): string;
   encodeFunctionData(functionFragment: "DNM_TOKEN", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "EIGHTEEN_MONTH_DURATION",
@@ -207,10 +195,13 @@ export interface StakeMetaInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "REWARD_DECAY_FACTOR",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "REWARD_DECAY_PERIOD",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "SC_EXISTS", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "STAKE_LIST_ID",
     values?: undefined
@@ -266,10 +257,6 @@ export interface StakeMetaInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "UVM_TOKEN", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "addSideContract",
-    values: [string]
-  ): string;
-  encodeFunctionData(
     functionFragment: "addTokenToPool",
     values: [BigNumberish]
   ): string;
@@ -296,10 +283,6 @@ export interface StakeMetaInterface extends utils.Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "dao", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "finalizeContract",
-    values?: undefined
-  ): string;
   encodeFunctionData(
     functionFragment: "getActiveStake",
     values?: undefined
@@ -339,10 +322,6 @@ export interface StakeMetaInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "removeSideContract",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "renounceOwnership",
     values?: undefined
   ): string;
@@ -360,12 +339,12 @@ export interface StakeMetaInterface extends utils.Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "transferOwnership",
-    values: [string]
+    functionFragment: "tempChangeStake",
+    values: [BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "transferRewardFromSideContract",
-    values: [BigNumberish, string]
+    functionFragment: "transferOwnership",
+    values: [string]
   ): string;
   encodeFunctionData(
     functionFragment: "updateTopUp",
@@ -392,10 +371,6 @@ export interface StakeMetaInterface extends utils.Interface {
     values: [BigNumberish, boolean]
   ): string;
 
-  decodeFunctionResult(
-    functionFragment: "CONTACT_FINALIZED",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "DNM_TOKEN", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "EIGHTEEN_MONTH_DURATION",
@@ -411,10 +386,13 @@ export interface StakeMetaInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "REWARD_DECAY_FACTOR",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "REWARD_DECAY_PERIOD",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "SC_EXISTS", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "STAKE_LIST_ID",
     data: BytesLike
@@ -470,10 +448,6 @@ export interface StakeMetaInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "UVM_TOKEN", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "addSideContract",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "addTokenToPool",
     data: BytesLike
   ): Result;
@@ -494,10 +468,6 @@ export interface StakeMetaInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "dao", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "finalizeContract",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "getActiveStake",
     data: BytesLike
@@ -534,10 +504,6 @@ export interface StakeMetaInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "removeSideContract",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "renounceOwnership",
     data: BytesLike
   ): Result;
@@ -546,11 +512,11 @@ export interface StakeMetaInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "stakeFrom", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "stakeList", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "transferOwnership",
+    functionFragment: "tempChangeStake",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "transferRewardFromSideContract",
+    functionFragment: "transferOwnership",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -576,39 +542,23 @@ export interface StakeMetaInterface extends utils.Interface {
   ): Result;
 
   events: {
-    "AddSideContract(address)": EventFragment;
     "AddTokenToPool(address,uint256)": EventFragment;
-    "FinalizeContract(uint256)": EventFragment;
     "NewStake(uint256,uint8,uint256,uint256,uint256,uint256)": EventFragment;
     "NewUser(address,uint256)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
-    "RemoveSideContract(bool)": EventFragment;
     "TransferReward(address,uint256)": EventFragment;
     "Withdraw(address,uint256)": EventFragment;
     "WithdrawUserStake(uint256)": EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "AddSideContract"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "AddTokenToPool"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "FinalizeContract"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "NewStake"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "NewUser"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "RemoveSideContract"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "TransferReward"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Withdraw"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "WithdrawUserStake"): EventFragment;
 }
-
-export interface AddSideContractEventObject {
-  sc_address: string;
-}
-export type AddSideContractEvent = TypedEvent<
-  [string],
-  AddSideContractEventObject
->;
-
-export type AddSideContractEventFilter = TypedEventFilter<AddSideContractEvent>;
 
 export interface AddTokenToPoolEventObject {
   user: string;
@@ -620,17 +570,6 @@ export type AddTokenToPoolEvent = TypedEvent<
 >;
 
 export type AddTokenToPoolEventFilter = TypedEventFilter<AddTokenToPoolEvent>;
-
-export interface FinalizeContractEventObject {
-  time: BigNumber;
-}
-export type FinalizeContractEvent = TypedEvent<
-  [BigNumber],
-  FinalizeContractEventObject
->;
-
-export type FinalizeContractEventFilter =
-  TypedEventFilter<FinalizeContractEvent>;
 
 export interface NewStakeEventObject {
   user_id: BigNumber;
@@ -666,17 +605,6 @@ export type OwnershipTransferredEvent = TypedEvent<
 
 export type OwnershipTransferredEventFilter =
   TypedEventFilter<OwnershipTransferredEvent>;
-
-export interface RemoveSideContractEventObject {
-  status: boolean;
-}
-export type RemoveSideContractEvent = TypedEvent<
-  [boolean],
-  RemoveSideContractEventObject
->;
-
-export type RemoveSideContractEventFilter =
-  TypedEventFilter<RemoveSideContractEvent>;
 
 export interface TransferRewardEventObject {
   to: string;
@@ -738,8 +666,6 @@ export interface StakeMeta extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    CONTACT_FINALIZED(overrides?: CallOverrides): Promise<[boolean]>;
-
     DNM_TOKEN(overrides?: CallOverrides): Promise<[string]>;
 
     EIGHTEEN_MONTH_DURATION(overrides?: CallOverrides): Promise<[BigNumber]>;
@@ -750,9 +676,9 @@ export interface StakeMeta extends BaseContract {
 
     ONE_YEAR_DURATION(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    REWARD_DECAY_PERIOD(overrides?: CallOverrides): Promise<[BigNumber]>;
+    REWARD_DECAY_FACTOR(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    SC_EXISTS(overrides?: CallOverrides): Promise<[boolean]>;
+    REWARD_DECAY_PERIOD(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     STAKE_LIST_ID(overrides?: CallOverrides): Promise<[BigNumber]>;
 
@@ -784,11 +710,6 @@ export interface StakeMeta extends BaseContract {
 
     UVM_TOKEN(overrides?: CallOverrides): Promise<[string]>;
 
-    addSideContract(
-      sc_address: string,
-      overrides?: Overrides & { from?: string }
-    ): Promise<ContractTransaction>;
-
     addTokenToPool(
       amount: BigNumberish,
       overrides?: Overrides & { from?: string }
@@ -819,10 +740,6 @@ export interface StakeMeta extends BaseContract {
     ): Promise<[BigNumber]>;
 
     dao(overrides?: CallOverrides): Promise<[string]>;
-
-    finalizeContract(
-      overrides?: Overrides & { from?: string }
-    ): Promise<ContractTransaction>;
 
     getActiveStake(
       overrides?: CallOverrides
@@ -870,10 +787,6 @@ export interface StakeMeta extends BaseContract {
     ): Promise<[BigNumber[]]>;
 
     owner(overrides?: CallOverrides): Promise<[string]>;
-
-    removeSideContract(
-      overrides?: Overrides & { from?: string }
-    ): Promise<ContractTransaction>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: string }
@@ -928,14 +841,14 @@ export interface StakeMeta extends BaseContract {
       }
     >;
 
-    transferOwnership(
-      newOwner: string,
+    tempChangeStake(
+      stake_id: BigNumberish,
+      start_time: BigNumberish,
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
 
-    transferRewardFromSideContract(
-      amount: BigNumberish,
-      user_address: string,
+    transferOwnership(
+      newOwner: string,
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
 
@@ -968,8 +881,6 @@ export interface StakeMeta extends BaseContract {
     ): Promise<ContractTransaction>;
   };
 
-  CONTACT_FINALIZED(overrides?: CallOverrides): Promise<boolean>;
-
   DNM_TOKEN(overrides?: CallOverrides): Promise<string>;
 
   EIGHTEEN_MONTH_DURATION(overrides?: CallOverrides): Promise<BigNumber>;
@@ -980,9 +891,9 @@ export interface StakeMeta extends BaseContract {
 
   ONE_YEAR_DURATION(overrides?: CallOverrides): Promise<BigNumber>;
 
-  REWARD_DECAY_PERIOD(overrides?: CallOverrides): Promise<BigNumber>;
+  REWARD_DECAY_FACTOR(overrides?: CallOverrides): Promise<BigNumber>;
 
-  SC_EXISTS(overrides?: CallOverrides): Promise<boolean>;
+  REWARD_DECAY_PERIOD(overrides?: CallOverrides): Promise<BigNumber>;
 
   STAKE_LIST_ID(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1014,11 +925,6 @@ export interface StakeMeta extends BaseContract {
 
   UVM_TOKEN(overrides?: CallOverrides): Promise<string>;
 
-  addSideContract(
-    sc_address: string,
-    overrides?: Overrides & { from?: string }
-  ): Promise<ContractTransaction>;
-
   addTokenToPool(
     amount: BigNumberish,
     overrides?: Overrides & { from?: string }
@@ -1049,10 +955,6 @@ export interface StakeMeta extends BaseContract {
   ): Promise<BigNumber>;
 
   dao(overrides?: CallOverrides): Promise<string>;
-
-  finalizeContract(
-    overrides?: Overrides & { from?: string }
-  ): Promise<ContractTransaction>;
 
   getActiveStake(
     overrides?: CallOverrides
@@ -1096,10 +998,6 @@ export interface StakeMeta extends BaseContract {
   ): Promise<BigNumber[]>;
 
   owner(overrides?: CallOverrides): Promise<string>;
-
-  removeSideContract(
-    overrides?: Overrides & { from?: string }
-  ): Promise<ContractTransaction>;
 
   renounceOwnership(
     overrides?: Overrides & { from?: string }
@@ -1154,14 +1052,14 @@ export interface StakeMeta extends BaseContract {
     }
   >;
 
-  transferOwnership(
-    newOwner: string,
+  tempChangeStake(
+    stake_id: BigNumberish,
+    start_time: BigNumberish,
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
 
-  transferRewardFromSideContract(
-    amount: BigNumberish,
-    user_address: string,
+  transferOwnership(
+    newOwner: string,
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
 
@@ -1194,8 +1092,6 @@ export interface StakeMeta extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    CONTACT_FINALIZED(overrides?: CallOverrides): Promise<boolean>;
-
     DNM_TOKEN(overrides?: CallOverrides): Promise<string>;
 
     EIGHTEEN_MONTH_DURATION(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1206,9 +1102,9 @@ export interface StakeMeta extends BaseContract {
 
     ONE_YEAR_DURATION(overrides?: CallOverrides): Promise<BigNumber>;
 
-    REWARD_DECAY_PERIOD(overrides?: CallOverrides): Promise<BigNumber>;
+    REWARD_DECAY_FACTOR(overrides?: CallOverrides): Promise<BigNumber>;
 
-    SC_EXISTS(overrides?: CallOverrides): Promise<boolean>;
+    REWARD_DECAY_PERIOD(overrides?: CallOverrides): Promise<BigNumber>;
 
     STAKE_LIST_ID(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1240,11 +1136,6 @@ export interface StakeMeta extends BaseContract {
 
     UVM_TOKEN(overrides?: CallOverrides): Promise<string>;
 
-    addSideContract(
-      sc_address: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     addTokenToPool(
       amount: BigNumberish,
       overrides?: CallOverrides
@@ -1275,8 +1166,6 @@ export interface StakeMeta extends BaseContract {
     ): Promise<BigNumber>;
 
     dao(overrides?: CallOverrides): Promise<string>;
-
-    finalizeContract(overrides?: CallOverrides): Promise<void>;
 
     getActiveStake(
       overrides?: CallOverrides
@@ -1320,8 +1209,6 @@ export interface StakeMeta extends BaseContract {
     ): Promise<BigNumber[]>;
 
     owner(overrides?: CallOverrides): Promise<string>;
-
-    removeSideContract(overrides?: CallOverrides): Promise<void>;
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
 
@@ -1371,14 +1258,14 @@ export interface StakeMeta extends BaseContract {
       }
     >;
 
-    transferOwnership(
-      newOwner: string,
+    tempChangeStake(
+      stake_id: BigNumberish,
+      start_time: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    transferRewardFromSideContract(
-      amount: BigNumberish,
-      user_address: string,
+    transferOwnership(
+      newOwner: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1410,11 +1297,6 @@ export interface StakeMeta extends BaseContract {
   };
 
   filters: {
-    "AddSideContract(address)"(
-      sc_address?: string | null
-    ): AddSideContractEventFilter;
-    AddSideContract(sc_address?: string | null): AddSideContractEventFilter;
-
     "AddTokenToPool(address,uint256)"(
       user?: string | null,
       amount?: null
@@ -1423,9 +1305,6 @@ export interface StakeMeta extends BaseContract {
       user?: string | null,
       amount?: null
     ): AddTokenToPoolEventFilter;
-
-    "FinalizeContract(uint256)"(time?: null): FinalizeContractEventFilter;
-    FinalizeContract(time?: null): FinalizeContractEventFilter;
 
     "NewStake(uint256,uint8,uint256,uint256,uint256,uint256)"(
       user_id?: null,
@@ -1459,9 +1338,6 @@ export interface StakeMeta extends BaseContract {
       newOwner?: string | null
     ): OwnershipTransferredEventFilter;
 
-    "RemoveSideContract(bool)"(status?: null): RemoveSideContractEventFilter;
-    RemoveSideContract(status?: null): RemoveSideContractEventFilter;
-
     "TransferReward(address,uint256)"(
       to?: string | null,
       amount?: null
@@ -1482,8 +1358,6 @@ export interface StakeMeta extends BaseContract {
   };
 
   estimateGas: {
-    CONTACT_FINALIZED(overrides?: CallOverrides): Promise<BigNumber>;
-
     DNM_TOKEN(overrides?: CallOverrides): Promise<BigNumber>;
 
     EIGHTEEN_MONTH_DURATION(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1494,9 +1368,9 @@ export interface StakeMeta extends BaseContract {
 
     ONE_YEAR_DURATION(overrides?: CallOverrides): Promise<BigNumber>;
 
-    REWARD_DECAY_PERIOD(overrides?: CallOverrides): Promise<BigNumber>;
+    REWARD_DECAY_FACTOR(overrides?: CallOverrides): Promise<BigNumber>;
 
-    SC_EXISTS(overrides?: CallOverrides): Promise<BigNumber>;
+    REWARD_DECAY_PERIOD(overrides?: CallOverrides): Promise<BigNumber>;
 
     STAKE_LIST_ID(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1528,11 +1402,6 @@ export interface StakeMeta extends BaseContract {
 
     UVM_TOKEN(overrides?: CallOverrides): Promise<BigNumber>;
 
-    addSideContract(
-      sc_address: string,
-      overrides?: Overrides & { from?: string }
-    ): Promise<BigNumber>;
-
     addTokenToPool(
       amount: BigNumberish,
       overrides?: Overrides & { from?: string }
@@ -1563,10 +1432,6 @@ export interface StakeMeta extends BaseContract {
     ): Promise<BigNumber>;
 
     dao(overrides?: CallOverrides): Promise<BigNumber>;
-
-    finalizeContract(
-      overrides?: Overrides & { from?: string }
-    ): Promise<BigNumber>;
 
     getActiveStake(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1602,10 +1467,6 @@ export interface StakeMeta extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
-    removeSideContract(
-      overrides?: Overrides & { from?: string }
-    ): Promise<BigNumber>;
-
     renounceOwnership(
       overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
@@ -1635,14 +1496,14 @@ export interface StakeMeta extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    transferOwnership(
-      newOwner: string,
+    tempChangeStake(
+      stake_id: BigNumberish,
+      start_time: BigNumberish,
       overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
 
-    transferRewardFromSideContract(
-      amount: BigNumberish,
-      user_address: string,
+    transferOwnership(
+      newOwner: string,
       overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
 
@@ -1674,8 +1535,6 @@ export interface StakeMeta extends BaseContract {
   };
 
   populateTransaction: {
-    CONTACT_FINALIZED(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     DNM_TOKEN(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     EIGHTEEN_MONTH_DURATION(
@@ -1688,11 +1547,13 @@ export interface StakeMeta extends BaseContract {
 
     ONE_YEAR_DURATION(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    REWARD_DECAY_PERIOD(
+    REWARD_DECAY_FACTOR(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    SC_EXISTS(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    REWARD_DECAY_PERIOD(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     STAKE_LIST_ID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -1724,11 +1585,6 @@ export interface StakeMeta extends BaseContract {
 
     UVM_TOKEN(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    addSideContract(
-      sc_address: string,
-      overrides?: Overrides & { from?: string }
-    ): Promise<PopulatedTransaction>;
-
     addTokenToPool(
       amount: BigNumberish,
       overrides?: Overrides & { from?: string }
@@ -1759,10 +1615,6 @@ export interface StakeMeta extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     dao(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    finalizeContract(
-      overrides?: Overrides & { from?: string }
-    ): Promise<PopulatedTransaction>;
 
     getActiveStake(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -1805,10 +1657,6 @@ export interface StakeMeta extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    removeSideContract(
-      overrides?: Overrides & { from?: string }
-    ): Promise<PopulatedTransaction>;
-
     renounceOwnership(
       overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
@@ -1838,14 +1686,14 @@ export interface StakeMeta extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    transferOwnership(
-      newOwner: string,
+    tempChangeStake(
+      stake_id: BigNumberish,
+      start_time: BigNumberish,
       overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 
-    transferRewardFromSideContract(
-      amount: BigNumberish,
-      user_address: string,
+    transferOwnership(
+      newOwner: string,
       overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 

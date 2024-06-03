@@ -117,7 +117,7 @@ export class BridgeService {
       if (res.hash) {
         await res.wait();
         transaction.status = TransferStatusEnum.Success;
-        await transaction.save();
+        const result = await transaction.save();
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { id, ...new_tx } = transaction;
         await this.transactionService.createTransaction({
@@ -125,7 +125,7 @@ export class BridgeService {
           network: NetworkEnum.POLYGON,
           tx_hash: res.hash,
           recipient_address: res.to,
-          block_number: res.blockNumber,
+          block_number: result?.block_number,
         });
         Logger.log(
           { from: res?.from, to: res?.to },
@@ -170,7 +170,7 @@ export class BridgeService {
         console.log('3');
         const result = await res.wait();
         transaction.status = TransferStatusEnum.Success;
-        await transaction.save();
+        const final_result = await transaction.save();
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { id, ...new_tx } = transaction;
         await this.transactionService.createTransaction({
@@ -178,7 +178,7 @@ export class BridgeService {
           network: NetworkEnum.POLYGON,
           tx_hash: res.hash,
           recipient_address: res.to,
-          block_number: res.blockNumber,
+          block_number: final_result?.block_number,
         });
         console.log('4');
         Logger.log(

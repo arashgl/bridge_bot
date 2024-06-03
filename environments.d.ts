@@ -12,7 +12,7 @@ export interface Env {
   SEPOLIA: string;
   BSC_TESTNET: string;
   BSC_MAINNET: string;
-  MUMBAI: string;
+  AMOY: string;
   POLYGON: string;
   MYSQL_ROOT_HOST: string;
   MYSQL_PORT: string;

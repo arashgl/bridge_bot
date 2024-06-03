@@ -9,6 +9,8 @@ import { WalletProvider } from '../ethers/wallet.provider';
 
 import { Transaction } from '../transactions/transaction.entity';
 import { TransferStatusEnum } from '../transactions/enums/transfer-status.enum';
+import { TransactionService } from '../transactions/transaction.service';
+import { NetworkEnum } from '../transactions/enums/network.enum';
 
 @Injectable()
 export class BridgeService {
@@ -23,6 +25,7 @@ export class BridgeService {
   constructor(
     private readonly configService: ConfigService<Env>,
     private readonly walletProvider: WalletProvider,
+    private readonly transactionService: TransactionService,
   ) {
     this.uvm_bsc = this.configService.getOrThrow('BSC_UVM_ADDRESS');
     this.uvm_polygon = this.configService.getOrThrow('POLYGON_UVM_ADDRESS');
@@ -67,6 +70,15 @@ export class BridgeService {
         await res.wait();
         console.log('Finished for Stake');
         transaction.status = TransferStatusEnum.Success;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { id, ...new_tx } = transaction;
+        await this.transactionService.createTransaction({
+          ...new_tx,
+          network: NetworkEnum.POLYGON,
+          tx_hash: res.hash,
+          recipient_address: res.to,
+          block_number: res.blockNumber,
+        });
         await transaction.save();
         Logger.log({ stakedAddress: res.to }, '<<< Staked');
         return transaction;
@@ -76,7 +88,9 @@ export class BridgeService {
         err?.reason || err?.error?.reason || err,
         'transferFullToPolygon',
       );
-      console.log(err);
+      for (const key in err) {
+        console.log({ [key]: err[key] });
+      }
       transaction.status = TransferStatusEnum.Pending;
       await transaction.save();
     }
@@ -104,6 +118,15 @@ export class BridgeService {
         await res.wait();
         transaction.status = TransferStatusEnum.Success;
         await transaction.save();
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { id, ...new_tx } = transaction;
+        await this.transactionService.createTransaction({
+          ...new_tx,
+          network: NetworkEnum.POLYGON,
+          tx_hash: res.hash,
+          recipient_address: res.to,
+          block_number: res.blockNumber,
+        });
         Logger.log(
           { from: res?.from, to: res?.to },
           'transferLandToPolygonFinished',
@@ -148,6 +171,15 @@ export class BridgeService {
         const result = await res.wait();
         transaction.status = TransferStatusEnum.Success;
         await transaction.save();
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { id, ...new_tx } = transaction;
+        await this.transactionService.createTransaction({
+          ...new_tx,
+          network: NetworkEnum.POLYGON,
+          tx_hash: res.hash,
+          recipient_address: res.to,
+          block_number: res.blockNumber,
+        });
         console.log('4');
         Logger.log(
           { from: result?.from, to: result?.to },

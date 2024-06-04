@@ -91,8 +91,6 @@ export class BridgeService {
       for (const key in err) {
         console.log({ [key]: err[key] });
       }
-      transaction.status = TransferStatusEnum.Pending;
-      await transaction.save();
     }
   }
 
@@ -139,8 +137,6 @@ export class BridgeService {
         'transferLandToPolygon',
       );
       console.log(err);
-      transaction.status = TransferStatusEnum.Pending;
-      await transaction.save();
     }
   }
 
@@ -193,8 +189,6 @@ export class BridgeService {
         'TransferToPolygon',
       );
       console.log(err);
-      transaction.status = TransferStatusEnum.Pending;
-      await transaction.save();
     }
   }
 }

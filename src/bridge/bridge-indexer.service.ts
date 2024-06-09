@@ -121,7 +121,7 @@ export class BridgeIndexerService {
         })
         .pipe(
           catchError((error: AxiosError) => {
-            Logger.error(error?.response?.data);
+            Logger.error(error);
             throw 'An error happened In Getting TX List!';
           }),
         ),

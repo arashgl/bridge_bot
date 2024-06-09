@@ -40,7 +40,7 @@ export class BridgeIndexerService {
     );
   }
 
-  @Cron(CronExpression.EVERY_30_SECONDS)
+  @Cron(CronExpression.EVERY_MINUTE)
   async transferInterval() {
     if (this.isGettingTransactions) return;
     this.isGettingTransactions = true;

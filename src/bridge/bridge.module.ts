@@ -18,7 +18,7 @@ import { Env } from '../../environments';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService<Env>) => ({
-        timeout: 10000,
+        timeout: 40000,
         maxRedirects: 5,
         baseURL:
           configService.getOrThrow('NET_MODE') === 'TEST'

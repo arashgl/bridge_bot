@@ -5,6 +5,7 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { TransferTypeEnum } from '../transactions/transfer-type.enum';
 import { TransferStatusEnum } from '../transactions/enums/transfer-status.enum';
 import { NetworkEnum } from '../transactions/enums/network.enum';
+import { BridgeIndexerService } from './bridge-indexer.service';
 
 @Injectable()
 export class BridgeIntervalService {
@@ -15,12 +16,16 @@ export class BridgeIntervalService {
   constructor(
     private readonly transactionService: TransactionService,
     private readonly bridgeService: BridgeService,
+    private readonly bridgeIndexerService: BridgeIndexerService,
   ) {}
 
   @Cron(CronExpression.EVERY_MINUTE)
   async transferFromBsc() {
     if (this.isProcessing) return;
     this.isProcessing = true;
+    while (this.bridgeIndexerService.isGettingTransactions) {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+    }
     try {
       const pendingTransactions = await this.transactionService.findAll({
         where: {

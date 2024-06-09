@@ -22,7 +22,7 @@ export class BridgeIndexerService {
   private readonly bsc_bridge: Bridge;
   private readonly confirmationBlock: number;
   private readonly decoder = new InputDataDecoder(BridgeAbi);
-  private isGettingTransactions = false;
+  public isGettingTransactions = false;
   constructor(
     private readonly configService: ConfigService<Env>,
     private readonly transactionService: TransactionService,

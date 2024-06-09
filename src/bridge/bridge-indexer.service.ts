@@ -22,7 +22,7 @@ export class BridgeIndexerService {
   private readonly bsc_bridge: Bridge;
   private readonly confirmationBlock: number;
   private readonly decoder = new InputDataDecoder(BridgeAbi);
-
+  private isGettingTransactions = false;
   constructor(
     private readonly configService: ConfigService<Env>,
     private readonly transactionService: TransactionService,
@@ -42,6 +42,8 @@ export class BridgeIndexerService {
 
   @Cron(CronExpression.EVERY_30_SECONDS)
   async transferInterval() {
+    if (this.isGettingTransactions) return;
+    this.isGettingTransactions = true;
     try {
       const currentBlock = await this.bsc_bridge.provider.getBlockNumber();
       const transaction = await this.transactionService.getLatestTransaction();
@@ -49,6 +51,8 @@ export class BridgeIndexerService {
       if (transaction) blockNumber = transaction.block_number;
       const transactions =
         await this.getRemainingTransactionsFromBlockNumber(blockNumber);
+
+      if (!Array.isArray(transactions)) return;
 
       for (const tx of transactions) {
         const data = this.decoder.decodeData(tx.input);
@@ -95,6 +99,8 @@ export class BridgeIndexerService {
       }
     } catch (e) {
       Logger.error(e);
+    } finally {
+      this.isGettingTransactions = false;
     }
   }
   async getRemainingTransactionsFromBlockNumber(
@@ -116,7 +122,7 @@ export class BridgeIndexerService {
         .pipe(
           catchError((error: AxiosError) => {
             Logger.error(error?.response?.data);
-            throw 'An error happened!';
+            throw 'An error happened In Getting TX List!';
           }),
         ),
     );
